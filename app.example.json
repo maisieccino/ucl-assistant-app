@@ -1,10 +1,6 @@
 {
   "expo": {
     "name": "UCL Assistant",
-    "packagerOpts": {
-      "config": "rn-cli.config.js",
-      "projectRoots": ""
-    },
     "description": "No description",
     "slug": "ucl-assistant",
     "privacy": "public",
