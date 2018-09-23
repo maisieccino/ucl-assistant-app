@@ -4,7 +4,7 @@ import AsyncStorage from "redux-persist/es/storage";
 import createSecureStore from "redux-persist-expo-securestore";
 import thunk from "redux-thunk";
 import persistReducer from "redux-persist/lib/persistReducer";
-import debounce from "../lib/debounce";
+import debounce from "./lib/debounce";
 import reducer, { initialState } from "./reducers";
 import { SIGN_OUT_USER } from "./constants/userConstants";
 
