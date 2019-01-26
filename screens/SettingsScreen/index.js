@@ -136,7 +136,14 @@ class SettingsScreen extends Component {
           )}
         </Horizontal>
         <SubtitleText>Author</SubtitleText>
-        <BodyText>Created by Matt Bell, using the UCL API.</BodyText>
+        <BodyText>
+          Created by Matt Bell (class of 2018) using the UCL API.
+        </BodyText>
+        <BodyText>
+          Currently managed by the UCL API Team: a group of students working
+          together within ISD to improve UCL by building a platform on top of
+          UCL's digital services for students.
+        </BodyText>
         <BodyText>
           Illustrations courtesy of the unDraw project, released under the MIT
           license.

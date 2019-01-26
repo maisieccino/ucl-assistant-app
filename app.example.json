@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "UCL Assistant",
-    "description": "No description",
+    "description": "One beautiful app to manage your life at UCL.",
     "slug": "ucl-assistant",
     "privacy": "public",
     "sdkVersion": "28.0.0",
@@ -16,10 +16,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "me.mbell.uclassistant"
+      "bundleIdentifier": "com.uclapi.uclassistant"
     },
     "android": {
-      "package": "me.mbell.uclassistant",
+      "package": "com.uclapi.uclassistant",
       "adaptiveIcon": {
         "backgroundImage": "./assets/images/icon-bg.png",
         "foregroundImage": "./assets/images/icon-fg.png"
