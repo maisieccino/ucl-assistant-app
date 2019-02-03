@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { ActivityIndicator, Linking } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { fetchPerson } from "../actions/peopleActions";
+import MailManager from "../lib/MailManager";
 import Button from "../components/Button";
 import { PaddedIcon, PageNoScroll, Spacer } from "../components/Containers";
 import {
@@ -43,19 +44,6 @@ class PersonDetailScreen extends Component {
     error: "",
   };
 
-  static getDerivedStateFromProps(props, state) {
-    if (state.isFetching && !props.isFetching) {
-      return {
-        name: props.name,
-        email: props.email,
-        department: props.department,
-        status: props.status,
-        isFetching: false,
-      };
-    }
-    return null;
-  }
-
   static mapStateToProps = state => ({
     name: state.people.person.name,
     department: state.people.person.department,
@@ -73,19 +61,20 @@ class PersonDetailScreen extends Component {
   constructor(props) {
     super(props);
     const { params } = props.navigation.state;
-    this.state = { ...params, isFetching: true };
+    this.state = { ...params };
   }
 
   componentDidMount() {
     this.props.fetchPerson(this.props.token, this.state.email);
   }
   sendEmail() {
-    Linking.openURL(`mailto:${this.state.email}`);
+    MailManager.composeAsync({
+      recipients: [this.state.email],
+    });
   }
 
   render() {
-    const { name, status, department, email, isFetching } = this.state;
-    const { error } = this.props;
+    const { name, status, department, email, isFetching, error } = this.props;
     return (
       <PageNoScroll>
         <TitleText>{name}</TitleText>

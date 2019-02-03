@@ -4,7 +4,7 @@
     "description": "One beautiful app to manage your life at UCL.",
     "slug": "ucl-assistant",
     "privacy": "public",
-    "sdkVersion": "28.0.0",
+    "sdkVersion": "32.0.0",
     "version": "0.6.5",
     "orientation": "portrait",
     "primaryColor": "#1B998B",
