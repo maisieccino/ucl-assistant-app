@@ -7,7 +7,6 @@ import { momentObj } from "react-moment-proptypes";
 import { FlatList } from "react-native";
 import { connect } from "react-redux";
 import { generate } from "shortid";
-// import diff from "deep-diff";
 import { surveys } from "../../constants/studyspaces";
 import { fetchSeatInfos } from "../../actions/studyspacesActions";
 import Button from "../../components/Button";

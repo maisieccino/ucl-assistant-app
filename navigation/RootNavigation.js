@@ -1,4 +1,7 @@
-import { createStackNavigator } from "react-navigation";
+import {
+  createStackNavigator,
+  createAppContainer,
+} from "react-navigation";
 
 import MainTabNavigator from "./MainTabNavigator";
 import SplashScreen from "../screens/SplashScreen";
@@ -32,7 +35,7 @@ const RootStackNavigator = createStackNavigator(
     },
   },
   {
-    navigationOptions: () => ({
+    defaultNavigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: "normal",
         fontFamily: "apercu",
@@ -41,4 +44,4 @@ const RootStackNavigator = createStackNavigator(
   },
 );
 
-export default RootStackNavigator;
+export default createAppContainer(RootStackNavigator);
