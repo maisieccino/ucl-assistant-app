@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { Image } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { TitleText, SubtitleText, CentredText } from "../components/Typography";
-import { Page, Horizontal } from "../components/Containers";
-import { TextInput } from "../components/Input";
-import Colors from "../constants/Colors";
-import Styles from "../styles/Containers";
+import PropTypes from "prop-types";
+import { TitleText, CentredText } from "../../components/Typography";
+import { Page, Horizontal } from "../../components/Containers";
+import Colors from "../../constants/Colors";
+import Styles from "../../styles/Containers";
+import SearchControl from "./SearchControl";
 
-class TimetableScreen extends Component {
+class RoomsScreen extends Component {
   static navigationOptions = {
     header: null,
     tabBarIcon: ({ focused }) => (
@@ -19,7 +20,12 @@ class TimetableScreen extends Component {
     ),
   };
 
+  static propTypes = {
+    navigation: PropTypes.shape().isRequired,
+  };
+
   render() {
+    const { navigation } = this.props;
     if (!__DEV__) {
       return (
         <Page mainTabPage>
@@ -29,7 +35,7 @@ class TimetableScreen extends Component {
           </CentredText>
           <Horizontal>
             <Image
-              source={require("../assets/images/undraw_building_blocks.png")}
+              source={require("../../assets/images/undraw_building_blocks.png")}
               resizeMethod="scale"
               style={[Styles.image]}
               width={150}
@@ -43,13 +49,11 @@ class TimetableScreen extends Component {
     return (
       <Page mainTabPage>
         <TitleText>Rooms</TitleText>
-        <TextInput placeholder="Search for a room or building name..." />
+        <SearchControl navigation={navigation} />
         <CentredText>Start typing to get search results</CentredText>
-        <SubtitleText>Your Favourites</SubtitleText>
-        <SubtitleText>In Roberts Building</SubtitleText>
       </Page>
     );
   }
 }
 
-export default TimetableScreen;
+export default RoomsScreen;
