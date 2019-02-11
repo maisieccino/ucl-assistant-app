@@ -71,6 +71,13 @@ StudySpaceResult.defaultProps = {
 
 const ConnectedStudySpaceResult = ({ id, studyspaces, navigation }) => {
   const space = studyspaces.filter(x => x.id === id)[0];
+
+  // There may be non-studyspace results e.g. 1 Saint Martin Le Grand
+  // occupancy information is not available for these locations
+  if (!space || space.capacity === 0) {
+    return null;
+  }
+
   return (
     <StudySpaceResult
       {...space}
