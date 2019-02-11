@@ -18,23 +18,23 @@ const StudySpaceResult = ({
   if (capacity > 0) {
     switch (true) {
       case occupation > 0.9:
-        capacityString = "Very busy right now";
+        capacityString = "Very busy";
         indicatorColor = Colors.indicatorRed;
         break;
       case occupation > 0.65:
-        capacityString = "Quite busy right now";
+        capacityString = "Quite busy";
         indicatorColor = Colors.indicatorOrange;
         break;
       case occupation > 0.5:
-        capacityString = "A little busy right now";
+        capacityString = "A little busy";
         indicatorColor = Colors.indicatorYellow;
         break;
       case occupation > 0.2:
-        capacityString = "Rather quiet right now";
+        capacityString = "Rather quiet";
         indicatorColor = Colors.indicatorLime;
         break;
       default:
-        capacityString = "Very quiet right now";
+        capacityString = "Very quiet";
         indicatorColor = Colors.indicatorGreen;
     }
   }
@@ -42,7 +42,7 @@ const StudySpaceResult = ({
     <SearchResult
       key={generate()}
       topText={name}
-      bottomText={capacityString}
+      bottomText={`${capacityString} (${occupied}/${capacity})`}
       type="location"
       buttonText="View"
       indicator

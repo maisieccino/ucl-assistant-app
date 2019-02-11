@@ -2,11 +2,10 @@
 // @flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import moment from "moment";
 import { connect } from "react-redux";
 import { fetchAverages } from "../../actions/studyspacesActions";
-import Button from "../../components/Button";
 import { Page, Horizontal } from "../../components/Containers";
 import { BodyText, TitleText, SubtitleText } from "../../components/Typography";
 import CapacityChart from "./CapacityChart";
@@ -22,12 +21,12 @@ const busyText = (
 ) => {
   const diff = data[time] - occupied;
   if (Math.abs(diff) / capacity < 0.05) {
-    return "about as busy as normal.";
+    return "about as busy as normal";
   }
   if (diff > 0) {
-    return "quieter than usual.";
+    return "quieter than usual";
   }
-  return "busier than usual.";
+  return "busier than usual";
 };
 
 class StudySpaceDetailScreen extends Component {
@@ -100,7 +99,7 @@ class StudySpaceDetailScreen extends Component {
     const hour = parseInt(moment().format("HH"), 10);
     return (
       <View style={{ flex: 1 }}>
-        <Page style={{ flex: 1.8 }}>
+        <Page style={{ flex: 1 }}>
           <TitleText>{name}</TitleText>
           <Horizontal>
             <View style={{ flex: 1 }}>
@@ -128,17 +127,21 @@ class StudySpaceDetailScreen extends Component {
             <LiveIndicator />
             <BodyText>
               {moment().format("HH:mm")} -{" "}
-              {busyText(hour, data, occupied, capacity)}
+              {busyText(hour, data, occupied, capacity)} ({occupied}/{capacity})
             </BodyText>
           </Horizontal>
-          <Button>Live Seating Map</Button>
+          <View>
+            <SubtitleText>Live Seating Map</SubtitleText>
+          </View>
           {/* <SubtitleText>Opening Hours</SubtitleText>
           <OpeningHours /> */}
-          <SubtitleText>Facilities</SubtitleText>
-          <BodyText>
-            See the libraries website for more information about what facilities
-            are offered.
-          </BodyText>
+          <View style={styles.facilities}>
+            <SubtitleText>Facilities</SubtitleText>
+            <BodyText>
+              See the libraries website for more information about what
+              facilities are offered.
+            </BodyText>
+          </View>
         </Page>
         <FavouriteButton id={id} />
       </View>
@@ -150,3 +153,9 @@ export default connect(
   StudySpaceDetailScreen.mapStateToProps,
   StudySpaceDetailScreen.mapDispatchToProps,
 )(StudySpaceDetailScreen);
+
+const styles = StyleSheet.create({
+  facilities: {
+    marginBottom: 20,
+  },
+});
