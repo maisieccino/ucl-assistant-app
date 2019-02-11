@@ -15,7 +15,7 @@ import Colors from "../../constants/Colors";
 import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants";
 import DateControls from "./DateControls";
 import TimetableComponent from "./TimetableComponent";
-import { API_URL } from "../../constants/API";
+import { ASSISTANT_API_URL } from "../../constants/API";
 
 class TimetableScreen extends Component {
   static navigationOptions = {
@@ -120,7 +120,7 @@ class TimetableScreen extends Component {
     const pushToken = await Notifications.getExpoPushTokenAsync();
     const { token } = this.props.user;
     try {
-      const res = await fetch(`${API_URL}/notifications/register`, {
+      const res = await fetch(`${ASSISTANT_API_URL}/notifications/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
