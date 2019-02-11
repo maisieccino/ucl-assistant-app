@@ -73,7 +73,6 @@ export const fetchSeatInfos = (token: String, ids: Array) => async (
       throw new Error(json.error || "There was a problem");
     }
     console.log("data received");
-    console.log(json);
     return Promise.all(
       ids.map(id => {
         const info = json.content.filter(obj => `${obj.id}` === `${id}`)[0];

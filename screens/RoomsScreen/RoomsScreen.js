@@ -26,26 +26,6 @@ class RoomsScreen extends Component {
 
   render() {
     const { navigation } = this.props;
-    if (!__DEV__) {
-      return (
-        <Page mainTabPage>
-          <TitleText>Rooms</TitleText>
-          <CentredText>
-            This feature is not quite ready yet. Come back soon!
-          </CentredText>
-          <Horizontal>
-            <Image
-              source={require("../../assets/images/undraw_building_blocks.png")}
-              resizeMethod="scale"
-              style={[Styles.image]}
-              width={150}
-              height={150}
-              resizeMode="contain"
-            />
-          </Horizontal>
-        </Page>
-      );
-    }
     return (
       <Page mainTabPage>
         <TitleText>Rooms</TitleText>
