@@ -27,33 +27,34 @@ export const fetchSeatInfoFailure = (id, error) => ({
   type: WORKSPACES_FETCH_SEATINFO_FAILURE,
 });
 
-export const fetchSeatInfo = (token, id) => async dispatch => {
-  await dispatch(setIsFetchingSeatInfo([id]));
-  try {
-    const res = await fetch(`${WORKSPACES_URL}/${id}/seatinfo`, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    const json = await res.json();
-    if (!res.ok) {
-      throw new Error(json.error || "There was a problem");
-    }
-    return dispatch(
-      fetchSeatInfoSuccess(id, {
-        occupied: json.content.occupied,
-        capacity: json.content.total,
-      }),
-    );
-  } catch (error) {
-    return dispatch(
-      fetchSeatInfoFailure(
-        id,
-        typeof error === "string" ? error : error.message,
-      ),
-    );
-  }
-};
+// This action appears to be unused
+// export const fetchSeatInfo = (token, id) => async dispatch => {
+//   await dispatch(setIsFetchingSeatInfo([id]));
+//   try {
+//     const res = await fetch(`${WORKSPACES_URL}/${id}/seatinfo`, {
+//       headers: {
+//         authorization: `Bearer ${token}`,
+//       },
+//     });
+//     const json = await res.json();
+//     if (!res.ok) {
+//       throw new Error(json.error || "There was a problem");
+//     }
+//     return dispatch(
+//       fetchSeatInfoSuccess(id, {
+//         occupied: json.content.occupied,
+//         capacity: json.content.total,
+//       }),
+//     );
+//   } catch (error) {
+//     return dispatch(
+//       fetchSeatInfoFailure(
+//         id,
+//         typeof error === "string" ? error : error.message,
+//       ),
+//     );
+//   }
+// };
 
 export const fetchSeatInfos = (token: String, ids: Array) => async (
   dispatch: Function,
@@ -72,6 +73,7 @@ export const fetchSeatInfos = (token: String, ids: Array) => async (
       throw new Error(json.error || "There was a problem");
     }
     console.log("data received");
+    console.log(json);
     return Promise.all(
       ids.map(id => {
         const info = json.content.filter(obj => `${obj.id}` === `${id}`)[0];
