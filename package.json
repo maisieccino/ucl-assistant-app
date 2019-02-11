@@ -8,7 +8,8 @@
     "test": "jest --ci && yarn run lint:force",
     "storybook": "storybook start -p 7007",
     "prestorybook": "rnstl",
-    "start": "expo start"
+    "start": "expo start",
+    "publish": "expo publish"
   },
   "dependencies": {
     "@expo/vector-icons": "^9.0.0",

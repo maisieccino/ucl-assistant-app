@@ -160,9 +160,9 @@ class StudySpaceDetailScreen extends Component {
               {busyText(hour, data, occupied, capacity)}
             </BodyText>
           </Horizontal>
-          {survey ? (
+          {/* {survey ? (
             <Button onPress={this.navigateToLiveSeatMap}>Live Seat Map</Button>
-          ) : null}
+          ) : null} */}
           {/* <SubtitleText>Opening Hours</SubtitleText>
           <OpeningHours /> */}
           <View style={styles.facilities}>
