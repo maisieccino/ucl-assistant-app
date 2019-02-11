@@ -7,6 +7,7 @@ import PersonDetailScreen from "../screens/PersonDetailScreen";
 import StudySpaceDetailScreen from "../screens/StudySpaceDetailScreen";
 import StudySpaceAboutScreen from "../screens/StudySpaceAboutScreen";
 import LiveSeatingMapScreen from "../screens/LiveSeatingMapScreen";
+import RoomDetailScreen from "../screens/RoomDetailScreen";
 
 const RootStackNavigator = createStackNavigator(
   {
@@ -33,6 +34,9 @@ const RootStackNavigator = createStackNavigator(
     },
     LiveSeatingMap: {
       screen: LiveSeatingMapScreen,
+    },
+    RoomDetailScreen: {
+      screen: RoomDetailScreen,
     },
   },
   {

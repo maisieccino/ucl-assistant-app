@@ -20,6 +20,7 @@ class SearchControl extends Component {
   static SEARCH_DELAY = 500;
   static propTypes = {
     token: PropTypes.string,
+    navigation: PropTypes.shape().isRequired,
   };
   static defaultProps = {
     token: "",
@@ -27,7 +28,7 @@ class SearchControl extends Component {
   static mapStateToProps = state => ({
     token: state.user.token,
   });
-  static mapDispatchToProps = dispatch => ({});
+  static mapDispatchToProps = () => ({});
   constructor(props) {
     super(props);
     this.state = {
@@ -57,6 +58,8 @@ class SearchControl extends Component {
       this.setState({ error: error.message, isSearching: false });
     }
   };
+  navigateToRoomDetail = room => () =>
+    this.props.navigation.navigate("RoomDetailScreen", { room });
   renderSearchResult = searchResult => (
     <SearchResult
       key={searchResult.roomid}
@@ -64,9 +67,7 @@ class SearchControl extends Component {
       bottomText={searchResult.classification_name}
       type="location"
       buttonText="View"
-      onPress={() => {
-        // navigation.navigate("PersonDetail", res);
-      }}
+      onPress={this.navigateToRoomDetail(searchResult)}
     />
   );
   render() {
