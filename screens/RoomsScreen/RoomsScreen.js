@@ -50,7 +50,6 @@ class RoomsScreen extends Component {
       <Page mainTabPage>
         <TitleText>Rooms</TitleText>
         <SearchControl navigation={navigation} />
-        <CentredText>Start typing to get search results</CentredText>
       </Page>
     );
   }
