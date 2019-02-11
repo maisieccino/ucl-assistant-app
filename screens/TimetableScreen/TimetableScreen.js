@@ -157,7 +157,6 @@ class TimetableScreen extends Component {
     const { scopeNumber } = user;
     const { date, error } = this.state;
     const dateString = date.format("dddd, Do MMMM");
-    console.log(error);
     return (
       <Page
         refreshing={isFetchingTimetable}
