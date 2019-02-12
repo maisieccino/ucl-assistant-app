@@ -1,17 +1,29 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { FlatList } from "react-native";
+import { FlatList, View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { CentredText, SubtitleText } from "../../components/Typography";
 import StudySpaceResult from "./StudySpaceResult";
 
-const FavouriteStudySpaces = ({ favourites, studyspaces, navigation }) => {
+const styles = StyleSheet.create({
+  flatList: {
+    paddingTop: 10,
+  },
+});
+
+const FavouriteStudySpaces = ({
+  favourites,
+  studyspaces,
+  navigation,
+  style,
+}) => {
   const spaces = studyspaces.filter(space => favourites.includes(space.id));
   return (
-    <Fragment>
+    <View style={style}>
       <SubtitleText>Your Favourites</SubtitleText>
       {spaces.length > 0 ? (
         <FlatList
+          contentContainerStyle={styles.flatList}
           data={spaces}
           keyExtractor={item => `${item.id}`}
           renderItem={({ item }) => (
@@ -24,7 +36,7 @@ const FavouriteStudySpaces = ({ favourites, studyspaces, navigation }) => {
           add favourites!
         </CentredText>
       )}
-    </Fragment>
+    </View>
   );
 };
 

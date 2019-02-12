@@ -1,7 +1,7 @@
 import { AuthSession } from "expo";
 import * as constants from "../constants/userConstants";
 import { clearTimetable } from "./timetableActions";
-import { API_URL } from "../constants/API";
+import { ASSISTANT_API_URL } from "../constants/API";
 
 export const isSigningIn = () => ({
   type: constants.IS_SIGNING_IN,
@@ -35,7 +35,7 @@ export const signIn = () => async dispatch => {
   await dispatch(isSigningIn());
   const returnUrl = AuthSession.getRedirectUrl();
   const result = await AuthSession.startAsync({
-    authUrl: `${API_URL}/connect/uclapi?return=${encodeURIComponent(
+    authUrl: `${ASSISTANT_API_URL}/connect/uclapi?return=${encodeURIComponent(
       returnUrl,
     )}`,
   });

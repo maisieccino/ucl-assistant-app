@@ -25,7 +25,8 @@
     "react/no-typos": "off", // until https://github.com/yannickcr/eslint-plugin-react/issues/1389 fixed
     "react/jsx-filename-extension": "off",
     "jsx-a11y/accessible-emoji": "off",
-    "comma-dangle": ["error", "always-multiline"]
+    "comma-dangle": ["error", "always-multiline"],
+    "react-native/no-raw-text": "off"
   },
   "overrides": [
     {

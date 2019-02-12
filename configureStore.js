@@ -19,11 +19,14 @@ const config = {
   storage: AsyncStorage,
   debug: __DEV__,
   blacklist: ["user"],
+  timeout: null, // https://github.com/rt2zz/redux-persist/issues/786
 };
 
 const userPersistConfig = {
   key: "user",
   storage: secureStorage,
+  debug: __DEV__,
+  timeout: null,
 };
 
 const appReducer = combineReducers({

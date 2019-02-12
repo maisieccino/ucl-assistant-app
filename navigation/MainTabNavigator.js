@@ -30,7 +30,7 @@ const screens = {
 };
 
 export default createBottomTabNavigator(screens, {
-  navigationOptions: ({ navigation }) => ({
+  defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused }) => {
       const { routeName } = navigation.state;
       let iconName;

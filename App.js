@@ -13,7 +13,7 @@ import Styles from "./styles/Containers";
 
 if (!__DEV__) {
   Sentry.config(
-    "https://51d1644cf70f40b9af7d1e1416dac247@sentry.io/300408",
+    "https://329dca168bf14b1fbcf0eb462ce86dc6@sentry.io/1379891",
   ).install();
 }
 

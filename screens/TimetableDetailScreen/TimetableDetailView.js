@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Linking } from "react-native";
 import { MapView } from "expo";
 import moment from "moment";
 import {
@@ -12,6 +11,7 @@ import {
 import Button from "../../components/Button";
 import { Page } from "../../components/Containers";
 import MapStyle from "../../styles/Map";
+import MapsManager from "../../lib/MapsManager";
 
 const TimetableDetailView = props => {
   let contactTypeStr = "";
@@ -35,10 +35,6 @@ const TimetableDetailView = props => {
   const { lat, lng } = props.location.coordinates;
   const latitude = parseFloat(lat, 10) || props.initialRegion.latitude;
   const longitude = parseFloat(lng, 10) || props.initialRegion.longitude;
-  let mapsUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-  if (!lat || !lng) {
-    mapsUrl = `https://www.google.com/maps/search/?api=1&query=${props.location.address.join()}`;
-  }
 
   return (
     <Page>
@@ -70,7 +66,17 @@ const TimetableDetailView = props => {
       >
         <MapView.Marker coordinate={{ latitude, longitude }} />
       </MapView>
-      <Button onPress={() => Linking.openURL(mapsUrl)}>Directions</Button>
+      <Button
+        onPress={() => {
+          if (lat && lng) {
+            MapsManager.navigateToCoords({ lat, lng });
+          } else {
+            MapsManager.navigateToAddress(props.location.address.join());
+          }
+        }}
+      >
+        Directions
+      </Button>
 
       <SubtitleText>{contactTypeStr}</SubtitleText>
       <BodyText>{props.contact}</BodyText>

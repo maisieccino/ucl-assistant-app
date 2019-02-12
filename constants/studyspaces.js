@@ -2,381 +2,417 @@
 module.exports = {
   surveys: [
     {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "UCL Institute of Education Library",
-      active: true,
-      id: 46,
-      maps: [
-        {
-          image_id: 79,
-          name: "Level 3",
-          id: 73,
-        },
-        {
-          image_id: 80,
-          name: "Level 4",
-          id: 74,
-        },
-        {
-          image_id: 81,
-          name: "Level 5",
-          id: 75,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "UCL Cruciform Hub",
-      active: true,
-      id: 45,
-      maps: [
-        {
-          image_id: 78,
-          name: "Open Area",
-          id: 72,
-        },
-        {
-          image_id: 76,
-          name: "Cluster Areas",
-          id: 70,
-        },
-        {
-          image_id: 77,
-          name: "Teaching Rooms",
-          id: 71,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "The Joint Library of Ophthalmology",
-      active: true,
-      id: 40,
-      maps: [
-        {
-          image_id: 65,
-          name: "Ophthalmology Library",
-          id: 61,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "UCL SSEES Library",
-      active: true,
-      id: 39,
-      maps: [
-        {
-          image_id: 64,
-          name: "SSEES Basement",
-          id: 60,
-        },
-        {
-          image_id: 84,
-          name: "SSEES Ground Floor",
-          id: 77,
-        },
-        {
-          image_id: 63,
-          name: "SSEES 1st Floor",
-          id: 59,
-        },
-        {
-          image_id: 85,
-          name: "SSEES Second Floor",
-          id: 78,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "UCL Main Library",
-      active: true,
-      id: 38,
-      maps: [
-        {
-          image_id: 58,
-          name: "1st East",
-          id: 54,
-        },
-        {
-          image_id: 59,
-          name: "1st West",
-          id: 55,
-        },
-        {
-          image_id: 60,
-          name: "Law Library",
-          id: 56,
-        },
-        {
-          image_id: 61,
-          name: "2nd East",
-          id: 57,
-        },
-        {
-          image_id: 62,
-          name: "2nd West",
-          id: 58,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "UCL Senate House Hub",
-      active: true,
-      id: 35,
-      maps: [
-        {
-          image_id: 52,
-          name: "Senate House Hub",
-          id: 51,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "UCL SENIT Suite",
-      active: true,
-      id: 33,
-      maps: [
-        {
-          image_id: 53,
-          name: "Senate Suit (Main)",
-          id: 52,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "Royal Free Hospital Medical Library",
-      active: true,
-      id: 32,
-      maps: [
-        {
-          image_id: 51,
-          name: "Royal Free Hospital Library",
-          id: 50,
-        },
-      ],
-    },
-    {
-      end_time: "19:00",
-      start_time: "09:00",
-      name: "UCL Institute of Neurology, Queen Square Library",
-      active: true,
-      id: 28,
-      maps: [
-        {
-          image_id: 35,
-          name: "Neurology Library",
-          id: 35,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "UCL School of Pharmacy Library",
-      active: true,
-      id: 27,
-      maps: [
-        {
-          image_id: 37,
-          name: "SoP First Floor",
-          id: 37,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
+      id: 22,
       name: "UCL Wolfson Study",
       active: true,
-      id: 22,
+      start_time: "09:00",
+      end_time: "17:00",
       maps: [
         {
-          image_id: 3,
+          id: 84,
           name: "Wolfson Study",
-          id: 3,
+          image_id: 93,
         },
       ],
     },
     {
-      end_time: "17:00",
+      id: 58,
+      name: "UCL Student Center",
+      active: true,
       start_time: "09:00",
+      end_time: "17:00",
+      maps: [],
+    },
+    {
+      id: 39,
+      name: "UCL SSEES Library",
+      active: true,
+      start_time: "00:00",
+      end_time: "24:00",
+      maps: [
+        {
+          id: 99,
+          name: "Basement",
+          image_id: 108,
+        },
+        {
+          id: 100,
+          name: "Ground",
+          image_id: 109,
+        },
+        {
+          id: 101,
+          name: "First",
+          image_id: 110,
+        },
+        {
+          id: 102,
+          name: "Second",
+          image_id: 111,
+        },
+      ],
+    },
+    {
+      id: 33,
+      name: "UCL SENIT Suite",
+      active: true,
+      start_time: "09:00",
+      end_time: "17:00",
+      maps: [
+        {
+          id: 91,
+          name: "Senit Suite",
+          image_id: 100,
+        },
+      ],
+    },
+    {
+      id: 35,
+      name: "UCL Senate House Hub",
+      active: true,
+      start_time: "09:00",
+      end_time: "17:00",
+      maps: [
+        {
+          id: 86,
+          name: "Senate House",
+          image_id: 95,
+        },
+      ],
+    },
+    {
+      id: 19,
       name: "UCL Science Library",
       active: true,
-      id: 19,
+      start_time: "09:00",
+      end_time: "17:00",
       maps: [
         {
-          image_id: 12,
-          name: "Science Ground",
-          id: 12,
+          id: 108,
+          name: "Ground",
+          image_id: 117,
         },
         {
-          image_id: 13,
-          name: "DMS Ground Mezzanine",
-          id: 13,
+          id: 109,
+          name: "Ground Mez",
+          image_id: 118,
         },
         {
-          image_id: 14,
-          name: "DMS First Floor",
-          id: 14,
+          id: 110,
+          name: "1st Floor",
+          image_id: 119,
         },
         {
-          image_id: 15,
-          name: "DMS Second Floor",
-          id: 15,
+          id: 111,
+          name: "2nd Floor",
+          image_id: 120,
         },
         {
-          image_id: 16,
-          name: "DMS Third Floor",
-          id: 16,
+          id: 112,
+          name: "3rd Floor",
+          image_id: 121,
         },
         {
-          image_id: 27,
-          name: "DMS Fourth Floor",
-          id: 25,
+          id: 113,
+          name: "4th Floor",
+          image_id: 122,
         },
       ],
     },
     {
-      end_time: "19:00",
-      start_time: "09:00",
-      name: "UCL Ear Institute & Action on Hearing Loss Libraries",
+      id: 27,
+      name: "UCL School of Pharmacy Library",
       active: true,
-      id: 16,
+      start_time: "08:40",
+      end_time: "22:00",
       maps: [
         {
-          image_id: 48,
-          name: "Hearing Library 1st",
-          id: 47,
-        },
-        {
-          image_id: 49,
-          name: "Hearing Library Mez",
-          id: 48,
+          id: 83,
+          name: "SoP Library",
+          image_id: 92,
         },
       ],
     },
     {
-      end_time: "20:00",
+      id: 38,
+      name: "UCL Main Library",
+      active: true,
       start_time: "09:00",
+      end_time: "17:00",
+      maps: [
+        {
+          id: 103,
+          name: "1st West",
+          image_id: 112,
+        },
+        {
+          id: 104,
+          name: "1st East",
+          image_id: 113,
+        },
+        {
+          id: 105,
+          name: "Law",
+          image_id: 114,
+        },
+        {
+          id: 106,
+          name: "2nd West",
+          image_id: 115,
+        },
+        {
+          id: 107,
+          name: "2nd East",
+          image_id: 116,
+        },
+      ],
+    },
+    {
+      id: 14,
       name: "UCL Language & Speech Science Library",
       active: true,
-      id: 14,
-      maps: [
-        {
-          image_id: 83,
-          name: "2nd Floor",
-          id: 76,
-        },
-      ],
-    },
-    {
-      end_time: "18:00",
       start_time: "09:00",
-      name: "UCL Great Ormond Street Institute of Child Health Library",
-      active: true,
-      id: 12,
-      maps: [
-        {
-          image_id: 7,
-          name: "Child Health",
-          id: 7,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "UCL Graduate Hub",
-      active: true,
-      id: 11,
-      maps: [
-        {
-          image_id: 47,
-          name: "Graduate Hub",
-          id: 46,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "Foster Court B24 & B25",
-      active: true,
-      id: 10,
-      maps: [
-        {
-          image_id: 4,
-          name: "Foster Court",
-          id: 4,
-        },
-      ],
-    },
-    {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "UCL Eastman Dental Library",
-      active: true,
-      id: 9,
-      maps: [
-        {
-          image_id: 44,
-          name: "EDI Ground Floor",
-          id: 43,
-        },
-      ],
-    },
-    {
       end_time: "20:00",
-      start_time: "09:00",
-      name: "UCL Bartlett Library",
-      active: true,
-      id: 8,
       maps: [
         {
-          image_id: 6,
-          name: "Bartlett Library",
-          id: 6,
+          id: 96,
+          name: "L&SS",
+          image_id: 105,
         },
       ],
     },
     {
-      end_time: "21:00",
-      start_time: "09:30",
+      id: 47,
+      name: "UCL Institute of Orthopaedics Library",
+      active: true,
+      start_time: "08:30",
+      end_time: "20:00",
+      maps: [
+        {
+          id: 90,
+          name: "Orthopaedics",
+          image_id: 99,
+        },
+      ],
+    },
+    {
+      id: 28,
+      name: "UCL Institute of Neurology, Queen Square Library",
+      active: true,
+      start_time: "09:00",
+      end_time: "19:00",
+      maps: [
+        {
+          id: 89,
+          name: "Neurology",
+          image_id: 98,
+        },
+      ],
+    },
+    {
+      id: 46,
+      name: "UCL Institute of Education Library",
+      active: true,
+      start_time: "08:30",
+      end_time: "23:30",
+      maps: [
+        {
+          id: 114,
+          name: "Level 4",
+          image_id: 123,
+        },
+        {
+          id: 115,
+          name: "Level 3",
+          image_id: 126,
+        },
+        {
+          id: 116,
+          name: "Level 5",
+          image_id: 127,
+        },
+      ],
+    },
+    {
+      id: 7,
       name: "UCL Institute of Archaeology Library",
       active: true,
-      id: 7,
+      start_time: "09:30",
+      end_time: "21:00",
       maps: [
         {
-          image_id: 2,
-          name: "Archaeology",
-          id: 2,
+          id: 87,
+          name: "Archeaology",
+          image_id: 96,
         },
       ],
     },
     {
-      end_time: "17:00",
-      start_time: "09:00",
-      name: "UCL Anatomy Hub ",
+      id: 12,
+      name: "UCL Great Ormond Street Institute of Child Health Library",
       active: true,
-      id: 6,
+      start_time: "09:00",
+      end_time: "18:00",
       maps: [
         {
-          image_id: 5,
+          id: 88,
+          name: "ICH",
+          image_id: 97,
+        },
+      ],
+    },
+    {
+      id: 9,
+      name: "UCL Eastman Dental Library",
+      active: true,
+      start_time: "09:00",
+      end_time: "20:00",
+      maps: [
+        {
+          id: 98,
+          name: "EDI",
+          image_id: 107,
+        },
+      ],
+    },
+    {
+      id: 16,
+      name: "UCL Ear Institute & Hearing Loss Library",
+      active: true,
+      start_time: "09:00",
+      end_time: "19:00",
+      maps: [
+        {
+          id: 119,
+          name: "Ear 1st Floor",
+          image_id: 130,
+        },
+        {
+          id: 120,
+          name: "Ear Mez",
+          image_id: 131,
+        },
+      ],
+    },
+    {
+      id: 45,
+      name: "UCL Cruciform Hub",
+      active: true,
+      start_time: "09:00",
+      end_time: "17:00",
+      maps: [
+        {
+          id: 117,
+          name: "Main Area",
+          image_id: 128,
+        },
+        {
+          id: 118,
+          name: "Clusters",
+          image_id: 129,
+        },
+      ],
+    },
+    {
+      id: 8,
+      name: "UCL Bartlett Library",
+      active: true,
+      start_time: "09:00",
+      end_time: "20:00",
+      maps: [
+        {
+          id: 97,
+          name: "Bartlett",
+          image_id: 106,
+        },
+      ],
+    },
+    {
+      id: 6,
+      name: "UCL Anatomy Hub ",
+      active: true,
+      start_time: "09:00",
+      end_time: "17:00",
+      maps: [
+        {
+          id: 95,
           name: "Anatomy Hub",
-          id: 5,
+          image_id: 104,
+        },
+      ],
+    },
+    {
+      id: 40,
+      name: "The Joint Library of Ophthalmology",
+      active: true,
+      start_time: "08:00",
+      end_time: "21:00",
+      maps: [
+        {
+          id: 94,
+          name: "Opthalmology",
+          image_id: 103,
+        },
+      ],
+    },
+    {
+      id: 32,
+      name: "Royal Free Hospital Medical Library",
+      active: true,
+      start_time: "09:00",
+      end_time: "17:00",
+      maps: [
+        {
+          id: 121,
+          name: "Royal Free New Layout",
+          image_id: 132,
+        },
+        {
+          id: 93,
+          name: "Royal Free Old",
+          image_id: 102,
+        },
+      ],
+    },
+    {
+      id: 11,
+      name: "Graduate Hub",
+      active: true,
+      start_time: "09:00",
+      end_time: "17:00",
+      maps: [
+        {
+          id: 85,
+          name: "South Wing",
+          image_id: 94,
+        },
+      ],
+    },
+    {
+      id: 10,
+      name: "Foster Court",
+      active: true,
+      start_time: "08:00",
+      end_time: "20:00",
+      maps: [
+        {
+          id: 92,
+          name: "Foster Court",
+          image_id: 101,
+        },
+      ],
+    },
+    {
+      id: 49,
+      name: "1 Saint Martin Le Grand",
+      active: true,
+      start_time: "09:00",
+      end_time: "17:00",
+      maps: [
+        {
+          id: 82,
+          name: "1SMLG",
+          image_id: 91,
         },
       ],
     },

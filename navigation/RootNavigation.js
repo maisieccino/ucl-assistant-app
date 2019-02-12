@@ -1,4 +1,4 @@
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import MainTabNavigator from "./MainTabNavigator";
 import SplashScreen from "../screens/SplashScreen";
@@ -6,6 +6,8 @@ import TimetableDetailScreen from "../screens/TimetableDetailScreen";
 import PersonDetailScreen from "../screens/PersonDetailScreen";
 import StudySpaceDetailScreen from "../screens/StudySpaceDetailScreen";
 import StudySpaceAboutScreen from "../screens/StudySpaceAboutScreen";
+import LiveSeatingMapScreen from "../screens/LiveSeatingMapScreen";
+import RoomDetailScreen from "../screens/RoomDetailScreen";
 
 const RootStackNavigator = createStackNavigator(
   {
@@ -30,9 +32,15 @@ const RootStackNavigator = createStackNavigator(
     StudySpaceAbout: {
       screen: StudySpaceAboutScreen,
     },
+    LiveSeatingMap: {
+      screen: LiveSeatingMapScreen,
+    },
+    RoomDetailScreen: {
+      screen: RoomDetailScreen,
+    },
   },
   {
-    navigationOptions: () => ({
+    defaultNavigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: "normal",
         fontFamily: "apercu",
@@ -41,4 +49,4 @@ const RootStackNavigator = createStackNavigator(
   },
 );
 
-export default RootStackNavigator;
+export default createAppContainer(RootStackNavigator);
