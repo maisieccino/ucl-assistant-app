@@ -79,7 +79,7 @@ class StudySpaceAboutScreen extends Component {
         </BodyText>
         <Button
           onPress={() =>
-            Linking.openURL("https://github.com/mbellgb/ucl-assistant")
+            Linking.openURL("https://github.com/uclapi/ucl-assistant-app")
           }
         >
           Open GitHub
