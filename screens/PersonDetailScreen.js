@@ -51,7 +51,7 @@ class PersonDetailScreen extends Component {
     status: state.people.person.status,
     token: state.user.token,
     isFetching: state.people.isFetching,
-    error: state.people.searchError,
+    error: state.people.fetchError,
   });
 
   static mapDispatchToProps = dispatch => ({
@@ -67,15 +67,19 @@ class PersonDetailScreen extends Component {
   componentDidMount() {
     this.props.fetchPerson(this.props.token, this.state.email);
   }
-  sendEmail() {
+  sendEmail = () => {
     MailManager.composeAsync({
       recipients: [this.state.email],
     });
-  }
+  };
 
   render() {
     const { name, status, department, email, isFetching, error } = this.props;
-    return (
+    return isFetching ? (
+      <PageNoScroll>
+        <ActivityIndicator size="large" />
+      </PageNoScroll>
+    ) : (
       <PageNoScroll>
         <TitleText>{name}</TitleText>
         {error.length > 0 && <ErrorText>Error: {error}</ErrorText>}
@@ -83,11 +87,10 @@ class PersonDetailScreen extends Component {
           {status}, {department}
         </BodyText>
         <BodyText>Email: {email}</BodyText>
-        {isFetching && <ActivityIndicator size="large" />}
         <Spacer />
-        <Button onPress={() => this.sendEmail()}>
+        <Button onPress={this.sendEmail}>
           <PaddedIcon name="mail" size={24} color={Colors.pageBackground} />
-          <ButtonText>Send Email...</ButtonText>
+          <ButtonText>Send Email</ButtonText>
         </Button>
       </PageNoScroll>
     );
