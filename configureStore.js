@@ -14,6 +14,11 @@ const secureStorage = createSecureStore();
 
 const middleware = [debounce.middleware(), thunk];
 
+if (process.env.NODE_ENV === "development") {
+  const { logger } = require("redux-logger");
+  middleware.push(logger);
+}
+
 const config = {
   key: "root",
   storage: AsyncStorage,
