@@ -170,14 +170,6 @@ class StudySpaceScreen extends Component {
             <StudySpaceSearchResult navigation={navigation} id={item.id} />
           )}
         />
-
-        <Button
-          onPress={() => {
-            navigation.navigate("StudySpaceAbout");
-          }}
-        >
-          How Does This Work?
-        </Button>
         <View style={styles.padder} />
       </Page>
     );
