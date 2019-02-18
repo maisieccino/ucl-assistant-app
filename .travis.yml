@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - lts/*
+dist: trusty
+cache: npm
+before_script:
+  - npm i -g npm@latest
+script:
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - export RELEASE_CHANNEL=${$(echo ${BRANCH//[\/]/.} | tr '[:upper:]' '[:lower:]')//[^a-z^0-9^_^-^.]}
+  - npm ci
+  - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+  - npx expo publish --non-interactive --release-channel="dev.$RELEASE_CHANNEL"
+        
