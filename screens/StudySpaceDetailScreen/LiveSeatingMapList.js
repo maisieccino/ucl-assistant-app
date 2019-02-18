@@ -33,7 +33,7 @@ class LiveSeatingMapList extends Component {
   render() {
     const { maps } = this.props;
     const hasMaps = maps && Array.isArray(maps) && maps.length > 1;
-    // no need breakdown if only 1 map
+    // No breakdown needed if there is only one map in the survey
     // the map data == the survey data
     if (!hasMaps) {
       return null;
