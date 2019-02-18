@@ -19,7 +19,7 @@ Then you can start the app with `exp start` or by loading it in XDE.
 
 ## Which API server?
 
-production mode: uses api.assistant.mbell.me
+production mode: uses ucl-assistant.uclapi.com
 
 development mode: uses ucl-assistant.herokuapp.com
 
