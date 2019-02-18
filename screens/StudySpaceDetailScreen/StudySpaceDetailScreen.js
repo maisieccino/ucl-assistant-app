@@ -7,13 +7,13 @@ import moment from "moment";
 import { connect } from "react-redux";
 import { surveys } from "../../constants/studyspaces";
 import { fetchAverages } from "../../actions/studyspacesActions";
-import Button from "../../components/Button";
 import { Page, Horizontal } from "../../components/Containers";
 import { BodyText, TitleText, SubtitleText } from "../../components/Typography";
 import CapacityChart from "./CapacityChart";
 import LiveIndicator from "./LiveIndicator";
 // import OpeningHours from "./OpeningHours";
 import FavouriteButton from "./FavouriteButton";
+import LiveSeatingMapList from "./LiveSeatingMapList";
 
 const busyText = (
   time = 0,
@@ -122,8 +122,8 @@ class StudySpaceDetailScreen extends Component {
   };
 
   render() {
-    const { id, name, data, capacity, occupied, survey } = this.state;
-    const { isFetchingAverages } = this.state.space;
+    const { id, name, data, capacity, occupied, space } = this.state;
+    const { isFetchingAverages, maps } = space;
     const hour = parseInt(moment().format("HH"), 10);
     return (
       <View style={{ flex: 1 }}>
@@ -160,6 +160,7 @@ class StudySpaceDetailScreen extends Component {
               {busyText(hour, data, occupied, capacity)}
             </BodyText>
           </Horizontal>
+          <LiveSeatingMapList style={styles.liveSeatingMapList} maps={maps} />
           {/* {survey ? (
             <Button onPress={this.navigateToLiveSeatMap}>Live Seat Map</Button>
           ) : null} */}
