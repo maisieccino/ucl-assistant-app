@@ -7,6 +7,7 @@ import { Feather } from "@expo/vector-icons";
 import { Horizontal } from "../Containers";
 import Style from "../../styles/Typography";
 import Colors from "../../constants/Colors";
+import Link from "./Link";
 
 const propTypes = {
   children: PropTypes.node,
@@ -100,5 +101,7 @@ export const SearchResultBottomText = ({ children }) => (
 );
 SearchResultBottomText.propTypes = propTypes;
 SearchResultBottomText.defaultTextProps = defaultProps;
+
+export { Link };
 
 export default {};
