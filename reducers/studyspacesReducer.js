@@ -32,7 +32,17 @@ export const initialState = {
 const updateStudyspaces = (studyspaces, id, newSpace) => {
   const idx = studyspaces.findIndex(s => s.id === id);
   const newStudyspaces = studyspaces.filter(s => s.id !== id);
-  newStudyspaces.splice(idx, 0, newSpace);
+  const oldStudySpace = studyspaces[idx];
+  newStudyspaces.splice(idx, 0, {
+    ...newSpace,
+    maps: oldStudySpace.maps.map(oldMap => {
+      const newMap = newSpace.maps.filter(m => m.id === oldMap.id)[0];
+      return {
+        ...oldMap,
+        ...newMap,
+      };
+    }),
+  });
   return newStudyspaces;
 };
 
@@ -45,7 +55,7 @@ export default (state = initialState, action = null) => {
       const newStudyspaces = ids.reduce(
         (spaces, s) =>
           updateStudyspaces(spaces, s, {
-            ...state.studyspaces.filter(x => x.id === s),
+            ...state.studyspaces.filter(x => x.id === s)[0],
             isFetchingSeatInfo: true,
             fetchSeatInfoError: "",
           }),

@@ -1,10 +1,9 @@
+// @flow
 import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { SubtitleText } from "../../components/Typography";
-import Button from "../../components/Button";
-import ApiManager from "../../lib/ApiManager";
+import { SubtitleText, BodyText } from "../../components/Typography";
 
 const styles = StyleSheet.create({
   liveSeatingMap: {
@@ -14,39 +13,38 @@ const styles = StyleSheet.create({
 
 class LiveSeatingMapList extends Component {
   static propTypes = {
-    token: PropTypes.string,
-    survey: PropTypes.shape(),
+    maps: PropTypes.arrayOf(PropTypes.shape()),
   };
   static defaultProps = {
-    token: "",
-    survey: null,
+    maps: [],
   };
 
-  static mapStateToProps = state => ({
+  static mapStateToProps = (state: Object) => ({
     token: state.user.token,
   });
   static mapDispatchToProps = () => ({});
+
+  renderMapInfo = ({ id, name, capacity, occupied }) => (
+    <BodyText key={id}>
+      {name}: {capacity - occupied} seats free (total: {capacity})
+    </BodyText>
+  );
+
   render() {
-    const { survey } = this.props;
-    const hasMaps =
-      survey &&
-      survey.maps &&
-      Array.isArray(survey.maps) &&
-      survey.maps.length > 0;
+    const { maps } = this.props;
+    const hasMaps = maps && Array.isArray(maps) && maps.length > 1;
+    // No breakdown needed if there is only one map in the survey
+    // the map data == the survey data
     if (!hasMaps) {
       return null;
     }
 
-    const { maps } = survey;
+    const mapsList = maps.map(this.renderMapInfo);
 
     return (
       <View style={styles.liveSeatingMap}>
-        <SubtitleText>Live Seating Map</SubtitleText>
-        {maps.map(map => (
-          <Button key={map.id} onPress={this.getLiveSeatMap(map.id)}>
-            {map.name}
-          </Button>
-        ))}
+        <SubtitleText>Breakdown</SubtitleText>
+        {mapsList}
       </View>
     );
   }

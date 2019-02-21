@@ -59,10 +59,8 @@ export const fetchSeatInfoFailure = (id, error) => ({
 export const fetchSeatInfos = (token: String, ids: Array) => async (
   dispatch: Function,
 ) => {
-  console.log("setting isFetching to true...");
   await dispatch(setIsFetchingSeatInfo(ids));
   try {
-    console.log("requesting data...");
     const res = await fetch(`${WORKSPACES_URL}/summary`, {
       headers: {
         authorization: `Bearer ${token}`,
@@ -72,7 +70,6 @@ export const fetchSeatInfos = (token: String, ids: Array) => async (
     if (!res.ok) {
       throw new Error(json.error || "There was a problem");
     }
-    console.log("data received");
     return Promise.all(
       ids.map(id => {
         const info = json.content.filter(obj => `${obj.id}` === `${id}`)[0];
@@ -80,12 +77,11 @@ export const fetchSeatInfos = (token: String, ids: Array) => async (
           fetchSeatInfoSuccess(id, {
             occupied: info.occupied,
             capacity: info.total,
+            maps: info.maps,
           }),
         );
       }),
-    ).then(() => {
-      console.log("done");
-    });
+    );
   } catch (error) {
     return Promise.all(
       ids.map(id =>
