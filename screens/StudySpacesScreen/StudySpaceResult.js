@@ -42,7 +42,7 @@ const StudySpaceResult = ({
     <SearchResult
       key={generate()}
       topText={name}
-      bottomText={`${capacityString} (${occupied}/${capacity})`}
+      bottomText={`${capacityString} (${capacity - occupied} seats free)`}
       type="location"
       buttonText="View"
       indicator
