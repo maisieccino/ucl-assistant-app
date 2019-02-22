@@ -10,6 +10,8 @@ import {
   STUDYSPACE_TOGGLE_FAVOURITE,
 } from "../constants/studyspacesConstants";
 
+const sortStudySpaces = (s1, s2) => s1.id - s2.id;
+
 export const initialState = {
   studyspaces: surveys
     .map(survey => ({
@@ -23,7 +25,7 @@ export const initialState = {
       dailyAveragesError: "",
       lastUpdatedAverages: null,
     }))
-    .sort((s1, s2) => s1.id - s2.id),
+    .sort(sortStudySpaces),
   lastStatusUpdate: null,
   isFetchingSpaces: false,
   favourites: [],
@@ -33,44 +35,52 @@ const updateStudyspaces = (studyspaces, id, newSpace) => {
   const idx = studyspaces.findIndex(s => s.id === id);
   const newStudyspaces = studyspaces.filter(s => s.id !== id);
   const oldStudySpace = studyspaces[idx];
-  newStudyspaces.splice(idx, 0, {
-    ...newSpace,
-    maps: oldStudySpace.maps.map(oldMap => {
-      const newMap = newSpace.maps.filter(m => m.id === oldMap.id)[0];
-      return {
-        ...oldMap,
-        ...newMap,
-      };
-    }),
-  });
+  if (idx === -1) {
+    newStudyspaces.push({ ...newSpace });
+    newStudyspaces.sort(sortStudySpaces);
+  } else {
+    newStudyspaces.splice(idx, 0, {
+      ...oldStudySpace,
+      ...newSpace,
+      maps: oldStudySpace.maps.map(oldMap => {
+        const newMap = newSpace.maps
+          ? newSpace.maps.filter(m => m.id === oldMap.id)[0]
+          : {};
+        return {
+          ...oldMap,
+          ...newMap,
+        };
+      }),
+    });
+  }
   return newStudyspaces;
 };
 
 export default (state = initialState, action = null) => {
   const { type, id, ids, data, error, dailyAverages } = action;
-  const space = id ? state.studyspaces.filter(s => s.id === id)[0] : null;
+  const oldSpace = id ? state.studyspaces.filter(s => s.id === id)[0] : null;
 
   switch (type) {
     case WORKSPACES_IS_FETCHING_SEATINFO: {
       const newStudyspaces = ids.reduce(
         (spaces, s) =>
           updateStudyspaces(spaces, s, {
-            ...state.studyspaces.filter(x => x.id === s)[0],
+            ...oldSpace,
             isFetchingSeatInfo: true,
             fetchSeatInfoError: "",
           }),
         state.studyspaces,
       );
-      if (space) {
+      if (oldSpace) {
         return { ...state, studyspaces: newStudyspaces };
       }
       return state;
     }
 
     case WORKSPACES_FETCH_SEATINFO_FAILURE: {
-      if (space) {
+      if (oldSpace) {
         const newStudyspaces = updateStudyspaces(state.studyspaces, id, {
-          ...space,
+          ...oldSpace,
           isFetchingSeatInfo: false,
           fetchSeatInfoError: error,
         });
@@ -84,25 +94,22 @@ export default (state = initialState, action = null) => {
     }
 
     case WORKSPACES_FETCH_SEATINFO_SUCCESS: {
-      if (space) {
-        const newStudyspaces = updateStudyspaces(state.studyspaces, id, {
-          ...space,
-          ...data,
-          isFetchingSeatInfo: false,
-        });
-        return {
-          ...state,
-          studyspaces: newStudyspaces,
-          lastStatusUpdate: moment(),
-        };
-      }
-      return state;
+      const newStudyspaces = updateStudyspaces(state.studyspaces, id, {
+        ...oldSpace,
+        ...data,
+        isFetchingSeatInfo: false,
+      });
+      return {
+        ...state,
+        studyspaces: newStudyspaces,
+        lastStatusUpdate: moment(),
+      };
     }
 
     case WORKSPACES_IS_FETCHING_HISTORIC_DATA: {
-      if (space) {
+      if (oldSpace) {
         const newStudyspaces = updateStudyspaces(state.studyspaces, id, {
-          ...space,
+          ...oldSpace,
           isFetchingAverages: true,
           dailyAveragesError: "",
         });
@@ -115,9 +122,9 @@ export default (state = initialState, action = null) => {
     }
 
     case WORKSPACES_FETCH_HISTORIC_DATA_FAILURE: {
-      if (space) {
+      if (oldSpace) {
         const newStudyspaces = updateStudyspaces(state.studyspaces, id, {
-          ...space,
+          ...oldSpace,
           isFetchingAverages: false,
           dailyAveragesError: error,
           lastUpdatedAverages: moment(),
@@ -131,9 +138,9 @@ export default (state = initialState, action = null) => {
       return state;
     }
     case WORKSPACES_FETCH_HISTORIC_DATA_SUCCESS: {
-      if (space) {
+      if (oldSpace) {
         const newStudyspaces = updateStudyspaces(state.studyspaces, id, {
-          ...space,
+          ...oldSpace,
           dailyAverages,
           isFetchingAverages: false,
           lastUpdatedAverages: moment(),

@@ -71,16 +71,14 @@ export const fetchSeatInfos = (token: String, ids: Array) => async (
       throw new Error(json.error || "There was a problem");
     }
     return Promise.all(
-      ids.map(id => {
-        const info = json.content.filter(obj => `${obj.id}` === `${id}`)[0];
-        return dispatch(
-          fetchSeatInfoSuccess(id, {
-            occupied: info.occupied,
+      json.content.map(info =>
+        dispatch(
+          fetchSeatInfoSuccess(info.id, {
+            ...info,
             capacity: info.total,
-            maps: info.maps,
           }),
-        );
-      }),
+        ),
+      ),
     );
   } catch (error) {
     return Promise.all(
