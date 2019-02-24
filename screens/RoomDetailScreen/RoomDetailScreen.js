@@ -1,12 +1,19 @@
 import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
+import { connect } from "react-redux";
 import { MapView } from "expo";
 import PropTypes from "prop-types";
 import MapsManager from "../../lib/MapsManager";
 import Button from "../../components/Button";
 import { Page, Horizontal } from "../../components/Containers";
-import { BodyText, TitleText, ErrorText } from "../../components/Typography";
+import {
+  BodyText,
+  TitleText,
+  ErrorText,
+  SubtitleText,
+} from "../../components/Typography";
 import MapStyle from "../../styles/Map";
+import ApiManager from "../../lib/ApiManager";
 
 const styles = StyleSheet.create({
   address: {
@@ -21,6 +28,12 @@ const styles = StyleSheet.create({
   details: {
     justifyContent: "space-between",
     marginTop: 20,
+  },
+  equipmentList: {
+    marginTop: 20,
+  },
+  padder: {
+    height: 20,
   },
 });
 
@@ -37,8 +50,56 @@ class RoomDetailScreen extends Component {
   };
   static propTypes = {
     navigation: PropTypes.shape().isRequired,
+    token: PropTypes.string,
+  };
+  static defaultProps = {
+    token: "",
+  };
+  static mapStateToProps = state => ({
+    token: state.user.token,
+  });
+  constructor() {
+    super();
+    this.state = {
+      roombookings: [],
+      equipment: [],
+      fetchEquipmentError: null,
+    };
+  }
+  componentDidMount() {
+    const { token, navigation } = this.props;
+    const { room } = navigation.state.params;
+    const { roomid, siteid } = room;
+    this.fetchEquipment(token, roomid, siteid);
+  }
+  fetchEquipment = async (token, roomid, siteid) => {
+    try {
+      const equipment = await ApiManager.rooms.getEquipment(
+        token,
+        roomid,
+        siteid,
+      );
+      this.setState({ equipment });
+    } catch (error) {
+      this.setState({ fetchEquipmentError: error.message });
+    }
+  };
+  renderEquipment = ({ description, units }) => {
+    if (description === "Wheelchair accessible") {
+      return (
+        <BodyText key={description}>
+          This room is accessible via wheelchair
+        </BodyText>
+      );
+    }
+    return (
+      <BodyText key={description}>
+        {units} x {description}
+      </BodyText>
+    );
   };
   render() {
+    const { equipment, fetchEquipmentError } = this.state;
     const { room } = this.props.navigation.state.params;
     const {
       roomname: name,
@@ -103,10 +164,25 @@ class RoomDetailScreen extends Component {
           <View style={styles.navigate}>
             <Button onPress={navigateToLocation}>Directions</Button>
           </View>
+          {fetchEquipmentError ? (
+            <ErrorText>
+              Error: We couldn{"'"}t fetch equipment data for this venue.
+            </ErrorText>
+          ) : null}
+          {equipment.length > 0 ? (
+            <View style={styles.equipmentList}>
+              <SubtitleText>In This Room</SubtitleText>
+              {equipment.map(this.renderEquipment)}
+            </View>
+          ) : null}
+          <View style={styles.padder} />
         </Page>
       </View>
     );
   }
 }
 
-export default RoomDetailScreen;
+export default connect(
+  RoomDetailScreen.mapStateToProps,
+  () => ({}),
+)(RoomDetailScreen);
