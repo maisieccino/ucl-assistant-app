@@ -2,7 +2,7 @@ import moment from "moment";
 import { surveys } from "../constants/studyspaces";
 import {
   WORKSPACES_FETCH_SEATINFOS_FAILURE,
-  WORKSPACES_IS_FETCHING_SEATINFO,
+  WORKSPACES_IS_FETCHING_SEATINFOS,
   WORKSPACES_FETCH_SEATINFOS_SUCCESS,
   WORKSPACES_IS_FETCHING_HISTORIC_DATA,
   WORKSPACES_FETCH_HISTORIC_DATA_FAILURE,
@@ -61,7 +61,7 @@ export default (state = initialState, action = null) => {
   const oldSpace = id ? state.studyspaces.filter(s => s.id === id)[0] : null;
 
   switch (type) {
-    case WORKSPACES_IS_FETCHING_SEATINFO: {
+    case WORKSPACES_IS_FETCHING_SEATINFOS: {
       return {
         ...state,
         studyspaces: state.studyspaces.map(space => ({

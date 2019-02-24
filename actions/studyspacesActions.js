@@ -2,7 +2,7 @@
 import { WORKSPACES_URL } from "../constants/API";
 import {
   WORKSPACES_FETCH_SEATINFOS_FAILURE,
-  WORKSPACES_IS_FETCHING_SEATINFO,
+  WORKSPACES_IS_FETCHING_SEATINFOS,
   WORKSPACES_FETCH_SEATINFOS_SUCCESS,
   WORKSPACES_FETCH_HISTORIC_DATA_FAILURE,
   WORKSPACES_FETCH_HISTORIC_DATA_SUCCESS,
@@ -10,9 +10,8 @@ import {
   STUDYSPACE_TOGGLE_FAVOURITE,
 } from "../constants/studyspacesConstants";
 
-export const setIsFetchingSeatInfo = ids => ({
-  ids,
-  type: WORKSPACES_IS_FETCHING_SEATINFO,
+export const setIsFetchingSeatInfos = () => ({
+  type: WORKSPACES_IS_FETCHING_SEATINFOS,
 });
 
 export const fetchSeatInfosSuccess = data => ({
@@ -55,7 +54,7 @@ export const fetchSeatInfosFailure = error => ({
 // };
 
 export const fetchSeatInfos = (token: String) => async (dispatch: Function) => {
-  await dispatch(setIsFetchingSeatInfo());
+  await dispatch(setIsFetchingSeatInfos());
   try {
     const res = await fetch(`${WORKSPACES_URL}/summary`, {
       headers: {
