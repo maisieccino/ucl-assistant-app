@@ -1,9 +1,9 @@
 // @flow
 import { WORKSPACES_URL } from "../constants/API";
 import {
-  WORKSPACES_FETCH_SEATINFO_FAILURE,
+  WORKSPACES_FETCH_SEATINFOS_FAILURE,
   WORKSPACES_IS_FETCHING_SEATINFO,
-  WORKSPACES_FETCH_SEATINFO_SUCCESS,
+  WORKSPACES_FETCH_SEATINFOS_SUCCESS,
   WORKSPACES_FETCH_HISTORIC_DATA_FAILURE,
   WORKSPACES_FETCH_HISTORIC_DATA_SUCCESS,
   WORKSPACES_IS_FETCHING_HISTORIC_DATA,
@@ -15,16 +15,14 @@ export const setIsFetchingSeatInfo = ids => ({
   type: WORKSPACES_IS_FETCHING_SEATINFO,
 });
 
-export const fetchSeatInfoSuccess = (id, data) => ({
-  id,
+export const fetchSeatInfosSuccess = data => ({
   data,
-  type: WORKSPACES_FETCH_SEATINFO_SUCCESS,
+  type: WORKSPACES_FETCH_SEATINFOS_SUCCESS,
 });
 
-export const fetchSeatInfoFailure = (id, error) => ({
-  id,
+export const fetchSeatInfosFailure = error => ({
   error,
-  type: WORKSPACES_FETCH_SEATINFO_FAILURE,
+  type: WORKSPACES_FETCH_SEATINFOS_FAILURE,
 });
 
 // This action appears to be unused
@@ -56,10 +54,8 @@ export const fetchSeatInfoFailure = (id, error) => ({
 //   }
 // };
 
-export const fetchSeatInfos = (token: String, ids: Array) => async (
-  dispatch: Function,
-) => {
-  await dispatch(setIsFetchingSeatInfo(ids));
+export const fetchSeatInfos = (token: String) => async (dispatch: Function) => {
+  await dispatch(setIsFetchingSeatInfo());
   try {
     const res = await fetch(`${WORKSPACES_URL}/summary`, {
       headers: {
@@ -70,26 +66,10 @@ export const fetchSeatInfos = (token: String, ids: Array) => async (
     if (!res.ok) {
       throw new Error(json.error || "There was a problem");
     }
-    return Promise.all(
-      json.content.map(info =>
-        dispatch(
-          fetchSeatInfoSuccess(info.id, {
-            ...info,
-            capacity: info.total,
-          }),
-        ),
-      ),
-    );
+    return dispatch(fetchSeatInfosSuccess(json.content));
   } catch (error) {
-    return Promise.all(
-      ids.map(id =>
-        dispatch(
-          fetchSeatInfoFailure(
-            id,
-            typeof error === "string" ? error : error.message,
-          ),
-        ),
-      ),
+    return dispatch(
+      fetchSeatInfosFailure(typeof error === "string" ? error : error.message),
     );
   }
 };
