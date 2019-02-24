@@ -85,14 +85,21 @@ export default (state = initialState, action = null) => {
     }
 
     case WORKSPACES_FETCH_SEATINFOS_SUCCESS: {
-      const newStudyspaces = data.reduce(
-        (spaces, space) =>
-          updateStudyspaces(spaces, space.id, {
-            ...space,
-            isFetchingSeatInfo: false,
-          }),
-        state.studyspaces,
-      );
+      const newStudyspaces = data
+        .reduce(
+          (spaces, space) =>
+            updateStudyspaces(spaces, space.id, {
+              ...space,
+              isFetchingSeatInfo: false,
+            }),
+          state.studyspaces,
+        )
+        .filter(({ id: spaceId }) => {
+          const spaceIsRemoved =
+            data.filter(({ id: fetchedSpaceId }) => fetchedSpaceId === spaceId)
+              .length === 0;
+          return !spaceIsRemoved;
+        });
       return {
         ...state,
         studyspaces: newStudyspaces,
