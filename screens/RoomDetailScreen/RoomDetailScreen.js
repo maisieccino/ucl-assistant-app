@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
   },
   booking: {
     marginVertical: 5,
+    backgroundColor: 'white',
+    padding: 20,
+    elevation: 2,
   },
   container: {
     flex: 1,
@@ -37,6 +40,22 @@ const styles = StyleSheet.create({
   },
   equipmentList: {
     marginTop: 20,
+    backgroundColor: 'white',
+    padding: 20,
+    elevation: 2,
+  },
+  cardHeader: {
+    paddingBottom: 5,
+    marginBottom: 5,
+    borderBottomColor: 'grey',
+    borderBottomWidth: 0.5,
+  },
+  bookingHeader: {
+    padding: 20,
+    marginBottom: 5,
+    backgroundColor: '#1B998B',
+    color: 'white',
+    elevation: 2,
   },
   padder: {
     height: 20,
@@ -209,7 +228,7 @@ class RoomDetailScreen extends Component {
           ) : null}
           {equipment.length > 0 ? (
             <View style={styles.equipmentList}>
-              <SubtitleText>In This Room</SubtitleText>
+              <SubtitleText style={styles.cardHeader}>In This Room</SubtitleText>
               {equipment.map(this.renderEquipment)}
             </View>
           ) : null}
@@ -220,7 +239,7 @@ class RoomDetailScreen extends Component {
           ) : null}
           {roombookings.length > 0 ? (
             <View style={styles.bookingList}>
-              <SubtitleText>Bookings Today</SubtitleText>
+              <SubtitleText style={styles.bookingHeader}>Bookings Today</SubtitleText>
               {roombookings.map(this.renderBooking)}
             </View>
           ) : null}
