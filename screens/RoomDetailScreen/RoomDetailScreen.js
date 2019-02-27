@@ -17,16 +17,34 @@ import {
 } from "../../components/Typography";
 import MapStyle from "../../styles/Map";
 import ApiManager from "../../lib/ApiManager";
+import Colors from "../../constants/Colors";
+import Shadow from "../../lib/Shadow";
 
 const styles = StyleSheet.create({
   address: {
     marginVertical: 20,
   },
   booking: {
+    backgroundColor: Colors.cardBackground,
     marginVertical: 5,
-    backgroundColor: 'white',
     padding: 20,
-    elevation: 2,
+    ...Shadow(2),
+  },
+  bookingHeader: {
+    backgroundColor: Colors.accentColor,
+    color: Colors.cardBackground,
+    marginBottom: 5,
+    padding: 20,
+    ...Shadow(2),
+  },
+  bookingList: {
+    marginTop: 20,
+  },
+  cardHeader: {
+    borderBottomColor: Colors.dividerLine,
+    borderBottomWidth: 0.5,
+    marginBottom: 5,
+    paddingBottom: 5,
   },
   container: {
     flex: 1,
@@ -39,23 +57,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   equipmentList: {
+    backgroundColor: Colors.cardBackground,
     marginTop: 20,
-    backgroundColor: 'white',
     padding: 20,
-    elevation: 2,
-  },
-  cardHeader: {
-    paddingBottom: 5,
-    marginBottom: 5,
-    borderBottomColor: 'grey',
-    borderBottomWidth: 0.5,
-  },
-  bookingHeader: {
-    padding: 20,
-    marginBottom: 5,
-    backgroundColor: '#1B998B',
-    color: 'white',
-    elevation: 2,
+    ...Shadow(2),
   },
   padder: {
     height: 20,
@@ -228,7 +233,9 @@ class RoomDetailScreen extends Component {
           ) : null}
           {equipment.length > 0 ? (
             <View style={styles.equipmentList}>
-              <SubtitleText style={styles.cardHeader}>In This Room</SubtitleText>
+              <SubtitleText style={styles.cardHeader}>
+                In This Room
+              </SubtitleText>
               {equipment.map(this.renderEquipment)}
             </View>
           ) : null}
@@ -239,7 +246,9 @@ class RoomDetailScreen extends Component {
           ) : null}
           {roombookings.length > 0 ? (
             <View style={styles.bookingList}>
-              <SubtitleText style={styles.bookingHeader}>Bookings Today</SubtitleText>
+              <SubtitleText style={styles.bookingHeader}>
+                Bookings Today
+              </SubtitleText>
               {roombookings.map(this.renderBooking)}
             </View>
           ) : null}
