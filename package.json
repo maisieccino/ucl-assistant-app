@@ -20,7 +20,7 @@
     "expo": "^32.0.0",
     "memoize-one": "^5.0.0",
     "moment": "^2.24.0",
-    "prop-types": "^15.6.0",
+    "prop-types": "^15.7.2",
     "react": "16.5.0",
     "react-moment-proptypes": "^1.6.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
