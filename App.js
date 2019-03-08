@@ -11,6 +11,8 @@ import configureStore from "./configureStore";
 import RootNavigation from "./navigation/RootNavigation";
 import Styles from "./styles/Containers";
 
+const { persistor, store } = configureStore;
+
 if (!__DEV__) {
   Sentry.config(
     "https://329dca168bf14b1fbcf0eb462ce86dc6@sentry.io/1379891",
@@ -30,7 +32,10 @@ class App extends Component {
     super(props);
     this.state = {
       isLoadingComplete: false,
-      store: configureStore(),
+      store: {
+        persistor,
+        store,
+      },
     };
   }
 
