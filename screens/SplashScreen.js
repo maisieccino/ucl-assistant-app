@@ -1,12 +1,17 @@
 import React, { Component } from "react";
-import { Alert, Image } from "react-native";
+import { Alert, Image, View } from "react-native";
 import { LinearGradient } from "expo";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Feather } from "@expo/vector-icons";
 import { signIn } from "../actions/userActions";
-import { ButtonText, SubtitleText } from "../components/Typography";
+import {
+  ButtonText,
+  SubtitleText,
+  Link,
+  BodyText,
+} from "../components/Typography";
 import { Spacer, Horizontal } from "../components/Containers";
 import CustomButton from "../components/Button";
 import Colors from "../constants/Colors";
@@ -126,6 +131,19 @@ class SplashScreen extends Component {
             </ButtonText>
           </Horizontal>
         </CustomButton>
+        <View style={SplashStyle.disclaimer}>
+          <BodyText>
+            <BodyText style={SplashStyle.disclaimerText}>
+              By signing into this app, you agree to&nbsp;
+            </BodyText>
+            <Link
+              href="https://github.com/uclapi/ucl-assistant-app/blob/master/TERMS.md"
+              textStyle={SplashStyle.disclaimerLink}
+            >
+              UCL API{`'`}s terms & conditions.
+            </Link>
+          </BodyText>
+        </View>
       </LinearGradient>
     );
   }
