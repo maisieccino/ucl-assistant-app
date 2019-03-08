@@ -5,7 +5,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { View } from "react-native";
-import { NavigationActions } from "react-navigation";
+import { NavigationActions, StackActions } from "react-navigation";
 import { connect } from "react-redux";
 import { fetchTimetable } from "../../actions/timetableActions";
 import Button from "../../components/Button";
@@ -139,12 +139,11 @@ class TimetableScreen extends Component {
   loginCheck(props) {
     if (Object.keys(props.user).length > 0) {
       if (props.user.scopeNumber < 0) {
-        this.props.navigation.dispatch(
-          NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: "Splash" })],
-          }),
-        );
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: "Splash" })],
+        });
+        this.props.navigation.dispatch(resetAction);
         return false;
       }
     }

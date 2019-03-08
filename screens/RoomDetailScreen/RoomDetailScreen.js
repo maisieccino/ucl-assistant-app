@@ -166,7 +166,7 @@ class RoomDetailScreen extends Component {
     const {
       roomname: name,
       classification_name: classification,
-      total,
+      capacity,
       location,
     } = room;
     const { address } = location;
@@ -198,7 +198,7 @@ class RoomDetailScreen extends Component {
           <TitleText>{name}</TitleText>
           <Horizontal style={styles.details}>
             <BodyText>{classification}</BodyText>
-            <BodyText>Capacity: {total}</BodyText>
+            <BodyText>Capacity: {capacity}</BodyText>
           </Horizontal>
           <View style={styles.address}>
             <BodyText>{addressString}</BodyText>
