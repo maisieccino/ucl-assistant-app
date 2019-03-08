@@ -43,7 +43,7 @@
     "@storybook/react-native": "^3.2.16",
     "babel-eslint": "^9.0.0",
     "babel-preset-expo": "^5.0.0",
-    "eslint": "4.9.0",
+    "eslint": "4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "2.16.0",
