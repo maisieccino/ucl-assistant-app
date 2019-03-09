@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Image, View } from "react-native";
+import { Alert, Image, View, SafeAreaView, StyleSheet } from "react-native";
 import { LinearGradient } from "expo";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -17,6 +17,12 @@ import CustomButton from "../components/Button";
 import Colors from "../constants/Colors";
 import Styles from "../styles/Containers";
 import SplashStyle from "../styles/Splash";
+
+const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+  },
+});
 
 class SplashScreen extends Component {
   static navigationOptions = {
@@ -98,53 +104,55 @@ class SplashScreen extends Component {
 
   render() {
     return (
-      <LinearGradient
-        colors={[Colors.accentColor, Colors.buttonBackground]}
-        style={[Styles.page, SplashStyle.page]}
-        start={[0, 1]}
-        end={[1, 0]}
-      >
-        <Image
-          source={require("../assets/images/icon-fg.png")}
-          resizeMethod="scale"
-          style={Styles.image}
-          resizeMode="contain"
-        />
-        <SubtitleText style={SplashStyle.text}>
-          One app to manage your life at UCL.
-        </SubtitleText>
-        <Spacer />
-        <CustomButton
-          onPress={() => this.props.signIn()}
-          loading={this.props.isSigningIn}
-          style={SplashStyle.button}
+      <SafeAreaView style={styles.safeAreaView}>
+        <LinearGradient
+          colors={[Colors.accentColor, Colors.buttonBackground]}
+          start={[0, 1]}
+          end={[1, 0]}
+          style={[Styles.page, SplashStyle.page]}
         >
-          <Horizontal>
-            <Image
-              source={require("../assets/images/uclapi.png")}
-              resizeMethod="scale"
-              resizeMode="contain"
-              style={[Styles.image, SplashStyle.uclapiImage]}
-            />
-            <ButtonText style={SplashStyle.buttonText}>
-              Sign In With UCL
-            </ButtonText>
-          </Horizontal>
-        </CustomButton>
-        <View style={SplashStyle.disclaimer}>
-          <BodyText>
-            <BodyText style={SplashStyle.disclaimerText}>
-              By signing into this app, you agree to&nbsp;
+          <Image
+            source={require("../assets/images/icon-fg.png")}
+            resizeMethod="scale"
+            style={Styles.image}
+            resizeMode="contain"
+          />
+          <SubtitleText style={SplashStyle.text}>
+            One app to manage your life at UCL.
+          </SubtitleText>
+          <Spacer />
+          <CustomButton
+            onPress={() => this.props.signIn()}
+            loading={this.props.isSigningIn}
+            style={SplashStyle.button}
+          >
+            <Horizontal>
+              <Image
+                source={require("../assets/images/uclapi.png")}
+                resizeMethod="scale"
+                resizeMode="contain"
+                style={[Styles.image, SplashStyle.uclapiImage]}
+              />
+              <ButtonText style={SplashStyle.buttonText}>
+                Sign In With UCL
+              </ButtonText>
+            </Horizontal>
+          </CustomButton>
+          <View style={SplashStyle.disclaimer}>
+            <BodyText>
+              <BodyText style={SplashStyle.disclaimerText}>
+                By signing into this app, you agree to&nbsp;
+              </BodyText>
+              <Link
+                href="https://github.com/uclapi/ucl-assistant-app/blob/master/TERMS.md"
+                style={SplashStyle.disclaimerLink}
+              >
+                UCL API{`'`}s terms & conditions.
+              </Link>
             </BodyText>
-            <Link
-              href="https://github.com/uclapi/ucl-assistant-app/blob/master/TERMS.md"
-              textStyle={SplashStyle.disclaimerLink}
-            >
-              UCL API{`'`}s terms & conditions.
-            </Link>
-          </BodyText>
-        </View>
-      </LinearGradient>
+          </View>
+        </LinearGradient>
+      </SafeAreaView>
     );
   }
 }

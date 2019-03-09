@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
-import { Platform, StatusBar, SafeAreaView } from "react-native";
+import { Platform, StatusBar, View } from "react-native";
 import { AppLoading, Asset, Font, Notifications } from "expo";
 import { Feather } from "@expo/vector-icons";
 import Sentry from "sentry-expo";
@@ -91,10 +91,10 @@ class App extends Component {
     return (
       <Provider store={stateStore}>
         <PersistGate persistor={statePersistor}>
-          <SafeAreaView style={Styles.app}>
+          <View style={Styles.app}>
             <StatusBar barStyle="light-content" hidden={false} />
             <RootNavigation />
-          </SafeAreaView>
+          </View>
         </PersistGate>
       </Provider>
     );
