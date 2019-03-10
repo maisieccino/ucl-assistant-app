@@ -36,6 +36,8 @@ const TimetableDetailView = props => {
   const latitude = parseFloat(lat, 10) || props.initialRegion.latitude;
   const longitude = parseFloat(lng, 10) || props.initialRegion.longitude;
 
+  console.log(props.session_group);
+
   return (
     <Page>
       <TitleText>{props.module.name}</TitleText>
@@ -45,9 +47,9 @@ const TimetableDetailView = props => {
       </BodyText>
       <BodyText>{props.location.name}</BodyText>
       <BodyText>Type: {props.session_type_str}</BodyText>
-      {props.session_group.length > 0 && (
+      {props.session_group && props.session_group.length > 0 ? (
         <BodyText>Group {props.session_group}</BodyText>
-      )}
+      ) : null}
       {(!lat || !lng) && (
         <ErrorText>
           Error: We couldn{"'"}t fetch coordinates for this venue, so the map
