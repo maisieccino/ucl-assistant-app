@@ -87,10 +87,10 @@ class App extends Component {
         />
       );
     }
-    const { store, persistor } = this.state.store;
+    const { store: stateStore, persistor: statePersistor } = this.state.store;
     return (
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
+      <Provider store={stateStore}>
+        <PersistGate persistor={statePersistor}>
           <View style={Styles.app}>
             <StatusBar barStyle="light-content" hidden={false} />
             <RootNavigation />
