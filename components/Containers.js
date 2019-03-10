@@ -71,12 +71,15 @@ export const Page = ({
         contentContainerStyle={Styles.pageScrollContent}
         style={[style, Styles.page, Styles.pageScrollView]}
         refreshControl={
-          <RefreshControl
-            enabled={refreshEnabled}
-            onRefresh={onRefresh}
-            refreshing={refreshing}
-          />
+          refreshEnabled ? (
+            <RefreshControl
+              enabled={refreshEnabled}
+              onRefresh={onRefresh}
+              refreshing={refreshing}
+            />
+          ) : null
         }
+        keyboardDismissMode="on-drag"
       >
         <View style={pageTopPadding} />
         {children}
