@@ -45,9 +45,9 @@ const TimetableDetailView = props => {
       </BodyText>
       <BodyText>{props.location.name}</BodyText>
       <BodyText>Type: {props.session_type_str}</BodyText>
-      {props.session_group.length > 0 && (
+      {props.session_group && props.session_group.length > 0 ? (
         <BodyText>Group {props.session_group}</BodyText>
-      )}
+      ) : null}
       {(!lat || !lng) && (
         <ErrorText>
           Error: We couldn{"'"}t fetch coordinates for this venue, so the map
