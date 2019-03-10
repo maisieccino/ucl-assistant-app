@@ -36,8 +36,6 @@ const TimetableDetailView = props => {
   const latitude = parseFloat(lat, 10) || props.initialRegion.latitude;
   const longitude = parseFloat(lng, 10) || props.initialRegion.longitude;
 
-  console.log(props.session_group);
-
   return (
     <Page>
       <TitleText>{props.module.name}</TitleText>
