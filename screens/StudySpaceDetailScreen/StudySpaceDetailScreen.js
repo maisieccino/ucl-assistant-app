@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
 import moment from "moment";
 import { connect } from "react-redux";
-import { surveys } from "../../constants/studyspaces";
 import { fetchAverages } from "../../actions/studyspacesActions";
 import { Page, Horizontal } from "../../components/Containers";
 import { BodyText, TitleText, SubtitleText } from "../../components/Typography";
@@ -107,7 +106,7 @@ class StudySpaceDetailScreen extends Component {
       space: {
         isFetchingAverages: false,
       },
-      survey: surveys.filter(
+      survey: props.studyspaces.filter(
         ({ id: surveyId }) =>
           Number.parseInt(id, 10) === Number.parseInt(surveyId, 10),
       )[0],
