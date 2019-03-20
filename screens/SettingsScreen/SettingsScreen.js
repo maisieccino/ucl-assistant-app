@@ -3,11 +3,11 @@ import React, { Component, Fragment } from "react";
 import {
   Alert,
   Platform,
-  ToastAndroid,
   View,
   Clipboard,
   StyleSheet,
-} from "react-native"; // eslint-disable-line react-native/split-platform-components
+  Linking,
+} from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import PropTypes from "prop-types";
 import { Constants, IntentLauncherAndroid } from "expo";
@@ -70,12 +70,23 @@ class SettingsScreen extends Component {
   });
 
   static launchNotificationSettings() {
+    // note that this will only work on standalone apps
+    // because the bundleIdentifier/packageName will
+    // only be used when an APK/IPA is built
     if (Platform.OS === "android") {
       IntentLauncherAndroid.startActivityAsync(
         IntentLauncherAndroid.ACTION_APP_NOTIFICATION_SETTINGS,
         {
-          "android.provider.extra.APP_PACKAGE": "me.mbell.uclassistant",
+          "android.provider.extra.APP_PACKAGE":
+            Constants.manifest.android.package,
         },
+      );
+    } else {
+      // is iOS
+      Linking.openURL(
+        `app-settings://notification/${
+          Constants.manifest.ios.bundleIdentifier
+        }`,
       );
     }
   }
@@ -92,12 +103,6 @@ class SettingsScreen extends Component {
 
   componentDidUpdate(_, prevState) {
     if (prevState.isSigningOut && this.props.state.user.token === "") {
-      if (Platform.OS === "android") {
-        ToastAndroid.show(
-          "You have successfully signed out",
-          ToastAndroid.SHORT,
-        );
-      }
       const action = StackActions.reset({
         index: 0,
         actions: [NavigationActions.navigate({ routeName: "Splash" })],
@@ -117,11 +122,7 @@ class SettingsScreen extends Component {
 
   async copyTokenToClipboard() {
     await Clipboard.setString(this.props.state.user.token);
-    if (Platform.OS === "android") {
-      ToastAndroid.show("Token copied!", ToastAndroid.SHORT);
-    } else {
-      Alert.alert("Copied", "Token copied to clipboard.");
-    }
+    Alert.alert("Copied", "Token copied to clipboard.");
   }
 
   render() {
