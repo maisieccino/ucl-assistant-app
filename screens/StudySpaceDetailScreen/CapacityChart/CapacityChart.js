@@ -1,10 +1,10 @@
 /* eslint react-native/no-inline-styles: 0 */
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { Svg } from "expo";
-import { AreaChart } from "react-native-svg-charts";
+import { AreaChart, XAxis } from "react-native-svg-charts";
 import MapStyles from "../../../styles/Map";
 import TextStyles from "../../../styles/Typography";
 import Colors from "../../../constants/Colors";
@@ -13,6 +13,13 @@ import { BodyText } from "../../../components/Typography";
 import { Horizontal } from "../../../components/Containers";
 
 const { Defs, G, Line, LinearGradient, Rect, Stop, Text } = Svg;
+
+const styles = StyleSheet.create({
+  chart: {
+    backgroundColor: Colors.cardBackground,
+    height: 200,
+  },
+});
 
 const Gradient = ({ index }) => (
   <Defs key={index}>
@@ -88,6 +95,19 @@ class CapacityChart extends Component {
     }
   }
 
+  formatXLabel = value => {
+    const time = value - 1;
+    const selectTimes = [2, 8, 14, 20];
+    if (selectTimes.includes(time)) {
+      return moment(time, "H").format("h:00a");
+    }
+    // returning an empty or string or null makes the chart
+    // makes the chart library think all labels have zero height
+    // labels have zero height, so we return this blank character
+    // as a workaround to hide labels
+    return "⠀";
+  };
+
   render() {
     const { capacity, data, loading, occupied } = this.props;
     const { showData } = this.state;
@@ -106,27 +126,32 @@ class CapacityChart extends Component {
         {loading ? (
           <ChartLoading />
         ) : (
-          <AreaChart
-            animate
-            animationDuration={500}
-            contentInset={{ top: 10 }}
-            data={graphData}
-            showGrid={false}
-            gridMin={0}
-            gridMax={capacity}
-            svg={{
-              fill: showData ? "url(#gradient)" : "transparent",
-              stroke: showData ? Colors.accentColor : "none",
-              strokeWidth: showData ? 2 : 0,
-            }}
-            style={{
-              backgroundColor: Colors.textInputBackground,
-              height: 200,
-            }}
-            extras={[Gradient, line, highlightBar]}
-          />
+          <React.Fragment>
+            <AreaChart
+              animate
+              animationDuration={500}
+              data={graphData}
+              showGrid={false}
+              gridMin={0}
+              gridMax={capacity}
+              svg={{
+                fill: showData ? "url(#gradient)" : "transparent",
+                stroke: showData ? Colors.accentColor : "none",
+                strokeWidth: showData ? 2 : 0,
+              }}
+              style={styles.chart}
+              extras={[Gradient, line, highlightBar]}
+            />
+            <XAxis
+              style={{ marginHorizontal: -10 }}
+              contentInset={{ top: 10, right: 15 }}
+              data={showData ? Object.keys(graphData) : []}
+              formatLabel={this.formatXLabel}
+              svg={{ y: 10, fontSize: 16, fill: "black" }}
+            />
+          </React.Fragment>
         )}
-        <Horizontal
+        {/* <Horizontal
           style={{ justifyContent: "space-between", paddingHorizontal: 2 }}
         >
           <BodyText style={TextStyles.small}>12:00 am</BodyText>
@@ -134,7 +159,7 @@ class CapacityChart extends Component {
           <BodyText style={TextStyles.small}>12:00 pm</BodyText>
           <BodyText style={TextStyles.small}>6:00 pm</BodyText>
           <BodyText style={TextStyles.small}>11:00 pm</BodyText>
-        </Horizontal>
+        </Horizontal> */}
       </View>
     );
   }
