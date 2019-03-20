@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   section: {
+    marginBottom: 15,
     marginTop: 15,
   },
   textWithUpperMargin: {
