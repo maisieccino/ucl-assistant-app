@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 // @flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -32,6 +31,9 @@ const busyText = (
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   facilities: {
     marginBottom: 20,
     marginTop: 10,
@@ -39,6 +41,12 @@ const styles = StyleSheet.create({
   liveIndicator: {
     justifyContent: "flex-start",
     marginBottom: 10,
+  },
+  occupancySection: {
+    flex: 1,
+  },
+  padder: {
+    height: 80,
   },
   popularTimes: {
     marginVertical: 10,
@@ -126,53 +134,57 @@ class StudySpaceDetailScreen extends Component {
     const { isFetchingAverages, maps } = space;
     const hour = parseInt(moment().format("HH"), 10);
     return (
-      <Page style={{ flex: 1 }}>
-        <TitleText>{name}</TitleText>
-        <Horizontal>
-          <View style={{ flex: 1 }}>
-            <TitleText style={StudySpaceDetailScreen.capacityTextStyle}>
-              {total - occupied}
-            </TitleText>
-            <BodyText>Seats Available</BodyText>
+      <View style={styles.container}>
+        <Page>
+          <TitleText>{name}</TitleText>
+          <Horizontal>
+            <View style={styles.occupancySection}>
+              <TitleText style={StudySpaceDetailScreen.capacityTextStyle}>
+                {total - occupied}
+              </TitleText>
+              <BodyText>Seats Available</BodyText>
+            </View>
+            <View style={styles.occupancySection}>
+              <TitleText style={StudySpaceDetailScreen.capacityTextStyle}>
+                {occupied}
+              </TitleText>
+              <BodyText>Seats Occupied</BodyText>
+            </View>
+          </Horizontal>
+          <View style={styles.popularTimes}>
+            <SubtitleText>Popular Times</SubtitleText>
+            <CapacityChart
+              id={id}
+              data={data}
+              occupied={occupied}
+              capacity={total}
+              loading={isFetchingAverages}
+            />
           </View>
-          <View style={{ flex: 1 }}>
-            <TitleText style={StudySpaceDetailScreen.capacityTextStyle}>
-              {occupied}
-            </TitleText>
-            <BodyText>Seats Occupied</BodyText>
+          <Horizontal style={styles.liveIndicator}>
+            <LiveIndicator />
+            <BodyText>
+              {moment().format("h:mma")} -{" "}
+              {busyText(hour, data, occupied, total)}
+            </BodyText>
+          </Horizontal>
+          <LiveSeatingMapList style={styles.liveSeatingMapList} maps={maps} />
+          {/* {survey ? (
+            <Button onPress={this.navigateToLiveSeatMap}>Live Seat Map</Button>
+          ) : null} */}
+          {/* <SubtitleText>Opening Hours</SubtitleText>
+          <OpeningHours /> */}
+          <View style={styles.facilities}>
+            <SubtitleText>Facilities</SubtitleText>
+            <BodyText>
+              See the libraries website for more information about what
+              facilities are offered.
+            </BodyText>
           </View>
-        </Horizontal>
-        <View style={styles.popularTimes}>
-          <SubtitleText>Popular Times</SubtitleText>
-          <CapacityChart
-            id={id}
-            data={data}
-            occupied={occupied}
-            capacity={total}
-            loading={isFetchingAverages}
-          />
-        </View>
-        <Horizontal style={styles.liveIndicator}>
-          <LiveIndicator />
-          <BodyText>
-            {moment().format("HH:mm")} - {busyText(hour, data, occupied, total)}
-          </BodyText>
-        </Horizontal>
-        <LiveSeatingMapList style={styles.liveSeatingMapList} maps={maps} />
-        {/* {survey ? (
-          <Button onPress={this.navigateToLiveSeatMap}>Live Seat Map</Button>
-        ) : null} */}
-        {/* <SubtitleText>Opening Hours</SubtitleText>
-        <OpeningHours /> */}
-        <View style={styles.facilities}>
-          <SubtitleText>Facilities</SubtitleText>
-          <BodyText>
-            See the libraries website for more information about what facilities
-            are offered.
-          </BodyText>
-        </View>
+          <View style={styles.padder} />
+        </Page>
         <FavouriteButton id={id} />
-      </Page>
+      </View>
     );
   }
 }

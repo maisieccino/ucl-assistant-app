@@ -24,14 +24,6 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  floatingActionButton: {
-    position: "absolute",
-    bottom: 10,
-    right: 10,
-    width: 80,
-    height: 80,
-    backgroundColor: Colors.errorColor,
-  },
   roundButtonWrapper: {
     borderRadius: 100,
     width: 55,
