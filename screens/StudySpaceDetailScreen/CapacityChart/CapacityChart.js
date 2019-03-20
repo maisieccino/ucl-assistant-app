@@ -145,7 +145,11 @@ class CapacityChart extends Component {
             <XAxis
               style={{ marginHorizontal: -10 }}
               contentInset={{ top: 10, right: 15 }}
-              data={showData ? Object.keys(graphData) : []}
+              data={
+                showData
+                  ? Object.keys(graphData).map(v => Number.parseInt(v, 10))
+                  : []
+              }
               formatLabel={this.formatXLabel}
               svg={{ y: 10, fontSize: 16, fill: "black" }}
             />
