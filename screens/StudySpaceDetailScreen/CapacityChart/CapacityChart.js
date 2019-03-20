@@ -121,7 +121,6 @@ class CapacityChart extends Component {
       occupied,
     );
     const line = CapacityLine(capacity);
-    console.log(Object.keys(graphData));
     return (
       <View style={[MapStyles.wideMap, { height: undefined }]}>
         {loading ? (
