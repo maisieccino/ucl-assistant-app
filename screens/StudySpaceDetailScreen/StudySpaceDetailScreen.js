@@ -155,7 +155,7 @@ class StudySpaceDetailScreen extends Component {
         <Horizontal style={styles.liveIndicator}>
           <LiveIndicator />
           <BodyText>
-            {moment().format("HH:mm")} - {busyText(hour, data, occupied, total)}
+            {moment().format("h:ma")} - {busyText(hour, data, occupied, total)}
           </BodyText>
         </Horizontal>
         <LiveSeatingMapList style={styles.liveSeatingMapList} maps={maps} />
