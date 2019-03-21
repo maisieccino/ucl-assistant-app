@@ -21,7 +21,7 @@ jobs:
         - npx expo publish --non-interactive --release-channel="dev.$RELEASE_CHANNEL"
         - echo "Updated expo release at https://exp.host/@$EXPO_USERNAME/ucl-assistant?release-channel=dev.$RELEASE_CHANNEL\"
     - stage: deploy-master
-      if: branch = master
+      if: branch = master AND type = push AND fork = false and NOT type IN (pull_request)
       script:
         - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
         - npx expo publish --non-interactive
