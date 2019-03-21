@@ -8,7 +8,7 @@ You'll need the Expo XDE client or the Expo command line client. Get them from
 [here](https://expo.io/tools). You'll also need Yarn or NPM installed.
 
 Copy `app.example.json` to `app.json` and add your own Google Maps API key and
-either modify or delete the Sentry sourcemap hook.
+either modify or delete the Sentry sourcemap hook. Remember to update the APP_JSON env variable in Travis if you modify  `app.json`.
 
 The Google Maps API key is optional but without it you won't be able to use Maps
 on Android. You'll want to create an API key on the

@@ -7,6 +7,7 @@ install:
   - npm i -g npm@latest
   - export NODE_ENV=dev
   - npm ci
+  - echo $APP_JSON > app.json
 jobs:
   include:
     - stage: testing
@@ -20,7 +21,7 @@ jobs:
         - export RELEASE_CHANNEL=${RAW_RELEASE_CHANNEL//[^a-z^0-9^_^-^.]}
         - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
         - npx expo publish --non-interactive --release-channel="dev.$RELEASE_CHANNEL"
-        - echo "Updated expo release at https://exp.host/@$EXPO_USERNAME/ucl-assistant?release-channel=dev.$RELEASE_CHANNEL\"
+        - echo "Updated expo release at https://exp.host/@$EXPO_USERNAME/ucl-assistant?release-channel=dev.$RELEASE_CHANNEL"
     - stage: deploy-master
       if: branch = master AND type = push AND fork = false and type != pull_request
       script:
