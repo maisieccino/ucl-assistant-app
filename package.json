@@ -4,7 +4,7 @@
     "lint:force": "eslint . --ext .js --ext .jsx --ignore-path .eslintignore",
     "lint:staged": "lint-staged",
     "format": "prettier --write --trailing-comma all **/*.{js,jsx}",
-    "test": "jest --ci",
+    "test": "echo 'NO TESTS'",
     "storybook": "storybook start -p 7007",
     "prestorybook": "rnstl",
     "start": "expo start",
