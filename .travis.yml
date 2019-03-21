@@ -3,12 +3,25 @@ node_js:
   - lts/*
 dist: trusty
 cache: npm
-before_script:
+install:
   - npm i -g npm@latest
-script:
-  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-  - export RELEASE_CHANNEL=${$(echo ${BRANCH//[\/]/.} | tr '[:upper:]' '[:lower:]')//[^a-z^0-9^_^-^.]}
-  - npm ci
-  - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
-  - npx expo publish --non-interactive --release-channel="dev.$RELEASE_CHANNEL"
-        
+  - export NODE_ENV=dev
+  - npm i
+stages:
+  - name: test
+    script:
+      - npm run test
+      - echo "ALL TESTS PASSED"
+  - name: deploy-branch
+    script:
+      - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+      - export RELEASE_CHANNEL=${$(echo ${BRANCH//[\/]/.} | tr '[:upper:]' '[:lower:]')//[^a-z^0-9^_^-^.]}
+      - npm ci
+      - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+      - npx expo publish --non-interactive --release-channel="dev.$RELEASE_CHANNEL"
+  - name: deploy-master
+    if: branch = master
+    script:
+      - npm ci
+      - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+      - npx expo publish --non-interactive
