@@ -49,17 +49,13 @@ const EXPO_REACT_NATIVE_PATH = path.join(
 );
 if (!fs.existsSync(EXPO_REACT_NATIVE_PATH)) {
   throw new Error(
-    `Expo copy of React Native could not be found. Are you sure it exists at: ${
-      EXPO_REACT_NATIVE_PATH
-    }?`,
+    `Expo copy of React Native could not be found. Are you sure it exists at: ${EXPO_REACT_NATIVE_PATH}?`,
   );
 }
 const EXPO_REACT_PATH = path.join(EXPO_REACT_NATIVE_PATH, "node_modules/react");
 if (!fs.existsSync(EXPO_REACT_PATH)) {
   throw new Error(
-    `React Native's "react" peer could not be found. Are you sure it exists at: ${
-      EXPO_REACT_PATH
-    }?`,
+    `React Native's "react" peer could not be found. Are you sure it exists at: ${EXPO_REACT_PATH}?`,
   );
 }
 

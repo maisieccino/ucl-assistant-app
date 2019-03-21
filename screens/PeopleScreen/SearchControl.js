@@ -90,10 +90,9 @@ class SearchControl extends Component {
           )}
         </Horizontal>
 
-        {error.length > 0 &&
-          this.state.query.length > 2 && (
-            <CentredText>Error! {error} </CentredText>
-          )}
+        {error.length > 0 && this.state.query.length > 2 && (
+          <CentredText>Error! {error} </CentredText>
+        )}
 
         {isSearching && <ActivityIndicator />}
 
@@ -101,10 +100,9 @@ class SearchControl extends Component {
           <CentredText>Start typing to get search results</CentredText>
         )}
 
-        {this.state.query.length > 0 &&
-          searchResults.length === 0 && (
-            <CentredText>No results found.</CentredText>
-          )}
+        {this.state.query.length > 0 && searchResults.length === 0 && (
+          <CentredText>No results found.</CentredText>
+        )}
 
         {searchResults.map(res => (
           <SearchResult

@@ -62,7 +62,11 @@ class StudySpaceScreen extends Component {
   };
 
   static findErrorneousSpaces = spaces =>
-    spaces.filter(space => space.fetchSeatInfoError !== "");
+    spaces.filter(
+      space =>
+        typeof space.fetchSeatInfoError === "string" &&
+        space.fetchSeatInfoError !== "",
+    );
 
   static mapStateToProps = state => ({
     studyspaces: state.studyspaces.studyspaces,
@@ -170,14 +174,6 @@ class StudySpaceScreen extends Component {
             <StudySpaceSearchResult navigation={navigation} id={item.id} />
           )}
         />
-
-        <Button
-          onPress={() => {
-            navigation.navigate("StudySpaceAbout");
-          }}
-        >
-          How Does This Work?
-        </Button>
         <View style={styles.padder} />
       </Page>
     );

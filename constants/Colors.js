@@ -6,6 +6,7 @@ export default {
   accentColorLight: "#73CCC2",
   textInputBackground: "#eaeaea",
   cardBackground: "#fff",
+  dividerLine: "#808080",
   oldCardBackground: "#f2f2f2",
   buttonBackground: "#4BB3FD",
   disabledButtonBackground: "rgba(152, 153, 160, 1)",
@@ -18,4 +19,6 @@ export default {
   indicatorYellow: "#FFB800",
   indicatorLime: "#A6BC35",
   indicatorGreen: "#6DD149",
+  linkBlue: "#2980b9",
+  tabBackground: "#ced0d9",
 };

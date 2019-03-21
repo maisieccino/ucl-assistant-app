@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 // @flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -7,13 +6,13 @@ import moment from "moment";
 import { connect } from "react-redux";
 import { surveys } from "../../constants/studyspaces";
 import { fetchAverages } from "../../actions/studyspacesActions";
-import Button from "../../components/Button";
 import { Page, Horizontal } from "../../components/Containers";
 import { BodyText, TitleText, SubtitleText } from "../../components/Typography";
 import CapacityChart from "./CapacityChart";
 import LiveIndicator from "./LiveIndicator";
 // import OpeningHours from "./OpeningHours";
 import FavouriteButton from "./FavouriteButton";
+import LiveSeatingMapList from "./LiveSeatingMapList";
 
 const busyText = (
   time = 0,
@@ -32,6 +31,9 @@ const busyText = (
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   facilities: {
     marginBottom: 20,
     marginTop: 10,
@@ -39,6 +41,12 @@ const styles = StyleSheet.create({
   liveIndicator: {
     justifyContent: "flex-start",
     marginBottom: 10,
+  },
+  occupancySection: {
+    flex: 1,
+  },
+  padder: {
+    height: 80,
   },
   popularTimes: {
     marginVertical: 10,
@@ -88,11 +96,11 @@ class StudySpaceDetailScreen extends Component {
 
   constructor(props) {
     super(props);
-    const { id, name, occupied, capacity } = this.props.navigation.state.params;
+    const { id, name, occupied, total } = this.props.navigation.state.params;
     this.state = {
       name,
       id,
-      capacity,
+      total,
       occupied,
       data: Array.from(Array(24)).map(() => 0),
       fetchingData: false,
@@ -122,21 +130,21 @@ class StudySpaceDetailScreen extends Component {
   };
 
   render() {
-    const { id, name, data, capacity, occupied, survey } = this.state;
-    const { isFetchingAverages } = this.state.space;
+    const { id, name, data, total, occupied, space } = this.state;
+    const { isFetchingAverages, maps } = space;
     const hour = parseInt(moment().format("HH"), 10);
     return (
-      <View style={{ flex: 1 }}>
-        <Page style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Page>
           <TitleText>{name}</TitleText>
           <Horizontal>
-            <View style={{ flex: 1 }}>
+            <View style={styles.occupancySection}>
               <TitleText style={StudySpaceDetailScreen.capacityTextStyle}>
-                {capacity - occupied}
+                {total - occupied}
               </TitleText>
               <BodyText>Seats Available</BodyText>
             </View>
-            <View style={{ flex: 1 }}>
+            <View style={styles.occupancySection}>
               <TitleText style={StudySpaceDetailScreen.capacityTextStyle}>
                 {occupied}
               </TitleText>
@@ -149,17 +157,18 @@ class StudySpaceDetailScreen extends Component {
               id={id}
               data={data}
               occupied={occupied}
-              capacity={capacity}
+              capacity={total}
               loading={isFetchingAverages}
             />
           </View>
           <Horizontal style={styles.liveIndicator}>
             <LiveIndicator />
             <BodyText>
-              {moment().format("HH:mm")} -{" "}
-              {busyText(hour, data, occupied, capacity)}
+              {moment().format("h:mma")} -{" "}
+              {busyText(hour, data, occupied, total)}
             </BodyText>
           </Horizontal>
+          <LiveSeatingMapList style={styles.liveSeatingMapList} maps={maps} />
           {/* {survey ? (
             <Button onPress={this.navigateToLiveSeatMap}>Live Seat Map</Button>
           ) : null} */}
@@ -172,6 +181,7 @@ class StudySpaceDetailScreen extends Component {
               facilities are offered.
             </BodyText>
           </View>
+          <View style={styles.padder} />
         </Page>
         <FavouriteButton id={id} />
       </View>
