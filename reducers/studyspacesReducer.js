@@ -1,5 +1,4 @@
 import moment from "moment";
-import { surveys } from "../constants/studyspaces";
 import {
   WORKSPACES_FETCH_SEATINFOS_FAILURE,
   WORKSPACES_IS_FETCHING_SEATINFOS,
@@ -13,19 +12,7 @@ import {
 const sortStudySpaces = (s1, s2) => s1.id - s2.id;
 
 export const initialState = {
-  studyspaces: surveys
-    .map(survey => ({
-      ...survey,
-      occupied: 0,
-      total: 0,
-      fetchSeatInfoError: "",
-      isFetchingSeatInfo: false,
-      dailyAverages: Array.from(Array(24)).map(() => 0),
-      isFetchingAverages: false,
-      dailyAveragesError: "",
-      lastUpdatedAverages: null,
-    }))
-    .sort(sortStudySpaces),
+  studyspaces: [],
   lastStatusUpdate: null,
   isFetchingSpaces: false,
   favourites: [],
