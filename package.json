@@ -4,7 +4,6 @@
     "lint:force": "eslint . --ext .js --ext .jsx --ignore-path .eslintignore",
     "lint:staged": "lint-staged",
     "format": "prettier --write --trailing-comma all **/*.{js,jsx}",
-    "precommit": "yarn run lint:staged",
     "test": "jest --ci && yarn run lint:force",
     "storybook": "storybook start -p 7007",
     "prestorybook": "rnstl",
@@ -88,5 +87,10 @@
     }
   },
   "private": true,
-  "main": "node_modules/expo/AppEntry.js"
+  "main": "node_modules/expo/AppEntry.js",
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run lint:staged"
+    }
+  }
 }
