@@ -17,7 +17,7 @@ const mapToCards = (timetableItems, date, navigation, past = false) =>
       endTime={`${date} ${item.end_time}`}
       location={item.location.name || "TBA"}
       lecturer={item.contact ? item.contact : "Unknown Lecturer"}
-      pastEvent={past}
+      pastEvent={false}
       key={generate()}
       navigation={navigation}
     />

@@ -8,7 +8,7 @@ import { fetchAverages } from "../../actions/studyspacesActions";
 import { Page, Horizontal } from "../../components/Containers";
 import { BodyText, TitleText, SubtitleText } from "../../components/Typography";
 import CapacityChart from "./CapacityChart";
-import LiveIndicator from "./LiveIndicator";
+import LiveIndicator from "../../components/LiveIndicator";
 // import OpeningHours from "./OpeningHours";
 import FavouriteButton from "./FavouriteButton";
 import LiveSeatingMapList from "./LiveSeatingMapList";
