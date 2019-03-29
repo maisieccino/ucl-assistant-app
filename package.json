@@ -75,7 +75,8 @@
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|sentry-expo|react-native-action-button|redux-persist.*))"
-    ]
+    ],
+    "testEnvironment": "node"
   },
   "license": "MIT",
   "name": "ucl-assistant-app",
