@@ -4,10 +4,27 @@ import { View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { SubtitleText, BodyText } from "../../components/Typography";
+import Colors from "../../constants/Colors";
+import Shadow from "../../lib/Shadow";
 
 const styles = StyleSheet.create({
   liveSeatingMap: {
     marginVertical: 20,
+  },
+  cardHeader: {
+    backgroundColor: Colors.cardHeader,
+    color: Colors.cardBackground,
+    marginBottom: 5,
+    padding: 20,
+    borderRadius:10,
+    ...Shadow(2),
+  },
+  cardList: {
+    backgroundColor: Colors.cardBackground,
+    marginTop: 5,
+    padding: 20,
+    borderRadius:10,
+    ...Shadow(2),
   },
 });
 
@@ -43,8 +60,8 @@ class LiveSeatingMapList extends Component {
 
     return (
       <View style={styles.liveSeatingMap}>
-        <SubtitleText>Breakdown</SubtitleText>
-        {mapsList}
+        <SubtitleText style={styles.cardHeader}>Breakdown</SubtitleText>
+        <View style={styles.cardList}>{mapsList}</View>
       </View>
     );
   }
