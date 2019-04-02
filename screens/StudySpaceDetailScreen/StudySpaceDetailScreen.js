@@ -12,6 +12,8 @@ import LiveIndicator from "../../components/LiveIndicator";
 // import OpeningHours from "./OpeningHours";
 import FavouriteButton from "./FavouriteButton";
 import LiveSeatingMapList from "./LiveSeatingMapList";
+import Colors from "../../constants/Colors";
+import Shadow from "../../lib/Shadow";
 
 const busyText = (
   time = 0,
@@ -53,6 +55,21 @@ const styles = StyleSheet.create({
   },
   popularTimes: {
     marginTop: 10,
+  },
+  cardHeader: {
+    backgroundColor: Colors.cardHeader,
+    color: Colors.cardBackground,
+    marginBottom: 5,
+    padding: 20,
+    borderRadius:10,
+    ...Shadow(2),
+  },
+  cardList: {
+    backgroundColor: Colors.cardBackground,
+    marginTop: 5,
+    padding: 20,
+    borderRadius:10,
+    ...Shadow(2),
   },
 });
 
@@ -171,18 +188,20 @@ class StudySpaceDetailScreen extends Component {
               {busyText(hour, data, occupied, total)}
             </BodyText>
           </Horizontal>
-          <LiveSeatingMapList style={styles.liveSeatingMapList} maps={maps} />
+            <LiveSeatingMapList style={styles.liveSeatingMapList} maps={maps} />
           {/* {survey ? (
             <Button onPress={this.navigateToLiveSeatMap}>Live Seat Map</Button>
           ) : null} */}
           {/* <SubtitleText>Opening Hours</SubtitleText>
           <OpeningHours /> */}
           <View style={styles.facilities}>
-            <SubtitleText>Facilities</SubtitleText>
+            <SubtitleText style={styles.cardHeader}>Facilities</SubtitleText>
+            <View style={styles.cardList}>
             <BodyText>
               See the libraries website for more information about what
               facilities are offered.
             </BodyText>
+            </View>
           </View>
           <View style={styles.padder} />
         </Page>
