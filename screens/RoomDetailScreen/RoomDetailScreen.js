@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.cardBackground,
     marginVertical: 5,
     padding: 20,
-    borderRadius:10,
+    borderRadius: 10,
     ...Shadow(2),
   },
   cardHeader: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     color: Colors.cardBackground,
     marginBottom: 5,
     padding: 20,
-    borderRadius:10,
+    borderRadius: 10,
     ...Shadow(2),
   },
   bookingList: {
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.cardBackground,
     marginTop: 5,
     padding: 20,
-    borderRadius:10,
+    borderRadius: 10,
     ...Shadow(2),
   },
   padder: {
@@ -226,10 +226,10 @@ class RoomDetailScreen extends Component {
         ) : null}
         {equipment.length > 0 ? (
           <View>
-          <SubtitleText style={styles.cardHeader}>In This Room</SubtitleText>
-          <View style={styles.cardList}>
-            {equipment.map(this.renderEquipment)}
-          </View>
+            <SubtitleText style={styles.cardHeader}>In This Room</SubtitleText>
+            <View style={styles.cardList}>
+              {equipment.map(this.renderEquipment)}
+            </View>
           </View>
         ) : null}
         {fetchBookingsError ? (

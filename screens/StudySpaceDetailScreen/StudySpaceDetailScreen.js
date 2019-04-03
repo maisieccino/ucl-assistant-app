@@ -6,7 +6,12 @@ import moment from "moment";
 import { connect } from "react-redux";
 import { fetchAverages } from "../../actions/studyspacesActions";
 import { Page, Horizontal } from "../../components/Containers";
-import { BodyText, TitleText, SubtitleText } from "../../components/Typography";
+import {
+  BodyText,
+  TitleText,
+  SubtitleText,
+  Link,
+} from "../../components/Typography";
 import CapacityChart from "./CapacityChart";
 import LiveIndicator from "../../components/LiveIndicator";
 // import OpeningHours from "./OpeningHours";
@@ -33,6 +38,21 @@ const busyText = (
 };
 
 const styles = StyleSheet.create({
+  cardHeader: {
+    backgroundColor: Colors.cardHeader,
+    borderRadius: 10,
+    color: Colors.cardBackground,
+    marginBottom: 5,
+    padding: 20,
+    ...Shadow(2),
+  },
+  cardList: {
+    backgroundColor: Colors.cardBackground,
+    borderRadius: 10,
+    marginTop: 5,
+    padding: 20,
+    ...Shadow(2),
+  },
   container: {
     flex: 1,
   },
@@ -55,21 +75,6 @@ const styles = StyleSheet.create({
   },
   popularTimes: {
     marginTop: 10,
-  },
-  cardHeader: {
-    backgroundColor: Colors.cardHeader,
-    color: Colors.cardBackground,
-    marginBottom: 5,
-    padding: 20,
-    borderRadius:10,
-    ...Shadow(2),
-  },
-  cardList: {
-    backgroundColor: Colors.cardBackground,
-    marginTop: 5,
-    padding: 20,
-    borderRadius:10,
-    ...Shadow(2),
   },
 });
 
@@ -150,6 +155,7 @@ class StudySpaceDetailScreen extends Component {
   };
 
   render() {
+    const { navigation } = this.props;
     const { id, name, data, total, occupied, space } = this.state;
     const { isFetchingAverages, maps } = space;
     const hour = parseInt(moment().format("HH"), 10);
@@ -188,7 +194,12 @@ class StudySpaceDetailScreen extends Component {
               {busyText(hour, data, occupied, total)}
             </BodyText>
           </Horizontal>
-            <LiveSeatingMapList style={styles.liveSeatingMapList} maps={maps} />
+          <LiveSeatingMapList
+            style={styles.liveSeatingMapList}
+            maps={maps}
+            surveyId={id}
+            navigation={navigation}
+          />
           {/* {survey ? (
             <Button onPress={this.navigateToLiveSeatMap}>Live Seat Map</Button>
           ) : null} */}
@@ -197,10 +208,13 @@ class StudySpaceDetailScreen extends Component {
           <View style={styles.facilities}>
             <SubtitleText style={styles.cardHeader}>Facilities</SubtitleText>
             <View style={styles.cardList}>
-            <BodyText>
-              See the libraries website for more information about what
-              facilities are offered.
-            </BodyText>
+              <BodyText>
+                See the
+                <Link href="https://www.ucl.ac.uk/library/opening-hours">
+                  &nbsp;libraries website&nbsp;
+                </Link>
+                for more information about what facilities are offered.
+              </BodyText>
             </View>
           </View>
           <View style={styles.padder} />
