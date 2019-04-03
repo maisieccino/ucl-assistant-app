@@ -4,12 +4,13 @@ import { View, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { Svg } from "expo";
+import { generate } from "shortid";
 import { AreaChart, XAxis } from "react-native-svg-charts";
 import MapStyles from "../../../styles/Map";
 import Colors from "../../../constants/Colors";
 import ChartLoading from "./ChartLoading";
 
-const { Defs, G, Line, LinearGradient, Rect, Stop, Text } = Svg;
+const { Defs, G, Line, LinearGradient, Rect, Stop, Text, Circle } = Svg;
 
 const styles = StyleSheet.create({
   chart: {
@@ -22,8 +23,8 @@ const styles = StyleSheet.create({
 /* eslint-disable react/prop-types */
 
 const Gradient = ({ data }) =>
-  data.map((_, index) => (
-    <Defs key={index}>
+  data.map(() => (
+    <Defs key={generate()}>
       <LinearGradient id="gradient" x1="0%" y="0%" x2="0%" y2="100%">
         <Stop offset="0%" stopColor={Colors.accentColor} stopOpacity={0.8} />
         <Stop offset="100%" stopColor={Colors.accentColor} stopOpacity={0.2} />
@@ -78,19 +79,22 @@ const CapacityLine = ({ y, capacity, selectedIndex, data }) => (
   </G>
 );
 
-const HighlightBar = ({ x, y, width, height, selectedIndex, data }) => (
+const HighlightBar = ({ x, y, selectedIndex, data }) => (
   <G key="tooltip" x={x(selectedIndex)}>
-    <Rect
-      height={height}
-      width={width / 24}
-      opacity={0.3}
-      fill={Colors.graphCurrentBar}
+    <Line
+      key={generate()}
+      y1="100%"
+      y2={y(data[selectedIndex])}
+      x1={0}
+      x2={0}
+      stroke={Colors.graphCurrentBar}
+      strokeDasharray={[3, 2]}
     />
-    <Rect
-      y={y(data[selectedIndex])}
-      height={height - y(data[selectedIndex])}
-      width={width / 24}
-      fill={Colors.graphCurrentBar}
+    <Circle
+      cy={y(data[selectedIndex])}
+      r={5}
+      stroke={Colors.accentColor}
+      fill={Colors.cardBackground}
     />
   </G>
 );
@@ -100,7 +104,7 @@ const CustomGrid = ({ x, data, width, setIndex }) => (
     {// Vertical grid
     data.map((val, index) => (
       <Line
-        key={index}
+        key={generate()}
         y1="0%"
         y2="100%"
         x1={x(index)}
@@ -108,7 +112,6 @@ const CustomGrid = ({ x, data, width, setIndex }) => (
         stroke="rgba(0,0,0,0)"
         strokeWidth={width / 24}
         onPress={() => {
-          console.log("vertical", index, val);
           setIndex(index);
         }}
       />
