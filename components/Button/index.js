@@ -9,6 +9,7 @@ import Styles from "../../styles/Button";
 
 class Button extends Component {
   static propTypes = propTypes;
+
   static defaultProps = defaultProps;
 
   render() {

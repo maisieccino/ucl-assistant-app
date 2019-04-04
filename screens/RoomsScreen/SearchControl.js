@@ -3,9 +3,12 @@ import { View, StyleSheet, ActivityIndicator } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { TextInput } from "../../components/Input";
+import { SmallButton } from "../../components/Button";
 import { CentredText } from "../../components/Typography";
 import SearchResult from "../../components/SearchResult";
 import ApiManager from "../../lib/ApiManager";
+import { Horizontal } from "../../components/Containers";
+import { addRecent } from "../../actions/roomsActions";
 
 const styles = StyleSheet.create({
   container: {
@@ -13,6 +16,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
+    marginRight: 10,
   },
 });
 
@@ -23,18 +27,22 @@ class SearchControl extends Component {
     token: PropTypes.string,
     navigation: PropTypes.shape().isRequired,
     query: PropTypes.string,
+    addRecentRoom: PropTypes.func,
   };
 
   static defaultProps = {
     token: "",
     query: "",
+    addRecentRoom: () => {},
   };
 
   static mapStateToProps = state => ({
     token: state.user.token,
   });
 
-  static mapDispatchToProps = () => ({});
+  static mapDispatchToProps = dispatch => ({
+    addRecentRoom: room => dispatch(addRecent(room)),
+  });
 
   constructor(props) {
     super(props);
@@ -83,8 +91,13 @@ class SearchControl extends Component {
     }
   };
 
-  navigateToRoomDetail = room => () =>
-    this.props.navigation.navigate("RoomDetail", { room });
+  navigateToRoomDetail = room => () => {
+    const { navigation, addRecentRoom } = this.props;
+    addRecentRoom(room);
+    navigation.navigate("RoomDetail", { room });
+  };
+
+  clear = () => this.setState({ query: "", searchResults: [] });
 
   renderSearchResult = searchResult => (
     <SearchResult
@@ -101,13 +114,18 @@ class SearchControl extends Component {
     const { query, error, isSearching, searchResults } = this.state;
     return (
       <View style={styles.container}>
-        <TextInput
-          placeholder="Search for a room or building name..."
-          onChangeText={this.onChangeText}
-          value={query}
-          clearButtonMode="always"
-          style={styles.textInput}
-        />
+        <Horizontal>
+          <TextInput
+            placeholder="Search for a room or building name..."
+            onChangeText={this.onChangeText}
+            value={query}
+            clearButtonMode="always"
+            style={styles.textInput}
+          />
+          {query.length > 0 ? (
+            <SmallButton onPress={() => this.clear()}>Clear</SmallButton>
+          ) : null}
+        </Horizontal>
         {error ? <CentredText>Error! {error} </CentredText> : null}
         {isSearching ? <ActivityIndicator /> : null}
         {query.length === 0 ? (
