@@ -10,6 +10,7 @@ import { NotificationChannels } from "./constants/notificationsConstants";
 import configureStore from "./configureStore";
 import RootNavigation from "./navigation/RootNavigation";
 import Styles from "./styles/Containers";
+import AnalyticsManager from "./lib/AnalyticsManager";
 
 const { persistor, store } = configureStore;
 
@@ -49,6 +50,7 @@ class App extends Component {
     this.notificationSubscription = Notifications.addListener(
       this.handleNotification,
     );
+    AnalyticsManager.initialise();
   }
 
   loadResourcesAsync = async () =>

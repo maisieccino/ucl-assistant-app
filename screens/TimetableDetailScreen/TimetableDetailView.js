@@ -76,7 +76,7 @@ class TimetableDetailView extends React.Component {
       location,
       initialRegion,
       contact: contactPerson,
-      module: { department_name: departmentName, email },
+      module: { name: moduleName, department_name: departmentName, email },
       session_type_str: sessionTypeStr,
       session_group: sessionGroup,
       start_time: startTime,
@@ -106,7 +106,7 @@ class TimetableDetailView extends React.Component {
 
     return (
       <Page>
-        <TitleText>{module.name}</TitleText>
+        <TitleText>{moduleName}</TitleText>
         <BodyText>{moment(date).format("dddd, Do MMMM YYYY")}</BodyText>
         <BodyText>
           {startTime} - {endTime}

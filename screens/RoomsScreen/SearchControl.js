@@ -52,22 +52,34 @@ class SearchControl extends Component {
       isSearching: false,
       searchResults: [],
     };
-    const queryExists =
-      props.navigation.state &&
-      props.navigation.state.params &&
-      props.navigation.state.params.query &&
-      props.navigation.state.params.query.length > 0;
-    if (queryExists) {
-      this.state.query = props.navigation.state.params.query;
-    }
   }
 
   componentDidMount() {
-    const { query } = this.state;
-    if (query.length > 0) {
-      this.searchRooms(query);
-    }
+    const { navigation } = this.props;
+    this.subscriptions = [
+      navigation.addListener("didFocus", this.componentDidFocus),
+    ];
+    this.componentDidFocus({ state: navigation.state });
   }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(sub => sub.remove());
+  }
+
+  componentDidFocus = payload => {
+    const { query } = this.state;
+    const queryExists = this.queryExists(payload.state);
+    if (queryExists && query !== payload.state.params.query) {
+      this.setState({ query: payload.state.params.query });
+      this.searchRooms(payload.state.params.query, true);
+    }
+  };
+
+  queryExists = navigationState =>
+    navigationState &&
+    navigationState.params &&
+    navigationState.params.query &&
+    navigationState.params.query.length > 0;
 
   onChangeText = (query: String) => {
     if (query.length > 3) {
@@ -80,11 +92,14 @@ class SearchControl extends Component {
     this.setState({ query });
   };
 
-  searchRooms = async (query: String) => {
+  searchRooms = async (query: String, autoNavigate = false) => {
     const { token } = this.props;
     try {
       this.setState({ isSearching: true });
       const results = await ApiManager.rooms.search(token, query);
+      if (autoNavigate && results.length === 1) {
+        this.navigateToRoomDetail(results[0])();
+      }
       this.setState({ searchResults: results, isSearching: false });
     } catch (error) {
       this.setState({ error: error.message, isSearching: false });
