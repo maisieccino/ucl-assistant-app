@@ -46,6 +46,29 @@ class TimetableDetailView extends React.Component {
     navigation.navigate("Rooms", { query: roomName });
   };
 
+  // openRoomDetail = () => {
+  //   const {
+  //     navigation,
+  //     location: {
+  //       name: locationName,
+  //       capacity,
+  //       address,
+  //       coordinates,
+  //     },
+  //   } = this.props;
+  //   // note that classification_name is not present and hence
+  //   // is not passed in room
+  //   const room = {
+  //     roomname: locationName,
+  //     capacity,
+  //     location: {
+  //       address,
+  //       coordinates,
+  //     },
+  //   }
+  //   navigation.navigate("RoomDetail", { room });
+  // };
+
   render() {
     let contactTypeStr = "";
     const {
@@ -53,7 +76,7 @@ class TimetableDetailView extends React.Component {
       location,
       initialRegion,
       contact: contactPerson,
-      module,
+      module: { department_name: departmentName, email },
       session_type_str: sessionTypeStr,
       session_group: sessionGroup,
       start_time: startTime,
@@ -81,8 +104,6 @@ class TimetableDetailView extends React.Component {
     const longitude = parseFloat(lng, 10) || initialRegion.longitude;
     const { address, type: locationType, name: locationName } = location;
 
-    const { department_name: departmentName, email } = module.lecturer;
-
     return (
       <Page>
         <TitleText>{module.name}</TitleText>
@@ -91,6 +112,7 @@ class TimetableDetailView extends React.Component {
           {startTime} - {endTime}
         </BodyText>
         {locationType === "CB" ? (
+          // <Link onPress={this.openRoomDetail}>
           <Link onPress={this.openRoomSearch(locationName)}>
             {locationName}
           </Link>

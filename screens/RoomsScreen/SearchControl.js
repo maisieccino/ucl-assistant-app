@@ -18,19 +18,24 @@ const styles = StyleSheet.create({
 
 class SearchControl extends Component {
   static SEARCH_DELAY = 500;
+
   static propTypes = {
     token: PropTypes.string,
     navigation: PropTypes.shape().isRequired,
     query: PropTypes.string,
   };
+
   static defaultProps = {
     token: "",
     query: "",
   };
+
   static mapStateToProps = state => ({
     token: state.user.token,
   });
+
   static mapDispatchToProps = () => ({});
+
   constructor(props) {
     super(props);
     this.state = {
@@ -48,12 +53,14 @@ class SearchControl extends Component {
       this.state.query = props.navigation.state.params.query;
     }
   }
+
   componentDidMount() {
     const { query } = this.state;
     if (query.length > 0) {
       this.searchRooms(query);
     }
   }
+
   onChangeText = (query: String) => {
     if (query.length > 3) {
       clearTimeout(this.searchTimer);
@@ -64,6 +71,7 @@ class SearchControl extends Component {
     }
     this.setState({ query });
   };
+
   searchRooms = async (query: String) => {
     const { token } = this.props;
     try {
@@ -74,8 +82,10 @@ class SearchControl extends Component {
       this.setState({ error: error.message, isSearching: false });
     }
   };
+
   navigateToRoomDetail = room => () =>
-    this.props.navigation.navigate("RoomDetailScreen", { room });
+    this.props.navigation.navigate("RoomDetail", { room });
+
   renderSearchResult = searchResult => (
     <SearchResult
       key={searchResult.roomid}
@@ -86,6 +96,7 @@ class SearchControl extends Component {
       onPress={this.navigateToRoomDetail(searchResult)}
     />
   );
+
   render() {
     const { query, error, isSearching, searchResults } = this.state;
     return (

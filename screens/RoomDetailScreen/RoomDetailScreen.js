@@ -26,21 +26,28 @@ const styles = StyleSheet.create({
   },
   booking: {
     backgroundColor: Colors.cardBackground,
+    borderRadius: 10,
     marginVertical: 5,
     padding: 20,
-    borderRadius: 10,
-    ...Shadow(2),
-  },
-  cardHeader: {
-    backgroundColor: Colors.cardHeader,
-    color: Colors.cardBackground,
-    marginBottom: 5,
-    padding: 20,
-    borderRadius: 10,
     ...Shadow(2),
   },
   bookingList: {
     marginTop: 20,
+  },
+  cardHeader: {
+    backgroundColor: Colors.cardHeader,
+    borderRadius: 10,
+    color: Colors.cardBackground,
+    marginBottom: 5,
+    padding: 20,
+    ...Shadow(2),
+  },
+  cardList: {
+    backgroundColor: Colors.cardBackground,
+    borderRadius: 10,
+    marginTop: 5,
+    padding: 20,
+    ...Shadow(2),
   },
   coordinatesError: {
     marginBottom: 10,
@@ -48,13 +55,6 @@ const styles = StyleSheet.create({
   details: {
     justifyContent: "space-between",
     marginTop: 20,
-  },
-  cardList: {
-    backgroundColor: Colors.cardBackground,
-    marginTop: 5,
-    padding: 20,
-    borderRadius: 10,
-    ...Shadow(2),
   },
   padder: {
     height: 20,
@@ -72,16 +72,20 @@ class RoomDetailScreen extends Component {
   static navigationOptions = {
     title: "Room Detail",
   };
+
   static propTypes = {
     navigation: PropTypes.shape().isRequired,
     token: PropTypes.string,
   };
+
   static defaultProps = {
     token: "",
   };
+
   static mapStateToProps = state => ({
     token: state.user.token,
   });
+
   constructor() {
     super();
     this.state = {
@@ -91,6 +95,7 @@ class RoomDetailScreen extends Component {
       fetchBookingsError: null,
     };
   }
+
   componentDidMount() {
     const { token, navigation } = this.props;
     const { room } = navigation.state.params;
@@ -98,6 +103,7 @@ class RoomDetailScreen extends Component {
     this.fetchEquipment(token, roomid, siteid);
     this.fetchRoomBookings(token, roomid, siteid);
   }
+
   fetchEquipment = async (token, roomid, siteid) => {
     try {
       const equipment = await ApiManager.rooms.getEquipment(token, {
@@ -109,6 +115,7 @@ class RoomDetailScreen extends Component {
       this.setState({ fetchEquipmentError: error.message });
     }
   };
+
   fetchRoomBookings = async (token, roomid, siteid) => {
     try {
       const roombookings = await ApiManager.rooms.getBookings(token, {
@@ -121,6 +128,7 @@ class RoomDetailScreen extends Component {
       this.setState({ fetchBookingsError: error.message });
     }
   };
+
   renderEquipment = ({ description, units }) => {
     if (description === "Wheelchair accessible") {
       return (
@@ -135,6 +143,7 @@ class RoomDetailScreen extends Component {
       </BodyText>
     );
   };
+
   renderBooking = ({
     start_time: start,
     end_time: end,
@@ -149,6 +158,7 @@ class RoomDetailScreen extends Component {
       <BodyText>{description}</BodyText>
     </View>
   );
+
   render() {
     const {
       equipment,
@@ -156,7 +166,13 @@ class RoomDetailScreen extends Component {
       fetchBookingsError,
       roombookings,
     } = this.state;
-    const { room } = this.props.navigation.state.params;
+    const {
+      navigation: {
+        state: {
+          params: { room },
+        },
+      },
+    } = this.props;
     const {
       roomname: name,
       classification_name: classification,
