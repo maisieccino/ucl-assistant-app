@@ -46,6 +46,9 @@ class App extends Component {
         Notifications.createChannelAndroidAsync(channel.id, channel.options);
       });
     }
+    this.notificationSubscription = Notifications.addListener(
+      this.handleNotification,
+    );
   }
 
   loadResourcesAsync = async () =>
@@ -77,8 +80,13 @@ class App extends Component {
     this.setState({ isLoadingComplete: true });
   };
 
+  handleNotification = notification =>
+    console.log("Received notification", notification);
+
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+    const { isLoadingComplete } = this.state;
+    const { skipLoadingScreen } = this.props;
+    if (!isLoadingComplete && !skipLoadingScreen) {
       return (
         <AppLoading
           startAsync={this.loadResourcesAsync}
@@ -87,7 +95,9 @@ class App extends Component {
         />
       );
     }
-    const { store: stateStore, persistor: statePersistor } = this.state.store;
+    const {
+      store: { store: stateStore, persistor: statePersistor },
+    } = this.state;
     return (
       <Provider store={stateStore}>
         <PersistGate persistor={statePersistor}>

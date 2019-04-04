@@ -17,7 +17,6 @@ export const registrationStateError = error => ({
 });
 
 export const registerForNotifications = token => async dispatch => {
-  console.log(token);
   await dispatch(registrationChanging());
   const { status: existingStatus } = await Permissions.getAsync(
     Permissions.NOTIFICATIONS,
@@ -38,6 +37,7 @@ export const registerForNotifications = token => async dispatch => {
     return dispatch(registrationStateChanged(false));
   }
   const pushToken = await Notifications.getExpoPushTokenAsync();
+  console.log(`Expo pushToken: ${pushToken}`);
   try {
     const res = await fetch(`${NOTIFICATIONS_URL}/register`, {
       method: "POST",
