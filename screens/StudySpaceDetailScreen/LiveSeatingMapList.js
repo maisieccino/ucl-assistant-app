@@ -44,9 +44,9 @@ class LiveSeatingMapList extends Component {
     maps: [],
   };
 
-  openLiveMap = ({ surveyId, mapId }) => () => {
+  openLiveMap = ({ name, surveyId, mapId }) => () => {
     const { navigation } = this.props;
-    navigation.navigate("LiveSeatingMap", { surveyId, mapId });
+    navigation.navigate("LiveSeatingMap", { name, surveyId, mapId });
   };
 
   renderMapInfo = ({ id, name, total, occupied }) => {
@@ -54,7 +54,7 @@ class LiveSeatingMapList extends Component {
     return (
       <View key={id}>
         <BodyText>
-          <Link onPress={this.openLiveMap({ mapId: id, surveyId })}>
+          <Link onPress={this.openLiveMap({ name, mapId: id, surveyId })}>
             {name}
           </Link>
           : {total - occupied} seats free (total: {total})

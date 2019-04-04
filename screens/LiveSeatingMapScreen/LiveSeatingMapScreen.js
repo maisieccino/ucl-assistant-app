@@ -18,9 +18,9 @@ const styles = StyleSheet.create({
 });
 
 class LiveSeatingMapScreen extends Component {
-  static navigationOptions = {
-    title: "Live Seating Map",
-  };
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam("name", "Live Seating Map"),
+  });
 
   static propTypes = {
     navigation: PropTypes.shape().isRequired,
