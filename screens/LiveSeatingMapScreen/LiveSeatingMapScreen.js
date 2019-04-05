@@ -18,9 +18,9 @@ const styles = StyleSheet.create({
 });
 
 class LiveSeatingMapScreen extends Component {
-  static navigationOptions = {
-    title: "Live Seating Map",
-  };
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam("name", "Live Seating Map"),
+  });
 
   static propTypes = {
     navigation: PropTypes.shape().isRequired,
@@ -41,7 +41,7 @@ class LiveSeatingMapScreen extends Component {
   }
 
   componentDidMount() {
-    ScreenOrientation.allowAsync(ScreenOrientation.Orientation.LANDSCAPE);
+    // ScreenOrientation.allowAsync(ScreenOrientation.Orientation.LANDSCAPE);
     const { navigation, token } = this.props;
     const { surveyId, mapId } = navigation.state.params;
     ApiManager.workspaces
@@ -52,7 +52,7 @@ class LiveSeatingMapScreen extends Component {
   }
 
   componentWillUnmount() {
-    ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
+    // ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
   }
 
   render() {

@@ -33,7 +33,7 @@ export const NotificationChannels = {
       sound: false,
       vibrate: false,
       description: "UCL Assistant service updates.",
-      priority: "low",
+      priority: "high",
       badge: false,
     },
   },

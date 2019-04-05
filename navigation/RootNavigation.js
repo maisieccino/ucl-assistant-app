@@ -35,7 +35,7 @@ const RootStackNavigator = createStackNavigator(
     LiveSeatingMap: {
       screen: LiveSeatingMapScreen,
     },
-    RoomDetailScreen: {
+    RoomDetail: {
       screen: RoomDetailScreen,
     },
   },

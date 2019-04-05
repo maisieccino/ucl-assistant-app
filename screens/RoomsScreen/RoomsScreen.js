@@ -4,7 +4,9 @@ import PropTypes from "prop-types";
 import { TitleText } from "../../components/Typography";
 import { Page } from "../../components/Containers";
 import Colors from "../../constants/Colors";
+
 import SearchControl from "./SearchControl";
+import RecentResults from "./RecentResults";
 
 class RoomsScreen extends Component {
   static navigationOptions = {
@@ -28,6 +30,7 @@ class RoomsScreen extends Component {
       <Page mainTabPage>
         <TitleText>Rooms</TitleText>
         <SearchControl navigation={navigation} />
+        <RecentResults navigation={navigation} />
       </Page>
     );
   }
