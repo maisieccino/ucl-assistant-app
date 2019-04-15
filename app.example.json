@@ -5,7 +5,8 @@
     "slug": "ucl-assistant",
     "privacy": "public",
     "sdkVersion": "32.0.0",
-    "version": "0.6.5",
+    "version": "1.1.0",
+    "githubUrl": "https://github.com/uclapi/ucl-assistant-app",
     "orientation": "portrait",
     "primaryColor": "#1B998B",
     "icon": "./assets/images/icon.png",
@@ -28,15 +29,17 @@
         "googleMaps": {
           "apiKey": "<change-me>"
         }
-      }
+      },
+      "versionCode": 2,
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.uclapi.uclassistant"
     },
     "hooks": {
       "postPublish": [
         {
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
-            "organization": "matt-bell",
-            "project": "ucl-assistant-server",
+            "organization": "example-organisation",
+            "project": "ucl-assistant-app",
             "authToken": "<change-me>"
           }
         }
