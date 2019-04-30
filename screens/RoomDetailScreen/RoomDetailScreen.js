@@ -121,7 +121,6 @@ class RoomDetailScreen extends Component {
       const roombookings = await ApiManager.rooms.getBookings(token, {
         roomid,
         siteid,
-        date: "20190225",
       });
       this.setState({ roombookings });
     } catch (error) {
