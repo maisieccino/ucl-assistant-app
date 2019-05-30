@@ -80,8 +80,8 @@ export const WarningText = ({ children, icon }) => (
 WarningText.propTypes = { ...propTypes, icon: PropTypes.string };
 WarningText.defaultProps = { ...defaultProps, icon: "info" };
 
-export const InfoText = ({ children, icon }) => (
-  <Horizontal style={Style.infoTextContainer}>
+export const InfoText = ({ children, icon, style }) => (
+  <Horizontal style={[Style.infoTextContainer, style]}>
     <Feather size={18} color={Colors.infoColor} name={icon} />
     <Text style={Style.infoText}>{children}</Text>
   </Horizontal>
