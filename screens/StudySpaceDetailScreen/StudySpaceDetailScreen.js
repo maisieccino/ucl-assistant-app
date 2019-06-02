@@ -2,8 +2,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
-import moment from "moment";
 import { connect } from "react-redux";
+import moment from "moment";
+import Timezones from "../../constants/Timezones";
+import LocalisationManager from "../../lib/LocalisationManager";
 import { fetchAverages } from "../../actions/studyspacesActions";
 import { Page, Horizontal } from "../../components/Containers";
 import {
@@ -11,6 +13,7 @@ import {
   TitleText,
   SubtitleText,
   Link,
+  InfoText,
 } from "../../components/Typography";
 import CapacityChart from "./CapacityChart";
 import LiveIndicator from "../../components/LiveIndicator";
@@ -75,6 +78,10 @@ const styles = StyleSheet.create({
   },
   popularTimes: {
     marginTop: 10,
+  },
+  timezoneInfo: {
+    marginBottom: 10,
+    marginTop: -10,
   },
 });
 
@@ -158,7 +165,30 @@ class StudySpaceDetailScreen extends Component {
     const { navigation } = this.props;
     const { id, name, data, total, occupied, space } = this.state;
     const { isFetchingAverages, maps } = space;
-    const hour = parseInt(moment().format("HH"), 10);
+    const hour = parseInt(
+      moment()
+        .tz(Timezones.London)
+        .format("HH"),
+      10,
+    );
+
+    const londonTimeOffset = moment()
+      .tz(Timezones.London)
+      .utcOffset();
+    const localTimeOffset = moment()
+      .tz(LocalisationManager.getTimezone())
+      .utcOffset();
+    const hoursDifference = (localTimeOffset - londonTimeOffset) / 60;
+    const timezoneInfo =
+      londonTimeOffset !== localTimeOffset ? (
+        <InfoText style={styles.timezoneInfo}>
+          Using London time (
+          {hoursDifference > 0
+            ? `${hoursDifference}h behind`
+            : `${Math.abs(hoursDifference)}h ahead`}
+          ).
+        </InfoText>
+      ) : null;
     return (
       <View style={styles.container}>
         <Page>
@@ -187,11 +217,14 @@ class StudySpaceDetailScreen extends Component {
               loading={isFetchingAverages}
             />
           </View>
+          {timezoneInfo}
           <Horizontal style={styles.liveIndicatorContainer}>
             <LiveIndicator style={styles.liveIndicator} />
             <BodyText>
-              {moment().format("h:mma")} -{" "}
-              {busyText(hour, data, occupied, total)}
+              {moment()
+                .tz(Timezones.London)
+                .format("h:mma")}{" "}
+              - {busyText(hour, data, occupied, total)}
             </BodyText>
           </Horizontal>
           <LiveSeatingMapList

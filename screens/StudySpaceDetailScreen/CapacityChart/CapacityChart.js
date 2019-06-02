@@ -2,13 +2,14 @@
 import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
-import moment from "moment";
+import moment from "moment-timezone";
 import { Svg } from "expo";
 import { generate } from "shortid";
 import { AreaChart, XAxis } from "react-native-svg-charts";
 import MapStyles from "../../../styles/Map";
 import Colors from "../../../constants/Colors";
 import ChartLoading from "./ChartLoading";
+import Timezones from "../../../constants/Timezones";
 
 const { Defs, G, Line, LinearGradient, Rect, Stop, Text, Circle } = Svg;
 
@@ -164,9 +165,13 @@ class CapacityChart extends Component {
   render() {
     const { capacity, data, loading, occupied } = this.props;
     const { showData, selectedIndex } = this.state;
-    const hour = parseInt(moment().format("HH"), 10);
-    // chart library will spleen between a list of 0s and the actual
-    // data.
+    const hour = parseInt(
+      moment()
+        .tz(Timezones.London)
+        .format("HH"),
+      10,
+    );
+    // chart library will spleen between a list of 0s and the actual data.
     const graphData = showData ? data : Array.from(Array(24)).map(() => 0);
     return (
       <View style={[MapStyles.wideMap, { height: undefined }]}>
