@@ -28,7 +28,7 @@
     "react-native-action-button": "^2.8.5",
     "react-native-modal-datetime-picker": "^7.4.2",
     "react-native-svg-charts": "^5.2.0",
-    "react-navigation": "^3.5.1",
+    "react-navigation": "^3.11.0",
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
