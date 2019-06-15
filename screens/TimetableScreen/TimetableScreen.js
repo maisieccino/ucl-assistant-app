@@ -1,6 +1,7 @@
 /* eslint class-methods-use-this: 0 */
 import { Feather } from "@expo/vector-icons";
-import { Notifications, Permissions } from "expo";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
 import moment from "moment";
 import PropTypes from "prop-types";
 import React, { Component } from "react";

@@ -1,11 +1,9 @@
 /* eslint react-native/no-inline-styles: 0 */
 import React, { Component } from "react";
 import { View } from "react-native";
-import { DangerZone } from "expo";
 import Colors from "../../../constants/Colors";
 import { BodyText } from "../../../components/Typography";
-
-const { Lottie } = DangerZone;
+import Lottie from "lottie-react-native";
 
 class ChartLoading extends Component {
   state = {

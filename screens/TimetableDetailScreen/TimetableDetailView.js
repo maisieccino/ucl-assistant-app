@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
-import { MapView } from "expo";
+import MapView from "react-native-maps";
 import moment from "moment";
 import {
   ErrorText,

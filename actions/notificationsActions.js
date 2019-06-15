@@ -1,4 +1,5 @@
-import { Notifications, Permissions } from "expo";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
 import { actions } from "../constants/notificationsConstants";
 import { NOTIFICATIONS_URL } from "../constants/API";
 

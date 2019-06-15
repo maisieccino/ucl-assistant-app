@@ -1,20 +1,17 @@
 import { Dimensions, Platform, StyleSheet, StatusBar } from "react-native";
 import Colors from "../constants/Colors";
 import { BORDER_RADIUS } from "../constants/styleConstants";
+import Shadow from "../lib/Shadow";
 
 const { height, width } = Dimensions.get("window");
 
 const cardShared = {
   padding: 10,
   backgroundColor: Colors.cardBackground,
-  elevation: 3,
   marginBottom: 5,
   marginTop: 5,
   borderRadius: BORDER_RADIUS,
-  shadowColor: Colors.textColor,
-  shadowOffset: { width: 0, height: 3 },
-  shadowRadius: 3,
-  shadowOpacity: 0.5,
+  ...Shadow(3),
   marginLeft: Platform.OS === "ios" ? 1 : 0,
   marginRight: Platform.OS === "ios" ? 1 : 0,
 };

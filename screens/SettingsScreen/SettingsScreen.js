@@ -11,7 +11,8 @@ import {
 } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import PropTypes from "prop-types";
-import { Constants, IntentLauncherAndroid } from "expo";
+import * as IntentLauncherAndroid from "expo-intent-launcher";
+import Constants from "expo-constants";
 import { connect } from "react-redux";
 import {
   TitleText,

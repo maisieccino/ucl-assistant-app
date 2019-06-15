@@ -1,6 +1,6 @@
 /* eslint react/require-default-props: 0 */
 import React, { Fragment } from "react";
-import { BlurView } from "expo";
+import { BlurView } from "expo-blur";
 import PropTypes from "prop-types";
 import { Feather } from "@expo/vector-icons";
 import {
@@ -84,16 +84,16 @@ export const Page = ({
         <View style={pageTopPadding} />
         {children}
       </ScrollView>
-      {mainTabPage && (
-        <Fragment>
-          <BlurView
-            tint="light"
-            intensity={85}
-            style={[StyleSheet.absoluteFill, Styles.mainTabBlur]}
-          />
-          <View height={60} />
-        </Fragment>
-      )}
+      {/* {mainTabPage && (
+          <Fragment>
+            <BlurView
+              tint="light"
+              intensity={85}
+              style={[StyleSheet.absoluteFill, Styles.mainTabBlur]}
+            />
+            <View height={60} />
+          </Fragment>
+        )} */}
     </KeyboardAvoidingView>
   </SafeAreaView>
 );

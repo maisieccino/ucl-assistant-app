@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
-import { MapView } from "expo";
+import MapView from "react-native-maps";
 import { generate } from "shortid";
 import moment from "moment";
 import PropTypes from "prop-types";
