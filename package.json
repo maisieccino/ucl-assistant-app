@@ -1,10 +1,4 @@
 {
-  "//": [
-    "react-navigation-tabs added as dependency because of",
-    "https://github.com/react-navigation/tabs/issues/102",
-    "https://github.com/react-navigation/react-navigation/issues/5684",
-    "remove when react-navigation library is updated"
-  ],
   "scripts": {
     "lint": "eslint . --ext .js --ext .jsx --cache --ignore-path .eslintignore",
     "lint:force": "eslint . --ext .js --ext .jsx --ignore-path .eslintignore",
