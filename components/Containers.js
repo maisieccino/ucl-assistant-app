@@ -84,16 +84,16 @@ export const Page = ({
         <View style={pageTopPadding} />
         {children}
       </ScrollView>
-      {mainTabPage && (
-        <Fragment>
-          <BlurView
-            tint="light"
-            intensity={85}
-            style={[StyleSheet.absoluteFill, Styles.mainTabBlur]}
-          />
-          <View height={60} />
-        </Fragment>
-      )}
+      {/* {mainTabPage && (
+          <Fragment>
+            <BlurView
+              tint="light"
+              intensity={85}
+              style={[StyleSheet.absoluteFill, Styles.mainTabBlur]}
+            />
+            <View height={60} />
+          </Fragment>
+        )} */}
     </KeyboardAvoidingView>
   </SafeAreaView>
 );

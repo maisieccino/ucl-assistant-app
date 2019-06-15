@@ -28,8 +28,8 @@ const SearchResult = ({
   indicatorColor,
   indicatorLoading,
 }) => (
-  <TouchableOpacity onPress={onPress}>
-    <Horizontal style={Styles.resultCard}>
+  <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+    <Horizontal style={[Styles.resultCard, { padding: 10 }]}>
       <CircularIcon name={getIcon(type)} size={24} />
       {indicator && (
         <Indicator color={indicatorColor} loading={indicatorLoading} />
