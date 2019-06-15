@@ -63,9 +63,6 @@ export default createBottomTabNavigator(screens, {
   }),
   // initialRouteName: __DEV__ ? "Storybook" : "Timetable",
   initialRouteName: "Timetable",
-  tabBarPosition: "bottom",
-  animationEnabled: true,
-  swipeEnabled: false,
   tabBarOptions: {
     activeTintColor: Colors.pageBackground,
     activeBackgroundColor: Colors.accentColor,
