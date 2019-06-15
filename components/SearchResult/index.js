@@ -29,7 +29,7 @@ const SearchResult = ({
   indicatorLoading,
 }) => (
   <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-    <Horizontal style={[Styles.resultCard, { padding: 10 }]}>
+    <Horizontal style={[Styles.resultCard]}>
       <CircularIcon name={getIcon(type)} size={24} />
       {indicator && (
         <Indicator color={indicatorColor} loading={indicatorLoading} />
