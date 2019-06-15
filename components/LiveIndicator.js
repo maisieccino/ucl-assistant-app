@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { ViewPropTypes } from "react-native";
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 import { BodyText } from "./Typography";
 import Colors from "../constants/Colors";
 import Style from "../styles/Containers";

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
 import moment from "moment-timezone";
-import { Svg } from "expo";
+import * as Svg from "react-native-svg";
 import { generate } from "shortid";
 import { AreaChart, XAxis } from "react-native-svg-charts";
 import MapStyles from "../../../styles/Map";

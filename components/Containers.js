@@ -1,6 +1,6 @@
 /* eslint react/require-default-props: 0 */
 import React, { Fragment } from "react";
-import { BlurView } from "expo";
+import { BlurView } from "expo-blur";
 import PropTypes from "prop-types";
 import { Feather } from "@expo/vector-icons";
 import {
