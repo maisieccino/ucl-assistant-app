@@ -47,7 +47,7 @@
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
-    "redux-persist-expo-securestore": "uclapi/redux-persist-expo-securestore",
+    "redux-persist-expo-securestore": "github:uclapi/redux-persist-expo-securestore",
     "redux-thunk": "^2.3.0",
     "sentry-expo": "~1.13.0",
     "shortid": "^2.2.14"
