@@ -44,7 +44,7 @@
     "react-native-svg": "^9.4.0",
     "react-native-svg-charts": "^5.2.0",
     "react-navigation": "github:uclapi/react-navigation",
-    "react-redux": "^6.0.1",
+    "react-redux": "^7.1.0",
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
     "redux-persist-expo-securestore": "github:uclapi/redux-persist-expo-securestore",
