@@ -29,9 +29,17 @@ The app uses [redux-persist](https://github.com/rt2zz/redux-persist) to save the
 app state to the device storage. In the future, for extra security, the `user`
 reducer will be saved using the `Expo.SecureStore` API.
 
-## Releasing to Production
+## Deployment
 
 Expo allows us to update the app seamlessly OTA.
+
+### Automatic Deployment
+
+
+
+### Manual Deployment
+
+To manually publish:
 
     expo publish --release-channel production-[VERSION CODE]
 
@@ -41,3 +49,4 @@ Similarly, to create a new app binary (when native code is modified, e.g. for an
 
     expo build:android --release-channel production-[VERSION CODE]
     expo build:ios --release-channel production-[VERSION CODE]
+
