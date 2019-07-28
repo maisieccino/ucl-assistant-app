@@ -2,17 +2,16 @@
 import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
-import moment from "moment";
-import { Svg } from "expo";
+import moment from "moment-timezone";
+import * as Svg from "react-native-svg";
+import { generate } from "shortid";
 import { AreaChart, XAxis } from "react-native-svg-charts";
 import MapStyles from "../../../styles/Map";
-import TextStyles from "../../../styles/Typography";
 import Colors from "../../../constants/Colors";
 import ChartLoading from "./ChartLoading";
-import { BodyText } from "../../../components/Typography";
-import { Horizontal } from "../../../components/Containers";
+import Timezones from "../../../constants/Timezones";
 
-const { Defs, G, Line, LinearGradient, Rect, Stop, Text } = Svg;
+const { Defs, G, Line, LinearGradient, Rect, Stop, Text, Circle } = Svg;
 
 const styles = StyleSheet.create({
   chart: {
@@ -21,38 +20,37 @@ const styles = StyleSheet.create({
   },
 });
 
-const Gradient = ({ index }) => (
-  <Defs key={index}>
-    <LinearGradient id="gradient" x1="0%" y="0%" x2="0%" y2="100%">
-      <Stop offset="0%" stopColor={Colors.accentColor} stopOpacity={0.8} />
-      <Stop offset="100%" stopColor={Colors.accentColor} stopOpacity={0.2} />
-    </LinearGradient>
-  </Defs>
-);
-Gradient.propTypes = {
-  index: PropTypes.number.isRequired,
-};
-
 /* apparently ESLint does not like curried components!! */
 /* eslint-disable react/prop-types */
-const HighlightBar = (data, time, occupied) => ({ x, y, width, height }) => (
+
+const Gradient = ({ data }) =>
+  data.map(() => (
+    <Defs key={generate()}>
+      <LinearGradient id="gradient" x1="0%" y="0%" x2="0%" y2="100%">
+        <Stop offset="0%" stopColor={Colors.accentColor} stopOpacity={0.8} />
+        <Stop offset="100%" stopColor={Colors.accentColor} stopOpacity={0.2} />
+      </LinearGradient>
+    </Defs>
+  ));
+
+const CurrentTimeBar = ({ x, y, width, height, time, occupied }) => (
   <G key="tooltip" x={x(time)}>
     <Rect
       height={height}
       width={width / 24}
       opacity={0.3}
-      fill={Colors.graphCurrentBar}
+      fill={Colors.graphCurrentTime}
     />
     <Rect
       y={y(occupied)}
       height={height - y(occupied)}
       width={width / 24}
-      fill={Colors.graphCurrentBar}
+      fill={Colors.graphCurrentTime}
     />
   </G>
 );
 
-const CapacityLine = capacity => ({ y }) => (
+const CapacityLine = ({ y, capacity, selectedIndex, data }) => (
   <G key="capacity" x={0} y={y(capacity) < 0 ? 0 : y(capacity)}>
     <Line
       x1="0%"
@@ -65,6 +63,60 @@ const CapacityLine = capacity => ({ y }) => (
     <Text x={3} y={18} fill={Colors.textColor} fontSize={15}>
       Capacity{` (${capacity} seats)`}
     </Text>
+    {selectedIndex !== null ? (
+      <React.Fragment>
+        <Text
+          x={3}
+          y={38}
+          fill={Colors.textColor}
+          fontSize={15}
+          key={selectedIndex}
+        >
+          {moment(selectedIndex, "H").format("h:00a")} -{" "}
+          {`${Math.round(data[selectedIndex])} seats occupied`}
+        </Text>
+      </React.Fragment>
+    ) : null}
+  </G>
+);
+
+const HighlightBar = ({ x, y, selectedIndex, data }) => (
+  <G key="tooltip" x={x(selectedIndex)}>
+    <Line
+      key={generate()}
+      y1="100%"
+      y2={y(data[selectedIndex])}
+      x1={0}
+      x2={0}
+      stroke={Colors.graphCurrentBar}
+      strokeDasharray={[3, 2]}
+    />
+    <Circle
+      cy={y(data[selectedIndex])}
+      r={5}
+      stroke={Colors.accentColor}
+      fill={Colors.cardBackground}
+    />
+  </G>
+);
+
+const CustomGrid = ({ x, data, width, setIndex }) => (
+  <G>
+    {// Vertical grid
+    data.map((val, index) => (
+      <Line
+        key={generate()}
+        y1="0%"
+        y2="100%"
+        x1={x(index)}
+        x2={x(index)}
+        stroke="rgba(0,0,0,0)"
+        strokeWidth={width / 24}
+        onPress={() => {
+          setIndex(index);
+        }}
+      />
+    ))}
   </G>
 );
 
@@ -87,10 +139,12 @@ class CapacityChart extends Component {
 
   state = {
     showData: false,
+    selectedIndex: null,
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.loading && !this.props.loading) {
+    const { loading } = this.props;
+    if (prevProps.loading && !loading) {
       setTimeout(() => this.setState({ showData: true }), 600);
     }
   }
@@ -110,17 +164,15 @@ class CapacityChart extends Component {
 
   render() {
     const { capacity, data, loading, occupied } = this.props;
-    const { showData } = this.state;
-    const hour = parseInt(moment().format("HH"), 10);
-    // chart library will spleen between a list of 0s and the actual
-    // data.
-    const graphData = showData ? data : Array.from(Array(24)).map(() => 0);
-    const highlightBar = HighlightBar(
-      graphData,
-      showData ? hour : -1,
-      occupied,
+    const { showData, selectedIndex } = this.state;
+    const hour = parseInt(
+      moment()
+        .tz(Timezones.London)
+        .format("HH"),
+      10,
     );
-    const line = CapacityLine(capacity);
+    // chart library will spleen between a list of 0s and the actual data.
+    const graphData = showData ? data : Array.from(Array(24)).map(() => 0);
     return (
       <View style={[MapStyles.wideMap, { height: undefined }]}>
         {loading ? (
@@ -140,30 +192,34 @@ class CapacityChart extends Component {
                 strokeWidth: showData ? 2 : 0,
               }}
               style={styles.chart}
-              extras={[Gradient, line, highlightBar]}
-            />
+            >
+              <Gradient />
+              <CapacityLine capacity={capacity} selectedIndex={selectedIndex} />
+              <CurrentTimeBar
+                data={graphData}
+                time={showData ? hour : -1}
+                occupied={occupied}
+              />
+              {selectedIndex ? (
+                <HighlightBar selectedIndex={selectedIndex} />
+              ) : null}
+              <CustomGrid
+                setIndex={index => this.setState({ selectedIndex: index })}
+              />
+            </AreaChart>
             <XAxis
-              style={{ marginHorizontal: -10 }}
-              contentInset={{ top: 10, right: 15 }}
+              style={{ marginHorizontal: -10, marginTop: 10 }}
+              contentInset={{ right: 15 }}
               data={
                 showData
                   ? Object.keys(graphData).map(v => Number.parseInt(v, 10))
                   : []
               }
               formatLabel={this.formatXLabel}
-              svg={{ y: 10, fontSize: 16, fill: "black" }}
+              svg={{ fontSize: 16, fill: "black" }}
             />
           </React.Fragment>
         )}
-        {/* <Horizontal
-          style={{ justifyContent: "space-between", paddingHorizontal: 2 }}
-        >
-          <BodyText style={TextStyles.small}>12:00 am</BodyText>
-          <BodyText style={TextStyles.small}>6:00 am</BodyText>
-          <BodyText style={TextStyles.small}>12:00 pm</BodyText>
-          <BodyText style={TextStyles.small}>6:00 pm</BodyText>
-          <BodyText style={TextStyles.small}>11:00 pm</BodyText>
-        </Horizontal> */}
       </View>
     );
   }

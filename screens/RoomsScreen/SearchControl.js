@@ -3,9 +3,12 @@ import { View, StyleSheet, ActivityIndicator } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { TextInput } from "../../components/Input";
+import { SmallButton } from "../../components/Button";
 import { CentredText } from "../../components/Typography";
 import SearchResult from "../../components/SearchResult";
 import ApiManager from "../../lib/ApiManager";
+import { Horizontal } from "../../components/Containers";
+import { addRecent } from "../../actions/roomsActions";
 
 const styles = StyleSheet.create({
   container: {
@@ -13,24 +16,34 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
+    marginRight: 10,
   },
 });
 
 class SearchControl extends Component {
   static SEARCH_DELAY = 500;
+
   static propTypes = {
     token: PropTypes.string,
     navigation: PropTypes.shape().isRequired,
     query: PropTypes.string,
+    addRecentRoom: PropTypes.func,
   };
+
   static defaultProps = {
     token: "",
     query: "",
+    addRecentRoom: () => {},
   };
+
   static mapStateToProps = state => ({
     token: state.user.token,
   });
-  static mapDispatchToProps = () => ({});
+
+  static mapDispatchToProps = dispatch => ({
+    addRecentRoom: room => dispatch(addRecent(room)),
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -39,21 +52,35 @@ class SearchControl extends Component {
       isSearching: false,
       searchResults: [],
     };
-    const queryExists =
-      props.navigation.state &&
-      props.navigation.state.params &&
-      props.navigation.state.params.query &&
-      props.navigation.state.params.query.length > 0;
-    if (queryExists) {
-      this.state.query = props.navigation.state.params.query;
-    }
   }
+
   componentDidMount() {
-    const { query } = this.state;
-    if (query.length > 0) {
-      this.searchRooms(query);
-    }
+    const { navigation } = this.props;
+    this.subscriptions = [
+      navigation.addListener("didFocus", this.componentDidFocus),
+    ];
+    this.componentDidFocus({ state: navigation.state });
   }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(sub => sub.remove());
+  }
+
+  componentDidFocus = payload => {
+    const { query } = this.state;
+    const queryExists = this.queryExists(payload.state);
+    if (queryExists && query !== payload.state.params.query) {
+      this.setState({ query: payload.state.params.query });
+      this.searchRooms(payload.state.params.query, true);
+    }
+  };
+
+  queryExists = navigationState =>
+    navigationState &&
+    navigationState.params &&
+    navigationState.params.query &&
+    navigationState.params.query.length > 0;
+
   onChangeText = (query: String) => {
     if (query.length > 3) {
       clearTimeout(this.searchTimer);
@@ -64,18 +91,29 @@ class SearchControl extends Component {
     }
     this.setState({ query });
   };
-  searchRooms = async (query: String) => {
+
+  searchRooms = async (query: String, autoNavigate = false) => {
     const { token } = this.props;
     try {
       this.setState({ isSearching: true });
       const results = await ApiManager.rooms.search(token, query);
+      if (autoNavigate && results.length === 1) {
+        this.navigateToRoomDetail(results[0])();
+      }
       this.setState({ searchResults: results, isSearching: false });
     } catch (error) {
       this.setState({ error: error.message, isSearching: false });
     }
   };
-  navigateToRoomDetail = room => () =>
-    this.props.navigation.navigate("RoomDetailScreen", { room });
+
+  navigateToRoomDetail = room => () => {
+    const { navigation, addRecentRoom } = this.props;
+    addRecentRoom(room);
+    navigation.navigate("RoomDetail", { room });
+  };
+
+  clear = () => this.setState({ query: "", searchResults: [] });
+
   renderSearchResult = searchResult => (
     <SearchResult
       key={searchResult.roomid}
@@ -86,17 +124,23 @@ class SearchControl extends Component {
       onPress={this.navigateToRoomDetail(searchResult)}
     />
   );
+
   render() {
     const { query, error, isSearching, searchResults } = this.state;
     return (
       <View style={styles.container}>
-        <TextInput
-          placeholder="Search for a room or building name..."
-          onChangeText={this.onChangeText}
-          value={query}
-          clearButtonMode="always"
-          style={styles.textInput}
-        />
+        <Horizontal>
+          <TextInput
+            placeholder="Search for a room or building name..."
+            onChangeText={this.onChangeText}
+            value={query}
+            clearButtonMode="always"
+            style={styles.textInput}
+          />
+          {query.length > 0 ? (
+            <SmallButton onPress={() => this.clear()}>Clear</SmallButton>
+          ) : null}
+        </Horizontal>
         {error ? <CentredText>Error! {error} </CentredText> : null}
         {isSearching ? <ActivityIndicator /> : null}
         {query.length === 0 ? (

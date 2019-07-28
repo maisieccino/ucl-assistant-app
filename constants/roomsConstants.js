@@ -1,0 +1,3 @@
+export const ROOMS_ADD_RECENT = "ROOMS_ADD_RECENT";
+export const ROOMS_CLEAR_RECENTS = "ROOMS_CLEAR_RECENTS";
+export const ROOMS_MAX_RECENTS = 10;

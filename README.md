@@ -28,3 +28,16 @@ development mode: uses ucl-assistant.herokuapp.com
 The app uses [redux-persist](https://github.com/rt2zz/redux-persist) to save the
 app state to the device storage. In the future, for extra security, the `user`
 reducer will be saved using the `Expo.SecureStore` API.
+
+## Releasing to Production
+
+Expo allows us to update the app seamlessly OTA.
+
+    expo publish --release-channel production-[VERSION CODE]
+
+`[VERSION CODE]` should follow semantic versioning, e.g. 2.0.0.
+
+Similarly, to create a new app binary (when native code is modified, e.g. for an Expo SDK update)
+
+    expo build:android --release-channel production-[VERSION CODE]
+    expo build:ios --release-channel production-[VERSION CODE]

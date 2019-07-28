@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
-import { MapView } from "expo";
+import MapView from "react-native-maps";
 import { generate } from "shortid";
 import moment from "moment";
 import PropTypes from "prop-types";
@@ -26,14 +26,8 @@ const styles = StyleSheet.create({
   },
   booking: {
     backgroundColor: Colors.cardBackground,
+    borderRadius: 10,
     marginVertical: 5,
-    padding: 20,
-    ...Shadow(2),
-  },
-  bookingHeader: {
-    backgroundColor: Colors.accentColor,
-    color: Colors.cardBackground,
-    marginBottom: 5,
     padding: 20,
     ...Shadow(2),
   },
@@ -41,10 +35,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   cardHeader: {
-    borderBottomColor: Colors.dividerLine,
-    borderBottomWidth: 0.5,
+    backgroundColor: Colors.cardHeader,
+    borderRadius: 10,
+    color: Colors.cardBackground,
     marginBottom: 5,
-    paddingBottom: 5,
+    padding: 20,
+    ...Shadow(2),
+  },
+  cardList: {
+    backgroundColor: Colors.cardBackground,
+    borderRadius: 10,
+    marginTop: 5,
+    padding: 20,
+    ...Shadow(2),
   },
   coordinatesError: {
     marginBottom: 10,
@@ -52,12 +55,6 @@ const styles = StyleSheet.create({
   details: {
     justifyContent: "space-between",
     marginTop: 20,
-  },
-  equipmentList: {
-    backgroundColor: Colors.cardBackground,
-    marginTop: 20,
-    padding: 20,
-    ...Shadow(2),
   },
   padder: {
     height: 20,
@@ -75,16 +72,20 @@ class RoomDetailScreen extends Component {
   static navigationOptions = {
     title: "Room Detail",
   };
+
   static propTypes = {
     navigation: PropTypes.shape().isRequired,
     token: PropTypes.string,
   };
+
   static defaultProps = {
     token: "",
   };
+
   static mapStateToProps = state => ({
     token: state.user.token,
   });
+
   constructor() {
     super();
     this.state = {
@@ -94,6 +95,7 @@ class RoomDetailScreen extends Component {
       fetchBookingsError: null,
     };
   }
+
   componentDidMount() {
     const { token, navigation } = this.props;
     const { room } = navigation.state.params;
@@ -101,6 +103,7 @@ class RoomDetailScreen extends Component {
     this.fetchEquipment(token, roomid, siteid);
     this.fetchRoomBookings(token, roomid, siteid);
   }
+
   fetchEquipment = async (token, roomid, siteid) => {
     try {
       const equipment = await ApiManager.rooms.getEquipment(token, {
@@ -112,18 +115,19 @@ class RoomDetailScreen extends Component {
       this.setState({ fetchEquipmentError: error.message });
     }
   };
+
   fetchRoomBookings = async (token, roomid, siteid) => {
     try {
       const roombookings = await ApiManager.rooms.getBookings(token, {
         roomid,
         siteid,
-        date: "20190225",
       });
       this.setState({ roombookings });
     } catch (error) {
       this.setState({ fetchBookingsError: error.message });
     }
   };
+
   renderEquipment = ({ description, units }) => {
     if (description === "Wheelchair accessible") {
       return (
@@ -138,6 +142,7 @@ class RoomDetailScreen extends Component {
       </BodyText>
     );
   };
+
   renderBooking = ({
     start_time: start,
     end_time: end,
@@ -152,6 +157,7 @@ class RoomDetailScreen extends Component {
       <BodyText>{description}</BodyText>
     </View>
   );
+
   render() {
     const {
       equipment,
@@ -159,7 +165,13 @@ class RoomDetailScreen extends Component {
       fetchBookingsError,
       roombookings,
     } = this.state;
-    const { room } = this.props.navigation.state.params;
+    const {
+      navigation: {
+        state: {
+          params: { room },
+        },
+      },
+    } = this.props;
     const {
       roomname: name,
       classification_name: classification,
@@ -228,9 +240,11 @@ class RoomDetailScreen extends Component {
           </ErrorText>
         ) : null}
         {equipment.length > 0 ? (
-          <View style={styles.equipmentList}>
+          <View>
             <SubtitleText style={styles.cardHeader}>In This Room</SubtitleText>
-            {equipment.map(this.renderEquipment)}
+            <View style={styles.cardList}>
+              {equipment.map(this.renderEquipment)}
+            </View>
           </View>
         ) : null}
         {fetchBookingsError ? (
@@ -240,7 +254,7 @@ class RoomDetailScreen extends Component {
         ) : null}
         {roombookings.length > 0 ? (
           <View style={styles.bookingList}>
-            <SubtitleText style={styles.bookingHeader}>
+            <SubtitleText style={styles.cardHeader}>
               Bookings Today
             </SubtitleText>
             {roombookings.map(this.renderBooking)}

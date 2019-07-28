@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { View } from "react-native";
 import { generate } from "shortid";
-import { clearRecents } from "../../actions/peopleActions";
+import { clearRecents } from "../../actions/roomsActions";
 import Button from "../../components/Button";
 import { SubtitleText, CentredText } from "../../components/Typography";
 import SearchResult from "../../components/SearchResult";
@@ -13,24 +13,29 @@ class RecentResults extends Component {
   static propTypes = {
     recents: PropTypes.arrayOf(PropTypes.shape()),
     navigation: PropTypes.shape().isRequired,
-    clearRecents: PropTypes.func,
+    clearRecentRooms: PropTypes.func,
   };
 
   static defaultProps = {
     recents: [],
-    clearRecents: () => {},
+    clearRecentRooms: () => {},
   };
 
   static mapStateToProps = state => ({
-    recents: state.people.recents,
+    recents: state.rooms.recents,
   });
 
   static mapDispatchToProps = dispatch => ({
-    clearRecents: () => dispatch(clearRecents()),
+    clearRecentRooms: () => dispatch(clearRecents()),
   });
 
+  navigateToRoomDetail = room => () => {
+    const { navigation } = this.props;
+    navigation.navigate("RoomDetail", { room });
+  };
+
   render() {
-    const { navigation, recents } = this.props;
+    const { recents, clearRecentRooms } = this.props;
     if (recents.length === 0) {
       return null;
     }
@@ -40,17 +45,15 @@ class RecentResults extends Component {
         {recents.map(res => (
           <SearchResult
             key={generate()}
-            topText={res.name}
-            bottomText={res.department}
-            type="person"
+            topText={res.roomname}
+            bottomText={res.classification_name}
+            type="location"
             buttonText="View"
-            onPress={() => {
-              navigation.navigate("PersonDetail", res);
-            }}
+            onPress={this.navigateToRoomDetail(res)}
           />
         ))}
         {recents.length > 0 ? (
-          <Button onPress={() => this.props.clearRecents()}>Clear</Button>
+          <Button onPress={clearRecentRooms}>Clear</Button>
         ) : (
           <CentredText>Recent results will appear here.</CentredText>
         )}

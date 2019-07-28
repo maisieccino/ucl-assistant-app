@@ -1,11 +1,9 @@
 /* eslint react-native/no-inline-styles: 0 */
 import React, { Component } from "react";
 import { View } from "react-native";
-import { DangerZone } from "expo";
 import Colors from "../../../constants/Colors";
 import { BodyText } from "../../../components/Typography";
-
-const { Lottie } = DangerZone;
+import Lottie from "lottie-react-native";
 
 class ChartLoading extends Component {
   state = {
@@ -15,12 +13,14 @@ class ChartLoading extends Component {
   componentDidMount() {
     this.playAnimation();
   }
+
   playAnimation = () => {
-    if (!this.state.animation) {
+    const { animation } = this.state;
+    if (!animation) {
       this.loadAnimation();
     } else {
-      this.animation.reset();
-      this.animation.play();
+      this.animationRef.reset();
+      this.animationRef.play();
     }
   };
 
@@ -31,6 +31,7 @@ class ChartLoading extends Component {
   };
 
   render() {
+    const { animation } = this.state;
     return (
       <View
         style={{
@@ -41,14 +42,14 @@ class ChartLoading extends Component {
           flexDirection: "column",
         }}
       >
-        {this.state.animation && (
+        {animation && (
           <Lottie
-            ref={animation => {
-              this.animation = animation;
+            ref={animRef => {
+              this.animationRef = animRef;
             }}
             loop
             style={{ width: 200, height: 200 }}
-            source={this.state.animation}
+            source={animation}
           />
         )}
         <BodyText style={{ position: "relative", bottom: 75 }}>

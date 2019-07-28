@@ -40,7 +40,8 @@ class NotificationSwitch extends Component {
   };
 
   async onSwitchChange() {
-    if (!this.props.registered) {
+    const { registered, register, token } = this.props;
+    if (!registered) {
       await this.setState({ spin: true });
       Alert.alert(
         "Register for notifications?",
@@ -55,7 +56,7 @@ class NotificationSwitch extends Component {
             text: "Continue",
             onPress: () => {
               this.setState({ spin: false });
-              this.props.register(this.props.token);
+              register(token);
             },
           },
         ],

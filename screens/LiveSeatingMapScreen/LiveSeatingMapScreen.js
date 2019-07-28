@@ -1,38 +1,82 @@
 import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Page } from "../../components/Containers";
-import { TitleText, SubtitleText } from "../../components/Typography";
-import LiveSeatingMap from "./LiveSeatingMap";
+import { ScreenOrientation } from "expo";
+import Svg from "../../components/Svg";
+import ApiManager from "../../lib/ApiManager";
 
 const styles = StyleSheet.create({
-  seatMap: {},
+  loadingContainer: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+  },
+  webview: {
+    flex: 1,
+  },
 });
 
 class LiveSeatingMapScreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam("name", "Live Seating Map"),
+  });
+
   static propTypes = {
     navigation: PropTypes.shape().isRequired,
+    token: PropTypes.string.isRequired,
   };
-  renderSeatMap = survey => ({ name, id: mapId }) => (
-    <View style={styles.seatMap} key={mapId}>
-      {name ? <SubtitleText>{name}</SubtitleText> : null}
-      <LiveSeatingMap surveyId={survey.id} mapId={mapId} />
-    </View>
-  );
-  render() {
-    const { survey } = this.props.navigation.state.params;
-    const seatMaps =
-      survey.maps.length === 1
-        ? this.renderSeatMap(survey)({ ...survey.maps[0], name: null })
-        : survey.maps.map(this.renderSeatMap(survey));
 
+  static mapStateToProps = (state: Object) => ({
+    token: state.user.token,
+  });
+
+  static mapDispatchToProps = () => ({});
+
+  constructor() {
+    super();
+    this.state = {
+      svg: null,
+    };
+  }
+
+  componentDidMount() {
+    // ScreenOrientation.allowAsync(ScreenOrientation.Orientation.LANDSCAPE);
+    const { navigation, token } = this.props;
+    const { surveyId, mapId } = navigation.state.params;
+    ApiManager.workspaces
+      .getLiveImage(token, { surveyId, mapId })
+      .then(base64 => {
+        this.setState({ svg: base64 });
+      });
+  }
+
+  componentWillUnmount() {
+    // ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
+  }
+
+  render() {
+    const { svg } = this.state;
+    if (!svg) {
+      return (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
-      <Page>
-        <TitleText>{survey.name}</TitleText>
-        {seatMaps}
-      </Page>
+      <Svg
+        uri={svg}
+        style={styles.webview}
+        scrollEnabled
+        bounces
+        pointerEvents="auto"
+      />
     );
   }
 }
 
-export default LiveSeatingMapScreen;
+export default connect(
+  LiveSeatingMapScreen.mapStateToProps,
+  LiveSeatingMapScreen.mapDispatchToProps,
+)(LiveSeatingMapScreen);

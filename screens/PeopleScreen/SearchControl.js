@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, View, StyleSheet } from "react-native";
 import { generate } from "shortid";
 import { CentredText } from "../../components/Typography";
 import { TextInput } from "../../components/Input";
@@ -11,6 +11,13 @@ import { SmallButton } from "../../components/Button";
 import SearchResult from "../../components/SearchResult";
 import { search, searchClear } from "../../actions/peopleActions";
 import { Horizontal } from "../../components/Containers";
+
+const styles = StyleSheet.create({
+  textInput: {
+    flex: 1,
+    marginRight: 10,
+  },
+});
 
 class SearchControl extends Component {
   static propTypes = {
@@ -74,6 +81,7 @@ class SearchControl extends Component {
   }
 
   render() {
+    const { query } = this.state;
     const { error, isSearching, navigation, searchResults } = this.props;
     return (
       <View>
@@ -81,26 +89,24 @@ class SearchControl extends Component {
           <TextInput
             placeholder="Search for a name or email..."
             onChangeText={text => this.onQueryChange(text)}
-            value={this.state.query}
+            value={query}
             clearButtonMode="always"
-            style={{ flex: 1 }}
+            style={styles.textInput}
           />
-          {(searchResults.length > 0 || this.state.query.length > 0) && (
+          {query.length > 0 ? (
             <SmallButton onPress={() => this.clear()}>Clear</SmallButton>
-          )}
+          ) : null}
         </Horizontal>
-
-        {error.length > 0 && this.state.query.length > 2 && (
+        {error.length > 0 && query.length > 2 && (
           <CentredText>Error! {error} </CentredText>
         )}
 
         {isSearching && <ActivityIndicator />}
 
-        {this.state.query.length === 0 && (
+        {query.length === 0 && (
           <CentredText>Start typing to get search results</CentredText>
         )}
-
-        {this.state.query.length > 0 && searchResults.length === 0 && (
+        {query.length > 0 && searchResults.length === 0 && (
           <CentredText>No results found.</CentredText>
         )}
 

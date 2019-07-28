@@ -3,13 +3,16 @@ import PropTypes from "prop-types";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { Platform, StatusBar, View } from "react-native";
-import { AppLoading, Asset, Font, Notifications } from "expo";
+import { AppLoading, Notifications } from "expo";
+import * as Font from "expo-font";
+import { Asset } from "expo-asset";
 import { Feather } from "@expo/vector-icons";
 import Sentry from "sentry-expo";
 import { NotificationChannels } from "./constants/notificationsConstants";
 import configureStore from "./configureStore";
 import RootNavigation from "./navigation/RootNavigation";
 import Styles from "./styles/Containers";
+import AnalyticsManager from "./lib/AnalyticsManager";
 
 const { persistor, store } = configureStore;
 
@@ -46,6 +49,10 @@ class App extends Component {
         Notifications.createChannelAndroidAsync(channel.id, channel.options);
       });
     }
+    this.notificationSubscription = Notifications.addListener(
+      this.handleNotification,
+    );
+    AnalyticsManager.initialise();
   }
 
   loadResourcesAsync = async () =>
@@ -77,8 +84,13 @@ class App extends Component {
     this.setState({ isLoadingComplete: true });
   };
 
+  handleNotification = notification =>
+    console.log("Received notification", notification);
+
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+    const { isLoadingComplete } = this.state;
+    const { skipLoadingScreen } = this.props;
+    if (!isLoadingComplete && !skipLoadingScreen) {
       return (
         <AppLoading
           startAsync={this.loadResourcesAsync}
@@ -87,7 +99,9 @@ class App extends Component {
         />
       );
     }
-    const { store: stateStore, persistor: statePersistor } = this.state.store;
+    const {
+      store: { store: stateStore, persistor: statePersistor },
+    } = this.state;
     return (
       <Provider store={stateStore}>
         <PersistGate persistor={statePersistor}>

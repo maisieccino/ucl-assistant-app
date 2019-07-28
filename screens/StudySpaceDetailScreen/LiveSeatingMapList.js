@@ -1,56 +1,84 @@
 // @flow
 import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { SubtitleText, BodyText } from "../../components/Typography";
+import { SubtitleText, BodyText, Link } from "../../components/Typography";
+import Colors from "../../constants/Colors";
+import Shadow from "../../lib/Shadow";
 
 const styles = StyleSheet.create({
-  liveSeatingMap: {
-    marginVertical: 20,
+  cardHeader: {
+    backgroundColor: Colors.cardHeader,
+    borderRadius: 10,
+    color: Colors.cardBackground,
+    marginBottom: 5,
+    padding: 20,
+    ...Shadow(2),
   },
+  cardList: {
+    backgroundColor: Colors.cardBackground,
+    borderRadius: 10,
+    marginTop: 5,
+    padding: 20,
+    ...Shadow(2),
+  },
+});
+
+const studySpaceNames = ["Student Centre "];
+// remove the name of the studyspace from the name
+// of the map if it is present because it's just redundant
+// e.g. Student Centre Level 1 => Level 1
+const fixNames = ({ name, ...otherProps }) => ({
+  ...otherProps,
+  name: name.replace(new RegExp(`(${studySpaceNames.join("|")})`), ""),
 });
 
 class LiveSeatingMapList extends Component {
   static propTypes = {
+    navigation: PropTypes.shape().isRequired,
     maps: PropTypes.arrayOf(PropTypes.shape()),
+    surveyId: PropTypes.number.isRequired,
   };
+
   static defaultProps = {
     maps: [],
   };
 
-  static mapStateToProps = (state: Object) => ({
-    token: state.user.token,
-  });
-  static mapDispatchToProps = () => ({});
+  openLiveMap = ({ name, surveyId, mapId }) => () => {
+    const { navigation } = this.props;
+    navigation.navigate("LiveSeatingMap", { name, surveyId, mapId });
+  };
 
-  renderMapInfo = ({ id, name, total, occupied }) => (
-    <BodyText key={id}>
-      {name}: {total - occupied} seats free (total: {total})
-    </BodyText>
-  );
+  renderMapInfo = ({ id, name, total, occupied }) => {
+    const { surveyId } = this.props;
+    return (
+      <View key={id}>
+        <BodyText>
+          <Link onPress={this.openLiveMap({ name, mapId: id, surveyId })}>
+            {name}
+          </Link>
+          : {total - occupied} seats free (total: {total})
+        </BodyText>
+      </View>
+    );
+  };
 
   render() {
     const { maps } = this.props;
-    const hasMaps = maps && Array.isArray(maps) && maps.length > 1;
-    // No breakdown needed if there is only one map in the survey
-    // the map data == the survey data
+    const hasMaps = maps && Array.isArray(maps);
     if (!hasMaps) {
       return null;
     }
 
-    const mapsList = maps.map(this.renderMapInfo);
+    const mapsList = maps.map(fixNames).map(this.renderMapInfo);
 
     return (
       <View style={styles.liveSeatingMap}>
-        <SubtitleText>Breakdown</SubtitleText>
-        {mapsList}
+        <SubtitleText style={styles.cardHeader}>Breakdown</SubtitleText>
+        <View style={styles.cardList}>{mapsList}</View>
       </View>
     );
   }
 }
 
-export default connect(
-  LiveSeatingMapList.mapStateToProps,
-  LiveSeatingMapList.mapDispatchToProps,
-)(LiveSeatingMapList);
+export default LiveSeatingMapList;

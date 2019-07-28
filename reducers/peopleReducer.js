@@ -10,24 +10,7 @@ import {
   PEOPLE_CLEAR_RECENTS,
 } from "../constants/peopleConstants";
 
-const deepCompare = (fst, snd) => {
-  const keys = Object.keys(fst);
-  if (keys.length !== Object.keys(snd).length) {
-    return false;
-  }
-  return keys.reduce((res, key) => res && fst[key] === snd[key], true);
-};
-
-const addToRecents = (recents = [], person) => {
-  if (recents.filter(recent => deepCompare(recent, person)).length > 0) {
-    return recents;
-  }
-  const newRecents = [person, ...recents];
-  while (newRecents.length > PEOPLE_MAX_RECENTS) {
-    newRecents.pop();
-  }
-  return newRecents;
-};
+import { addToRecents } from "./utils";
 
 export const initialState = {
   isSearching: false,
@@ -77,7 +60,11 @@ export default (state = initialState, action = null) => {
     }
 
     case PEOPLE_FETCH_SUCCESS: {
-      const newRecents = addToRecents(state.recents, person);
+      const newRecents = addToRecents(
+        state.recents,
+        person,
+        PEOPLE_MAX_RECENTS,
+      );
       return { ...state, isFetching: false, person, recents: newRecents };
     }
 

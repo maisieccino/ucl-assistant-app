@@ -7,16 +7,19 @@ import {
   Clipboard,
   StyleSheet,
   Linking,
+  Picker,
 } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import PropTypes from "prop-types";
-import { Constants, IntentLauncherAndroid } from "expo";
+import * as IntentLauncherAndroid from "expo-intent-launcher";
+import Constants from "expo-constants";
 import { connect } from "react-redux";
 import {
   TitleText,
   BodyText,
   SubtitleText,
   ButtonText,
+  Link,
 } from "../../components/Typography";
 import { Page, Horizontal, PaddedIcon } from "../../components/Containers";
 import { signOut } from "../../actions/userActions";
@@ -24,7 +27,7 @@ import Button, { SmallButton } from "../../components/Button";
 import Colors from "../../constants/Colors";
 import TextInput from "../../components/Input/TextInput";
 import NotificationSwitch from "./NotificationSwitch";
-import LiveIndicator from "../StudySpaceDetailScreen/LiveIndicator";
+import LiveIndicator from "../../components/LiveIndicator";
 import common from "../../styles/common";
 
 const { version } = require("../../package.json");
@@ -85,9 +88,7 @@ class SettingsScreen extends Component {
     } else {
       // is iOS
       Linking.openURL(
-        `app-settings://notification/${
-          Constants.manifest.ios.bundleIdentifier
-        }`,
+        `app-settings://notification/${Constants.manifest.ios.bundleIdentifier}`,
       );
     }
   }
@@ -96,6 +97,7 @@ class SettingsScreen extends Component {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
+    marginBottom: 10,
   };
 
   state = {
@@ -103,12 +105,13 @@ class SettingsScreen extends Component {
   };
 
   componentDidUpdate(_, prevState) {
-    if (prevState.isSigningOut && this.props.state.user.token === "") {
+    const { state, navigation } = this.props;
+    if (prevState.isSigningOut && state.user.token === "") {
       const action = StackActions.reset({
         index: 0,
         actions: [NavigationActions.navigate({ routeName: "Splash" })],
       });
-      this.props.navigation.dispatch(action);
+      navigation.dispatch(action);
     }
   }
 
@@ -122,7 +125,8 @@ class SettingsScreen extends Component {
   };
 
   async copyTokenToClipboard() {
-    await Clipboard.setString(this.props.state.user.token);
+    const { state } = this.props;
+    await Clipboard.setString(state.user.token);
     Alert.alert("Copied", "Token copied to clipboard.");
   }
 
@@ -131,7 +135,7 @@ class SettingsScreen extends Component {
     return (
       <Page mainTabPage>
         <TitleText>Settings</TitleText>
-        <View>
+        {/* <View>
           <SubtitleText>Notifications</SubtitleText>
           <NotificationSwitch />
           <Button
@@ -140,7 +144,21 @@ class SettingsScreen extends Component {
           >
             Manage Notification Settings
           </Button>
-        </View>
+        </View> */}
+        {/* <View style={styles.section}>
+          <SubtitleText>Default Screen</SubtitleText>
+          <BodyText>Set the default screen that shows when you open the app</BodyText>
+          <Picker
+            // selectedValue={this.state.language}
+            // style={{height: 50, width: 100}}
+            // onValueChange={(itemValue, itemIndex) =>
+            //   this.setState({language: itemValue})
+            // }
+            >
+            <Picker.Item label="Timetable" value="timetable" />
+            <Picker.Item label="Study Spaces" value="studyspaces" />
+          </Picker>
+        </View> */}
         <View style={styles.section}>
           <SubtitleText>User</SubtitleText>
           <BodyText>Logged in as {state.user.fullName}</BodyText>
@@ -174,6 +192,9 @@ class SettingsScreen extends Component {
               </Fragment>
             )}
           </Horizontal>
+          <Link href="https://github.com/uclapi/ucl-assistant-app">
+            Source Code
+          </Link>
         </View>
         <View style={styles.section}>
           <SubtitleText>Author</SubtitleText>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Alert, Image, View, SafeAreaView, StyleSheet } from "react-native";
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { NavigationActions, StackActions } from "react-navigation";
@@ -64,9 +64,7 @@ class SplashScreen extends Component {
   componentDidMount() {
     if (this.props.token !== "") {
       console.log(
-        `Component just mounted. Going to home. reason? token = ${
-          this.props.token
-        }`,
+        `Component just mounted. Going to home. reason? token = ${this.props.token}`,
       );
       this.goHome();
     }

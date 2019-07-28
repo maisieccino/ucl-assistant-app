@@ -2,16 +2,26 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
-import moment from "moment";
 import { connect } from "react-redux";
+import moment from "moment";
+import Timezones from "../../constants/Timezones";
+import LocalisationManager from "../../lib/LocalisationManager";
 import { fetchAverages } from "../../actions/studyspacesActions";
 import { Page, Horizontal } from "../../components/Containers";
-import { BodyText, TitleText, SubtitleText } from "../../components/Typography";
+import {
+  BodyText,
+  TitleText,
+  SubtitleText,
+  Link,
+  InfoText,
+} from "../../components/Typography";
 import CapacityChart from "./CapacityChart";
-import LiveIndicator from "./LiveIndicator";
+import LiveIndicator from "../../components/LiveIndicator";
 // import OpeningHours from "./OpeningHours";
 import FavouriteButton from "./FavouriteButton";
 import LiveSeatingMapList from "./LiveSeatingMapList";
+import Colors from "../../constants/Colors";
+import Shadow from "../../lib/Shadow";
 
 const busyText = (
   time = 0,
@@ -20,8 +30,9 @@ const busyText = (
   capacity = 1,
 ) => {
   const diff = data[time] - occupied;
-  if (Math.abs(diff) / capacity < 0.05) {
-    return "about as busy as normal";
+  const threshold = capacity > 100 ? 0.1 : 0.05;
+  if (Math.abs(diff) / capacity < threshold) {
+    return "as busy as normal";
   }
   if (diff > 0) {
     return "quieter than usual";
@@ -30,6 +41,21 @@ const busyText = (
 };
 
 const styles = StyleSheet.create({
+  cardHeader: {
+    backgroundColor: Colors.cardHeader,
+    borderRadius: 10,
+    color: Colors.cardBackground,
+    marginBottom: 5,
+    padding: 20,
+    ...Shadow(2),
+  },
+  cardList: {
+    backgroundColor: Colors.cardBackground,
+    borderRadius: 10,
+    marginTop: 5,
+    padding: 20,
+    ...Shadow(2),
+  },
   container: {
     flex: 1,
   },
@@ -38,8 +64,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   liveIndicator: {
+    marginRight: 10,
+  },
+  liveIndicatorContainer: {
     justifyContent: "flex-start",
-    marginBottom: 10,
+    paddingRight: 40,
   },
   occupancySection: {
     flex: 1,
@@ -48,7 +77,11 @@ const styles = StyleSheet.create({
     height: 80,
   },
   popularTimes: {
-    marginVertical: 10,
+    marginTop: 10,
+  },
+  timezoneInfo: {
+    marginBottom: 10,
+    marginTop: -10,
   },
 });
 
@@ -129,9 +162,33 @@ class StudySpaceDetailScreen extends Component {
   };
 
   render() {
+    const { navigation } = this.props;
     const { id, name, data, total, occupied, space } = this.state;
     const { isFetchingAverages, maps } = space;
-    const hour = parseInt(moment().format("HH"), 10);
+    const hour = parseInt(
+      moment()
+        .tz(Timezones.London)
+        .format("HH"),
+      10,
+    );
+
+    const londonTimeOffset = moment()
+      .tz(Timezones.London)
+      .utcOffset();
+    const localTimeOffset = moment()
+      .tz(LocalisationManager.getTimezone())
+      .utcOffset();
+    const hoursDifference = (localTimeOffset - londonTimeOffset) / 60;
+    const timezoneInfo =
+      londonTimeOffset !== localTimeOffset ? (
+        <InfoText style={styles.timezoneInfo}>
+          Using London time (
+          {hoursDifference > 0
+            ? `${hoursDifference}h behind`
+            : `${Math.abs(hoursDifference)}h ahead`}
+          ).
+        </InfoText>
+      ) : null;
     return (
       <View style={styles.container}>
         <Page>
@@ -160,25 +217,38 @@ class StudySpaceDetailScreen extends Component {
               loading={isFetchingAverages}
             />
           </View>
-          <Horizontal style={styles.liveIndicator}>
-            <LiveIndicator />
+          {timezoneInfo}
+          <Horizontal style={styles.liveIndicatorContainer}>
+            <LiveIndicator style={styles.liveIndicator} />
             <BodyText>
-              {moment().format("h:mma")} -{" "}
-              {busyText(hour, data, occupied, total)}
+              {moment()
+                .tz(Timezones.London)
+                .format("h:mma")}{" "}
+              - {busyText(hour, data, occupied, total)}
             </BodyText>
           </Horizontal>
-          <LiveSeatingMapList style={styles.liveSeatingMapList} maps={maps} />
+          <LiveSeatingMapList
+            style={styles.liveSeatingMapList}
+            maps={maps}
+            surveyId={id}
+            navigation={navigation}
+          />
           {/* {survey ? (
             <Button onPress={this.navigateToLiveSeatMap}>Live Seat Map</Button>
           ) : null} */}
           {/* <SubtitleText>Opening Hours</SubtitleText>
           <OpeningHours /> */}
           <View style={styles.facilities}>
-            <SubtitleText>Facilities</SubtitleText>
-            <BodyText>
-              See the libraries website for more information about what
-              facilities are offered.
-            </BodyText>
+            <SubtitleText style={styles.cardHeader}>Facilities</SubtitleText>
+            <View style={styles.cardList}>
+              <BodyText>
+                See the
+                <Link href="https://www.ucl.ac.uk/library/opening-hours">
+                  &nbsp;libraries website&nbsp;
+                </Link>
+                for more information about what facilities are offered.
+              </BodyText>
+            </View>
           </View>
           <View style={styles.padder} />
         </Page>
