@@ -40,7 +40,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-action-button": "^2.8.5",
     "react-native-maps": "^0.24.2",
-    "react-native-modal-datetime-picker": "^7.4.2",
+    "react-native-modal-datetime-picker": "^7.5.0",
     "react-native-svg": "^9.4.0",
     "react-native-svg-charts": "^5.2.0",
     "react-navigation": "github:uclapi/react-navigation",
