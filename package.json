@@ -7,7 +7,7 @@
     "test": "jest --ci && yarn run lint:force",
     "storybook": "storybook start -p 7007",
     "prestorybook": "rnstl",
-    "start": "expo start",
+    "start": "expo start -c",
     "publish:prod": "expo publish --release-channel=production",
     "publish:dev": "expo publish --release-channel=development"
   },
@@ -37,7 +37,7 @@
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-moment-proptypes": "^1.6.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.1.tar.gz",
     "react-native-action-button": "^2.8.5",
     "react-native-gesture-handler": "^1.3.0",
     "react-native-maps": "~0.24.0",
