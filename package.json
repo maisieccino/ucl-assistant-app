@@ -69,7 +69,7 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-react": "7.14.3",
     "eslint-plugin-react-native": "^3.7.0",
-    "expo-cli": "^3.0.8",
+    "expo-cli": "^3.0.9",
     "husky": "^3.0.2",
     "jest-expo": "^34.0.0",
     "lint-staged": "^9.2.1",
