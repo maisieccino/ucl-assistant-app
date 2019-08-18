@@ -22,9 +22,6 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
   },
-  topBar: {
-    flex: 0,
-  },
 });
 
 class SplashScreen extends Component {
@@ -105,7 +102,6 @@ class SplashScreen extends Component {
   render() {
     return (
       <>
-        {/* <SafeAreaView style={styles.topBar} /> */}
         <LinearGradient
           colors={[Colors.accentColor, Colors.buttonBackground]}
           start={[0, 1]}
