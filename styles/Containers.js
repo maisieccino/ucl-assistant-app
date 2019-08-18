@@ -17,6 +17,76 @@ const cardShared = {
 };
 
 export default StyleSheet.create({
+  app: {
+    backgroundColor: Colors.pageBackground,
+    flex: 1,
+  },
+  card: StyleSheet.flatten([
+    cardShared,
+    {
+      flexDirection: "column",
+    },
+  ]),
+  circle: {
+    borderColor: Colors.textColor,
+    borderRadius: 5,
+    borderWidth: 1,
+    height: 10,
+    width: 10,
+  },
+  circularIcon: {
+    backgroundColor: Colors.textInputBackground,
+    borderRadius: 80,
+    marginRight: 10,
+    padding: 10,
+  },
+  horizontal: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  image: {
+    alignSelf: "stretch",
+    backgroundColor: Colors.black,
+    flex: 1,
+    height: undefined,
+    marginTop: 50,
+    width: undefined,
+  },
+  liveIndicator: {
+    borderRadius: 5,
+    flex: 0,
+    marginRight: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+  },
+  mainTab: {
+    paddingTop: StatusBar.currentHeight,
+  },
+  mainTabBlur: {
+    bottom: 0,
+    height: 60,
+    left: 0,
+    right: 0,
+    top: undefined,
+  },
+  oldCard: StyleSheet.flatten([
+    cardShared,
+    {
+      flexDirection: "column",
+      backgroundColor: Colors.oldCardBackground,
+    },
+  ]),
+  paddedIcon: {
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  page: {
+    backgroundColor: Colors.pageBackground,
+    flex: 1,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
   pageContainer: {
     flex: 1,
     flexDirection: "column",
@@ -27,44 +97,15 @@ export default StyleSheet.create({
   pageNoScrollContainer: {
     paddingTop: 10,
   },
-  mainTab: {
-    paddingTop: StatusBar.currentHeight,
-  },
-  app: {
-    flex: 1,
-    backgroundColor: Colors.pageBackground,
-  },
-  page: {
-    flex: 1,
-    backgroundColor: Colors.pageBackground,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-  pageScrollView: {
-    paddingLeft: 0,
-    paddingRight: 0,
-  },
   pageScrollContent: {
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 10,
   },
-  spacer: {
-    flex: 1,
+  pageScrollView: {
+    paddingLeft: 0,
+    paddingRight: 0,
   },
-  card: StyleSheet.flatten([
-    cardShared,
-    {
-      flexDirection: "column",
-    },
-  ]),
-  oldCard: StyleSheet.flatten([
-    cardShared,
-    {
-      flexDirection: "column",
-      backgroundColor: Colors.oldCardBackground,
-    },
-  ]),
   resultCard: StyleSheet.flatten([
     cardShared,
     {
@@ -74,48 +115,7 @@ export default StyleSheet.create({
       marginRight: 2,
     },
   ]),
-  horizontal: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  image: {
+  spacer: {
     flex: 1,
-    width: undefined,
-    height: undefined,
-    alignSelf: "stretch",
-    marginTop: 50,
-    backgroundColor: "rgba(0,0,0,0)",
-  },
-  paddedIcon: {
-    marginLeft: 5,
-    marginRight: 5,
-  },
-  circularIcon: {
-    marginRight: 10,
-    backgroundColor: Colors.textInputBackground,
-    padding: 10,
-    borderRadius: 80,
-  },
-  circle: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    borderColor: Colors.textColor,
-    borderWidth: 1,
-  },
-  liveIndicator: {
-    flex: 0,
-    paddingVertical: 2,
-    paddingHorizontal: 5,
-    marginRight: 5,
-    borderRadius: 5,
-  },
-  mainTabBlur: {
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: undefined,
-    height: 60,
   },
 });

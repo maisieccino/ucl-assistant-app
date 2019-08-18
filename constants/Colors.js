@@ -23,4 +23,5 @@ export default {
   indicatorGreen: "#6DD149",
   linkBlue: "#2980b9",
   tabBackground: "#ced0d9",
+  black: "rgba(0,0,0,0)",
 };

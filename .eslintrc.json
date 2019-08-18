@@ -16,7 +16,12 @@
       "jsx": true
     }
   },
-  "plugins": ["react", "react-native", "jsx-a11y", "import"],
+  "plugins": [
+    "react",
+    "react-native",
+    "jsx-a11y",
+    "import"
+  ],
   "globals": {
     "__DEV__": true
   },
@@ -25,19 +30,27 @@
     "react/no-typos": "off", // until https://github.com/yannickcr/eslint-plugin-react/issues/1389 fixed
     "react/jsx-filename-extension": "off",
     "jsx-a11y/accessible-emoji": "off",
-    "comma-dangle": ["error", "always-multiline"],
+    "comma-dangle": [
+      "error",
+      "always-multiline"
+    ],
     "react-native/no-raw-text": "off",
     "jsx-a11y/anchor-is-valid": "off"
   },
   "overrides": [
     {
-      "files": ["**/__tests__/*.{js,jsx}", "*.test.js"],
+      "files": [
+        "**/__tests__/*.{js,jsx}",
+        "*.test.js"
+      ],
       "env": {
         "jest": true
       }
     },
     {
-      "files": ["**/*-stories.js"],
+      "files": [
+        "**/*-stories.js"
+      ],
       "rules": {
         "import/no-extraneous-dependencies": [
           "error",
@@ -46,14 +59,20 @@
             "optionalDependencies": false,
             "peerDependencies": false
           }
-        ]
+        ],
+        "no-console": "warn"
       }
     }
   ],
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", ".android.js", ".ios.js"]
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".android.js",
+          ".ios.js"
+        ]
       }
     }
   }
