@@ -26,7 +26,10 @@
     "__DEV__": true
   },
   "rules": {
+    "semi": ["error", "never"],
     "global-require": "off",
+    "quotes": ["error", "backtick"],
+    "no-console": "off",
     "react/no-typos": "off", // until https://github.com/yannickcr/eslint-plugin-react/issues/1389 fixed
     "react/jsx-filename-extension": "off",
     "jsx-a11y/accessible-emoji": "off",
@@ -37,8 +40,7 @@
     "react-native/no-raw-text": "off",
     "jsx-a11y/anchor-is-valid": "off"
   },
-  "overrides": [
-    {
+  "overrides": [{
       "files": [
         "**/__tests__/*.{js,jsx}",
         "*.test.js"

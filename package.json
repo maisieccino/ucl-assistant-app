@@ -6,8 +6,8 @@
     "storybook": "storybook start -p 7007",
     "prestorybook": "rnstl",
     "start": "expo start -c",
-    "publish:prod": "expo publish --release-channel=production",
-    "publish:dev": "expo publish --release-channel=development"
+    "publish": "node scripts/publish.js",
+    "build": "node scripts/build.js"
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.5",
@@ -69,6 +69,7 @@
     "eslint-plugin-react-native": "^3.7.0",
     "expo-cli": "^3.0.9",
     "husky": "^3.0.3",
+    "inquirer": "^6.5.1",
     "jest-expo": "^34.0.0",
     "lint-staged": "^9.2.1",
     "react-dom": "16.8.6",
