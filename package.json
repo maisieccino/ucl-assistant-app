@@ -1,9 +1,7 @@
 {
   "scripts": {
-    "lint": "eslint . --ext .js --ext .jsx --cache --ignore-path .eslintignore",
-    "lint:force": "eslint . --ext .js --ext .jsx --ignore-path .eslintignore",
     "lint:staged": "lint-staged",
-    "format": "prettier --write --trailing-comma all **/*.{js,jsx}",
+    "format": "eslint . --fix --ext .js --ext .jsx --cache --ignore-path .eslintignore",
     "test": "jest --ci && yarn run lint:force",
     "storybook": "storybook start -p 7007",
     "prestorybook": "rnstl",
@@ -73,7 +71,6 @@
     "husky": "^3.0.3",
     "jest-expo": "^34.0.0",
     "lint-staged": "^9.2.1",
-    "prettier": "^1.18.2",
     "react-dom": "16.8.6",
     "react-native-storybook-loader": "^1.6.0",
     "react-test-renderer": "^16.8.6",
@@ -81,7 +78,7 @@
   },
   "lint-staged": {
     "*.{js,jsx}": [
-      "prettier --write --trailing-comma all",
+      "eslint --fix",
       "git add"
     ]
   },
@@ -100,7 +97,7 @@
   "name": "ucl-assistant-app",
   "version": "1.1.2",
   "description": "An app to manage your UCL life",
-  "author": "Matt Bell",
+  "author": "UCL API",
   "config": {
     "react-native-storybook-loader": {
       "pattern": "**/*-stories.js"
@@ -110,7 +107,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "husky": {
     "hooks": {
-      "pre-commit": "yarn run lint:staged"
+      "pre-commit": "npm run lint:staged"
     }
   }
 }

@@ -77,7 +77,7 @@ class App extends Component {
 
   handleLoadingError = error => {
     // TODO: Setup remote error logging
-    console.warn(error); // eslint-disable-line no-console
+    console.warn(error);
   };
 
   handleFinishLoading = () => {
