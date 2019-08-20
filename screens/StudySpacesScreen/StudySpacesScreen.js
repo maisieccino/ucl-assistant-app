@@ -43,7 +43,7 @@ class StudySpaceScreen extends Component {
         color={focused ? Colors.pageBackground : Colors.textColor}
       />
     ),
-  };
+  }
 
   static propTypes = {
     navigation: PropTypes.shape().isRequired,
@@ -51,41 +51,40 @@ class StudySpaceScreen extends Component {
     token: PropTypes.string,
     fetchInfo: PropTypes.func,
     lastUpdated: PropTypes.oneOfType([momentObj, PropTypes.string]),
-  };
+  }
 
   static defaultProps = {
     studyspaces: [],
     token: ``,
     fetchInfo: () => { },
     lastUpdated: null,
-  };
+  }
 
   static findErrorneousSpaces = spaces => spaces.filter(
     space => typeof space.fetchSeatInfoError === `string`
       && space.fetchSeatInfoError !== ``,
-  );
+  )
 
   static mapStateToProps = state => ({
     studyspaces: state.studyspaces.studyspaces,
     lastUpdated: state.studyspaces.lastStatusUpdate,
     token: state.user.token,
-  });
+  })
 
   static mapDispatchToProps = dispatch => ({
     fetchInfo: (ids, token) => dispatch(fetchSeatInfos(token, ids)),
-  });
+  })
 
   memoizeErrorneousSpaces = memoize(StudySpaceScreen.findErrorneousSpaces)
 
   constructor(props) {
     super(props)
+    this.state = {
+      loadedSeatInfo: false,
+      lastUpdated: `never`,
+    }
     this.updateTextInterval = null
   }
-
-  state = {
-    loadedSeatInfo: false,
-    lastUpdated: `never`,
-  };
 
   componentDidMount() {
     const { loadedSeatInfo } = this.state
@@ -110,11 +109,16 @@ class StudySpaceScreen extends Component {
     clearInterval(this.updateTextInterval)
   }
 
-  updateLastUpdatedText() {
+  updateLastUpdatedText = () => {
     const { lastUpdated } = this.props
     this.setState({
       lastUpdated: lastUpdated ? moment(lastUpdated).fromNow() : `never`,
     })
+  }
+
+  getMatchingStudySpaces = () => {
+    const { studyspaces } = this.props
+    studyspaces.sort((s1, s2) => s1.name.localeCompare(s2.name))
   }
 
   async fetchSeatInfo() {
@@ -129,7 +133,8 @@ class StudySpaceScreen extends Component {
   render() {
     console.log(`begin render calcs`)
     const { loadedSeatInfo, lastUpdated } = this.state
-    const { navigation, studyspaces } = this.props
+    const { navigation } = this.props
+    const studyspaces = this.getMatchingStudySpaces()
     const errorneousSpaces = this.memoizeErrorneousSpaces(studyspaces)
     const isLoading = !loadedSeatInfo
       || studyspaces.reduce(
@@ -176,7 +181,7 @@ class StudySpaceScreen extends Component {
         <StudySpaceFilters />
 
         <FlatList
-          data={studyspaces.sort((s1, s2) => s1.name.localeCompare(s2.name))}
+          data={studyspaces}
           contentContainerStyle={styles.flatList}
           keyExtractor={item => `${item.id}`}
           initialNumToRender={30}

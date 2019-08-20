@@ -4,7 +4,8 @@
     "plugin:react-native/all",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:security/recommended"
+    "plugin:security/recommended",
+    "plugin:flowtype/recommended"
   ],
   "parser": "babel-eslint",
   "env": {
@@ -23,7 +24,8 @@
     "import",
     "security",
     "no-secrets",
-    "json"
+    "json",
+    "flowtype"
   ],
   "globals": {
     "__DEV__": true
