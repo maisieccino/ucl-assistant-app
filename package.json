@@ -61,12 +61,14 @@
     "babel-preset-expo": "^5.2.0",
     "eslint": "^6.2.0",
     "eslint-config-airbnb": "^17.1.1",
-    "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-import": "2.18.2",
+    "eslint-plugin-json": "^1.4.0",
     "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-no-secrets": "^0.3.3",
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-react": "7.14.3",
     "eslint-plugin-react-native": "^3.7.0",
+    "eslint-plugin-security": "^1.4.0",
     "expo-cli": "^3.0.9",
     "husky": "^3.0.4",
     "inquirer": "^6.5.1",
@@ -78,7 +80,7 @@
     "redux-logger": "^3.0.6"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
+    "*.{js,jsx,json}": [
       "eslint --fix",
       "git add"
     ]
