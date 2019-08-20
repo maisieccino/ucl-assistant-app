@@ -18,6 +18,7 @@ import {
 import Colors from "../../constants/Colors"
 import FavouriteStudySpaces from "./FavouriteStudySpaces"
 import StudySpaceSearchResult from "./StudySpaceResult"
+import StudySpaceFilters from './StudySpaceFilters'
 
 const styles = StyleSheet.create({
   favourites: {
@@ -171,6 +172,8 @@ class StudySpaceScreen extends Component {
           {` `}
           {lastUpdated}
         </BodyText>
+
+        <StudySpaceFilters />
 
         <FlatList
           data={studyspaces.sort((s1, s2) => s1.name.localeCompare(s2.name))}
