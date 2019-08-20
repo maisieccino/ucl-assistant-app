@@ -47,7 +47,9 @@
     ],
     "react-native/no-raw-text": "off",
     "jsx-a11y/anchor-is-valid": "off",
-    "no-secrets/no-secrets": "error"
+    "no-secrets/no-secrets": "error",
+    "security/detect-object-injection": "off",
+    "security/detect-non-literal-require": "off" // until https://github.com/nodesecurity/eslint-plugin-security/issues/27 is fixed
   },
   "overrides": [
     {
