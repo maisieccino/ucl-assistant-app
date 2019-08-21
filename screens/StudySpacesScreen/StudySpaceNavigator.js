@@ -12,6 +12,7 @@ const RootStackNavigator = createStackNavigator(
     },
   },
   {
+    initialRouteName: `StudySpacesFavourites`,
     defaultNavigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: `normal`,

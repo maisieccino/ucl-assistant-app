@@ -25,6 +25,7 @@ class StudySpaceFilters extends React.Component {
   // }
 
   render() {
+    // generic searchfield component?
     const { query, onChangeQuery } = this.props
     return (
       <View style={styles.container}>

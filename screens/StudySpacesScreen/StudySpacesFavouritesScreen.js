@@ -6,26 +6,21 @@ import React, { Component } from "react"
 import { momentObj } from "react-moment-proptypes"
 import { View, StyleSheet } from "react-native"
 import { connect } from "react-redux"
-import { fetchSeatInfos, setSearchQuery } from "../../actions/studyspacesActions"
+import { fetchSeatInfos } from "../../actions/studyspacesActions"
 import { Page } from "../../components/Containers"
 import Button from "../../components/Button"
 import Colors from "../../constants/Colors"
 import FavouriteStudySpaces from "./components/FavouriteStudySpaces"
-import StudySpacesList from "./StudySpacesListScreen"
+import { BodyText } from "../../components/Typography"
 
 const styles = StyleSheet.create({
   favourites: {
     paddingBottom: 20,
   },
   padder: {
-    height: 20,
+    height: 125,
   },
 })
-
-const VIEWS = {
-  default: `default`,
-  all: `all`,
-}
 
 class StudySpaceFavouritesScreen extends Component {
   static navigationOptions = {
@@ -47,8 +42,6 @@ class StudySpaceFavouritesScreen extends Component {
     fetchInfo: PropTypes.func,
     lastUpdated: PropTypes.oneOfType([momentObj, PropTypes.string]),
     favouriteSpaces: PropTypes.arrayOf(PropTypes.shape()),
-    setQuery: PropTypes.func,
-    searchQuery: PropTypes.string,
   }
 
   static defaultProps = {
@@ -57,15 +50,12 @@ class StudySpaceFavouritesScreen extends Component {
     fetchInfo: () => { },
     lastUpdated: null,
     favouriteSpaces: [],
-    setQuery: () => { },
-    searchQuery: ``,
   }
 
   static mapStateToProps = ({
     studyspaces: {
       studyspaces,
       lastStatusUpdate,
-      searchQuery = ``,
       favourites,
     },
     user: {
@@ -73,20 +63,12 @@ class StudySpaceFavouritesScreen extends Component {
     },
   }) => ({
     favouriteSpaces: studyspaces.filter((space) => favourites.includes(space.id)),
-    studyspaces: studyspaces.filter((studyspace) => {
-      if (searchQuery.length === 0) {
-        return true
-      }
-      return studyspace.name.toLowerCase().includes(searchQuery.toLowerCase())
-    }),
     lastUpdated: lastStatusUpdate,
     token,
-    searchQuery,
   })
 
   static mapDispatchToProps = (dispatch) => ({
     fetchInfo: (ids, token) => dispatch(fetchSeatInfos(token, ids)),
-    setQuery: (query: String) => dispatch(setSearchQuery(query)),
   })
 
   constructor(props) {
@@ -94,7 +76,6 @@ class StudySpaceFavouritesScreen extends Component {
     this.state = {
       loadedSeatInfo: false,
       lastUpdated: `never`,
-      currentView: VIEWS.default,
     }
     this.updateTextInterval = null
   }
@@ -137,7 +118,10 @@ class StudySpaceFavouritesScreen extends Component {
     })
   }
 
-  viewStudySpacesList = () => this.setState({ currentView: VIEWS.all })
+  viewStudySpacesList = () => {
+    const { navigation } = this.props
+    navigation.navigate(`StudySpacesList`)
+  }
 
   renderFavouriteStudySpaces = () => {
     const { lastUpdated } = this.state
@@ -155,24 +139,18 @@ class StudySpaceFavouritesScreen extends Component {
     )
   }
 
-  renderStudySpacesList = () => {
-    const { lastUpdated } = this.state
-    const {
-      navigation, studyspaces, setQuery, searchQuery,
-    } = this.props
-    return (
-      <StudySpacesList
-        navigation={navigation}
-        studyspaces={studyspaces}
-        setQuery={setQuery}
-        searchQuery={searchQuery}
-        lastUpdated={lastUpdated}
-      />
-    )
-  }
+  renderSuggestion = () => (
+    <>
+      <BodyText>
+        Mark a study space as a favourite and
+        {` `}
+        it will appear here for easy reference
+      </BodyText>
+    </>
+  )
 
   render() {
-    const { loadedSeatInfo, currentView } = this.state
+    const { loadedSeatInfo } = this.state
     const {
       studyspaces,
       favouriteSpaces,
@@ -190,9 +168,9 @@ class StudySpaceFavouritesScreen extends Component {
         refreshing={isLoading}
       >
         {
-          (favouriteSpaces.length > 0 && currentView !== VIEWS.all)
+          (favouriteSpaces.length > 0)
             ? this.renderFavouriteStudySpaces()
-            : this.renderStudySpacesList()
+            : this.renderSuggestion()
         }
         <View style={styles.padder} />
       </Page>

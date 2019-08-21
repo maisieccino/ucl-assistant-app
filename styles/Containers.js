@@ -1,4 +1,6 @@
-import { Dimensions, Platform, StyleSheet, StatusBar } from "react-native"
+import {
+  Dimensions, Platform, StyleSheet, StatusBar,
+} from "react-native"
 import Colors from "../constants/Colors"
 import { BORDER_RADIUS } from "../constants/styleConstants"
 import Shadow from "../lib/Shadow"
