@@ -8,6 +8,7 @@ import {
   WORKSPACES_FETCH_HISTORIC_DATA_SUCCESS,
   WORKSPACES_TOGGLE_FAVOURITE,
   WORKSPACES_SORT_TYPES,
+  WORKSPACES_SET_SEARCH_QUERY,
 } from "../constants/studyspacesConstants"
 
 const sortStudySpaces = (s1, s2) => s1.id - s2.id
@@ -22,8 +23,8 @@ export const initialState = {
 }
 
 const updateStudyspaces = (studyspaces, id, newSpace) => {
-  const idx = studyspaces.findIndex(s => s.id === id)
-  const newStudyspaces = studyspaces.filter(s => s.id !== id)
+  const idx = studyspaces.findIndex((s) => s.id === id)
+  const newStudyspaces = studyspaces.filter((s) => s.id !== id)
   const oldStudySpace = studyspaces[idx]
   if (idx === -1) {
     newStudyspaces.push({ ...newSpace })
@@ -34,7 +35,7 @@ const updateStudyspaces = (studyspaces, id, newSpace) => {
       ...newSpace,
       maps: newSpace.maps.map((newMap) => {
         const oldMap = oldStudySpace.maps
-          ? oldStudySpace.maps.filter(m => m.id === newMap.id)[0]
+          ? oldStudySpace.maps.filter((m) => m.id === newMap.id)[0]
           : {}
         return {
           ...oldMap,
@@ -48,15 +49,15 @@ const updateStudyspaces = (studyspaces, id, newSpace) => {
 
 export default (state = initialState, action = null) => {
   const {
-    type, id, data, error, dailyAverages,
+    type, id, data, error, dailyAverages, query,
   } = action
-  const oldSpace = id ? state.studyspaces.filter(s => s.id === id)[0] : null
+  const oldSpace = id ? state.studyspaces.filter((s) => s.id === id)[0] : null
 
   switch (type) {
     case WORKSPACES_IS_FETCHING_SEATINFOS: {
       return {
         ...state,
-        studyspaces: state.studyspaces.map(space => ({
+        studyspaces: state.studyspaces.map((space) => ({
           ...space,
           isFetchingSeatInfo: true,
           fetchSeatInfoError: ``,
@@ -67,7 +68,7 @@ export default (state = initialState, action = null) => {
     case WORKSPACES_FETCH_SEATINFOS_FAILURE: {
       return {
         ...state,
-        studyspaces: state.studyspaces.map(space => ({
+        studyspaces: state.studyspaces.map((space) => ({
           ...space,
           isFetchingSeatInfo: false,
           fetchSeatInfoError: error,
@@ -150,11 +151,18 @@ export default (state = initialState, action = null) => {
         return {
           ...state,
           favourites: state.favourites.includes(id)
-            ? state.favourites.filter(x => x !== id)
+            ? state.favourites.filter((x) => x !== id)
             : [...state.favourites, id],
         }
       }
       return state
+    }
+
+    case WORKSPACES_SET_SEARCH_QUERY: {
+      return {
+        ...state,
+        searchQuery: query,
+      }
     }
 
     default:

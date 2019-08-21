@@ -2,8 +2,8 @@ import React from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { generate } from "shortid"
-import SearchResult from "../../components/SearchResult"
-import Colors from "../../constants/Colors"
+import SearchResult from "../../../components/SearchResult"
+import Colors from "../../../constants/Colors"
 
 const StudySpaceResult = ({
   name,
@@ -70,7 +70,7 @@ StudySpaceResult.defaultProps = {
 }
 
 const ConnectedStudySpaceResult = ({ id, studyspaces, navigation }) => {
-  const space = studyspaces.filter(x => x.id === id)[0]
+  const space = studyspaces.filter((x) => x.id === id)[0]
 
   // There may be non-studyspace results e.g. 1 Saint Martin Le Grand
   // occupancy information is not available for these locations
@@ -81,14 +81,12 @@ const ConnectedStudySpaceResult = ({ id, studyspaces, navigation }) => {
   return (
     <StudySpaceResult
       {...space}
-      onPress={() =>
-        navigation.navigate(`StudySpaceDetail`, {
-          id: space.id,
-          name: space.name,
-          occupied: space.occupied,
-          total: space.total,
-        })
-      }
+      onPress={() => navigation.navigate(`StudySpaceDetail`, {
+        id: space.id,
+        name: space.name,
+        occupied: space.occupied,
+        total: space.total,
+      })}
     />
   )
 }
@@ -103,7 +101,7 @@ ConnectedStudySpaceResult.defaultProps = {
   studyspaces: [],
 }
 
-ConnectedStudySpaceResult.mapStateToProps = state => ({
+ConnectedStudySpaceResult.mapStateToProps = (state) => ({
   studyspaces: state.studyspaces.studyspaces,
 })
 

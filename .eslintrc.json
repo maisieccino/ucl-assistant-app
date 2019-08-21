@@ -51,7 +51,20 @@
     "jsx-a11y/anchor-is-valid": "off",
     "no-secrets/no-secrets": "error",
     "security/detect-object-injection": "off",
-    "security/detect-non-literal-require": "off" // until https://github.com/nodesecurity/eslint-plugin-security/issues/27 is fixed
+    "security/detect-non-literal-require": "off", // until https://github.com/nodesecurity/eslint-plugin-security/issues/27 is fixed
+    "react/jsx-indent": "off",
+    "react/jsx-indent-props": [
+      "error",
+      2
+    ],
+    "react/jsx-closing-bracket-location": [
+      "error"
+    ],
+    "react/static-property-placement": [
+      "error",
+      "static public field"
+    ],
+    "react/jsx-props-no-spreading": "off"
   },
   "overrides": [
     {
