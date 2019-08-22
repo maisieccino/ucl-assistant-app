@@ -1,22 +1,22 @@
 /* eslint class-methods-use-this: 0 */
-import { Feather } from "@expo/vector-icons";
-import { Notifications } from "expo";
-import * as Permissions from "expo-permissions";
-import moment from "moment";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { View } from "react-native";
-import { NavigationActions, StackActions } from "react-navigation";
-import { connect } from "react-redux";
-import { fetchTimetable } from "../../actions/timetableActions";
-import Button from "../../components/Button";
-import { Page } from "../../components/Containers";
-import { BodyText, TitleText, ErrorText } from "../../components/Typography";
-import Colors from "../../constants/Colors";
-import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants";
-import DateControls from "./DateControls";
-import TimetableComponent from "./TimetableComponent";
-import { ASSISTANT_API_URL } from "../../constants/API";
+import { Feather } from "@expo/vector-icons"
+import { Notifications } from "expo"
+import * as Permissions from "expo-permissions"
+import moment from "moment"
+import PropTypes from "prop-types"
+import React, { Component } from "react"
+import { View } from "react-native"
+import { NavigationActions, StackActions } from "react-navigation"
+import { connect } from "react-redux"
+import { fetchTimetable as fetchTimetableAction } from "../../actions/timetableActions"
+import Button from "../../components/Button"
+import { Page } from "../../components/Containers"
+import { BodyText, TitleText, ErrorText } from "../../components/Typography"
+import Colors from "../../constants/Colors"
+import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants"
+import DateControls from "./DateControls"
+import TimetableComponent from "./TimetableComponent"
+import { ASSISTANT_API_URL } from "../../constants/API"
 
 class TimetableScreen extends Component {
   static navigationOptions = {
@@ -44,55 +44,57 @@ class TimetableScreen extends Component {
   static defaultProps = {
     user: {},
     timetable: {},
-    error: "",
-    fetchTimetable: () => {},
+    error: ``,
+    fetchTimetable: () => { },
     isFetchingTimetable: false,
   };
 
-  static mapStateToProps = state => ({
+  static mapStateToProps = (state) => ({
     user: state.user,
     timetable: state.timetable.timetable,
     isFetchingTimetable: state.timetable.isFetching,
     error: state.timetable.error,
   });
 
-  static mapDispatchToProps = dispatch => ({
-    fetchTimetable: (token, date) => dispatch(fetchTimetable(token, date)),
+  static mapDispatchToProps = (dispatch) => ({
+    fetchTimetable: (token, date) => dispatch(fetchTimetableAction(token, date)),
   });
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      date: moment().startOf("day"),
-    };
+      date: moment().startOf(`day`),
+    }
   }
 
   componentDidMount() {
-    if (this.loginCheck(this.props) && this.props.user.token !== "") {
-      this.props.fetchTimetable(this.props.user.token, this.state.date);
+    const { date } = this.state
+    const { user: { token }, fetchTimetable } = this.props
+    if (this.loginCheck(this.props) && token !== ``) {
+      fetchTimetable(token, date)
     }
 
     // this.registerForPushNotificationsAsync();
   }
 
   async onDateChanged(newDate, forceUpdate = false) {
-    const newDay = newDate.startOf("day");
+    const newDay = newDate.startOf(`day`)
     await this.setState({
       date: newDay,
-    });
-    const dateString = newDay.format("YYYY-MM-DD");
-    if (
-      forceUpdate ||
-      !this.props.timetable[dateString] ||
-      !this.props.timetable[dateString].lastUpdated
-    ) {
-      this.props.fetchTimetable(this.props.user.token, this.state.date);
+    })
+    const dateString = newDay.format(`YYYY-MM-DD`)
+
+    const { timetable, fetchTimetable, user: { token } } = this.props
+    const { date } = this.state
+
+    if (forceUpdate || !timetable[dateString] || !timetable[dateString].lastUpdated) {
+      fetchTimetable(token, date)
     } else {
       const diff = moment.duration(
-        moment().diff(this.props.timetable[dateString].lastUpdated),
-      );
+        moment().diff(timetable[dateString].lastUpdated),
+      )
       if (diff.asHours() > TIMETABLE_CACHE_TIME_HOURS) {
-        this.props.fetchTimetable(this.props.user.token, this.state.date);
+        fetchTimetable(token, date)
       }
     }
   }
@@ -100,90 +102,97 @@ class TimetableScreen extends Component {
   async registerForPushNotificationsAsync() {
     const { status: existingStatus } = await Permissions.getAsync(
       Permissions.NOTIFICATIONS,
-    );
-    let finalStatus = existingStatus;
+    )
+    let finalStatus = existingStatus
 
     // only ask if permissions have not already been determined, because
     // iOS won't necessarily prompt the user a second time.
-    if (existingStatus !== "granted") {
+    if (existingStatus !== `granted`) {
       // Android remote notification permissions are granted during the app
       // install, so this will only ask on iOS
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      finalStatus = status;
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
+      finalStatus = status
     }
 
     // Stop here if the user did not grant permissions
-    if (finalStatus !== "granted") {
-      return;
+    if (finalStatus !== `granted`) {
+      return
     }
 
     // Get the token that uniquely identifies this device
-    const pushToken = await Notifications.getExpoPushTokenAsync();
-    const { token } = this.props.user;
+    const pushToken = await Notifications.getExpoPushTokenAsync()
+    const { user: { token } } = this.props
     try {
       const res = await fetch(`${ASSISTANT_API_URL}/notifications/register`, {
-        method: "POST",
+        method: `POST`,
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": `application/json`,
           Authorization: `Bearer ${token}`,
-          Accept: "application/json",
+          Accept: `application/json`,
         },
         body: JSON.stringify({ token: pushToken }),
-      });
-      console.log(await res.text());
+      })
+      console.log(await res.text())
     } catch (error) {
-      console.log(error.message);
-      this.setState({ error: error.message });
+      console.log(error.message)
+      this.setState({ error: error.message })
     }
   }
 
   loginCheck(props) {
-    if (Object.keys(props.user).length > 0) {
-      if (props.user.scopeNumber < 0) {
+    const { user, navigation } = props
+    if (Object.keys(user).length > 0) {
+      if (user.scopeNumber < 0) {
         const resetAction = StackActions.reset({
           index: 0,
-          actions: [NavigationActions.navigate({ routeName: "Splash" })],
-        });
-        this.props.navigation.dispatch(resetAction);
-        return false;
+          actions: [NavigationActions.navigate({ routeName: `Splash` })],
+        })
+        navigation.dispatch(resetAction)
+        return false
       }
     }
-    return true;
+    return true
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-    const { user, timetable, isFetchingTimetable } = this.props;
-    const { scopeNumber } = user;
-    const { date, error } = this.state;
-    const dateString = date.format("ddd, Do MMMM");
+    const {
+      user,
+      timetable,
+      isFetchingTimetable,
+      navigation,
+    } = this.props
+    const { navigate } = navigation
+    const { scopeNumber } = user
+    const { date, error } = this.state
+    const dateString = date.format(`ddd, Do MMMM`)
     return (
       <Page
         refreshing={isFetchingTimetable}
         onRefresh={() => this.onDateChanged(date, true)}
         refreshEnabled
         mainTabPage
+        bottomColour={Colors.tabBackground}
       >
         {scopeNumber < 0 && (
           <View>
             <BodyText>You are not signed in.</BodyText>
-            <Button onPress={() => navigate("Splash")}>Sign In</Button>
+            <Button onPress={() => navigate(`Splash`)}>Sign In</Button>
           </View>
         )}
-        {error && error !== "" ? (
+        {error && error !== `` ? (
           <View>
             <ErrorText>{error}</ErrorText>
           </View>
         ) : null}
         <TitleText>{dateString}</TitleText>
-        <DateControls date={date} onDateChanged={d => this.onDateChanged(d)} />
+        <DateControls date={date} onDateChanged={(d) => this.onDateChanged(d)} />
         <TimetableComponent
           timetable={timetable}
           date={date}
           isLoading={isFetchingTimetable}
-          navigation={this.props.navigation}
+          navigation={navigation}
         />
-        {!date.isSame(moment().startOf("day")) && (
+        {!date.isSame(moment().startOf(`day`)) && (
           <Button onPress={() => this.onDateChanged(moment())}>
             Jump To Today
           </Button>
@@ -192,11 +201,11 @@ class TimetableScreen extends Component {
         {/* <SubtitleText>Find A Timetable</SubtitleText>
         <TextInput placeholder="Search for a course or module..." /> */}
       </Page>
-    );
+    )
   }
 }
 
 export default connect(
   TimetableScreen.mapStateToProps,
   TimetableScreen.mapDispatchToProps,
-)(TimetableScreen);
+)(TimetableScreen)

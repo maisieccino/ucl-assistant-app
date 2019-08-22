@@ -1,1 +1,1 @@
-export { default } from "./TimetableScreen";
+export { default } from "./TimetableScreen"

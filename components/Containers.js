@@ -9,8 +9,10 @@ import {
   ScrollView,
   View,
   ViewPropTypes,
+  StyleSheet,
 } from "react-native"
 import Styles from "../styles/Containers"
+import Colors from "../constants/Colors"
 
 // const { height, width } = Dimensions.get("window");
 
@@ -25,6 +27,8 @@ const propTypes = {
   safeAreaViewStyle: ViewPropTypes.style,
   keyboardAvoidingViewStyle: ViewPropTypes.style,
   contentContainerStyle: ViewPropTypes.style,
+  topColour: PropTypes.string,
+  bottomColour: PropTypes.string,
 }
 /* eslint-enable react/no-unused-prop-types */
 const defaultProps = {
@@ -37,25 +41,18 @@ const defaultProps = {
   safeAreaViewStyle: {},
   keyboardAvoidingViewStyle: {},
   contentContainerStyle: {},
+  topColour: Colors.pageBackground,
+  bottomColour: Colors.pageBackground,
 }
 
-// export const Page = ({ children, style, ...props }) => (
-//   // <ScrollView style={Styles.pageScrollContainer}>
-//   //   <View style={[style, Styles.page]}>{children}</View>
-//   // </ScrollView>
-//   <KeyboardAvoidingView
-//     style={[Styles.pageScrollContainer]}
-//     {...props}
-//     behavior="padding"
-//   >
-//     <ScrollView style={[style, Styles.page, Styles.scrollPage]}>
-//       {children}
-//     </ScrollView>
-//   </KeyboardAvoidingView>
-// );
-// Page.propTypes = propTypes;
-// Page.defaultProps = defaultProps;
 const pageTopPadding = { height: 10 }
+
+const styles = StyleSheet.create({
+  safeAreaViewTop: {
+    flex: 0,
+  },
+})
+
 export const Page = ({
   children,
   style,
@@ -66,47 +63,47 @@ export const Page = ({
   onRefresh,
   refreshing,
   mainTabPage,
+  topColour,
+  bottomColour,
   ...props
 }) => (
-    <SafeAreaView style={[Styles.pageContainer, safeAreaViewStyle]}>
-      <KeyboardAvoidingView
-        style={[
-          Styles.pageContainer,
-          mainTabPage ? Styles.mainTab : null,
-          keyboardAvoidingViewStyle,
-        ]}
-        {...props}
-        behavior="padding"
+    <>
+      <SafeAreaView style={[styles.safeAreaViewTop, { backgroundColor: topColour }]} />
+      <SafeAreaView style={[
+        Styles.pageContainer,
+        { backgroundColor: bottomColour },
+        safeAreaViewStyle,
+      ]}
       >
-        <ScrollView
-          contentContainerStyle={[Styles.pageScrollContent, contentContainerStyle]}
-          style={[style, Styles.page, Styles.pageScrollView]}
-          refreshControl={
-            refreshEnabled ? (
-              <RefreshControl
-                enabled={refreshEnabled}
-                onRefresh={onRefresh}
-                refreshing={refreshing}
-              />
-            ) : null
-          }
-          keyboardDismissMode="on-drag"
+        <KeyboardAvoidingView
+          style={[
+            Styles.pageContainer,
+            mainTabPage ? Styles.mainTab : null,
+            keyboardAvoidingViewStyle,
+          ]}
+          {...props}
+          behavior="padding"
         >
-          <View style={pageTopPadding} />
-          {children}
-        </ScrollView>
-        {/* {mainTabPage && (
-          <Fragment>
-            <BlurView
-              tint="light"
-              intensity={85}
-              style={[StyleSheet.absoluteFill, Styles.mainTabBlur]}
-            />
-            <View height={60} />
-          </Fragment>
-        )} */}
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          <ScrollView
+            contentContainerStyle={[Styles.pageScrollContent, contentContainerStyle]}
+            style={[style, Styles.page, Styles.pageScrollView]}
+            refreshControl={
+              refreshEnabled ? (
+                <RefreshControl
+                  enabled={refreshEnabled}
+                  onRefresh={onRefresh}
+                  refreshing={refreshing}
+                />
+              ) : null
+            }
+            keyboardDismissMode="on-drag"
+          >
+            <View style={pageTopPadding} />
+            {children}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </>
 )
 Page.propTypes = propTypes
 Page.defaultProps = defaultProps
