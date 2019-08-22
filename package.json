@@ -5,7 +5,7 @@
     "test": "jest --ci && yarn run lint:force",
     "storybook": "storybook start -p 7007",
     "prestorybook": "rnstl",
-    "start": "expo start -c",
+    "start": "expo start",
     "publish": "node scripts/publish.js",
     "build": "node scripts/build.js"
   },

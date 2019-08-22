@@ -3,17 +3,26 @@ import {
   View, StyleSheet, TouchableOpacity, ViewPropTypes,
 } from 'react-native'
 import PropTypes from "prop-types"
-import { ButtonText } from '../../Typography'
+import { SmallButtonText } from '../../Typography'
 import Colors from '../../../constants/Colors'
 
 const styles = StyleSheet.create({
   active: {
     backgroundColor: Colors.accentColor,
   },
+  activeText: {
+    color: Colors.pageBackground,
+  },
   lightButton: {
     backgroundColor: Colors.pageBackground,
     borderColor: Colors.textColor,
+    borderRadius: 8,
     borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+  },
+  text: {
+    color: Colors.textColor,
   },
 })
 
@@ -30,7 +39,14 @@ const LightButton = ({
       <View style={[styles.lightButton, active ? styles.active : {}]}>
         {
           (typeof children === `string`) ? (
-            <ButtonText>{children}</ButtonText>
+            <SmallButtonText
+              style={[
+                styles.text,
+                active ? styles.activeText : {},
+              ]}
+            >
+              {children}
+            </SmallButtonText>
           ) : children
         }
       </View>

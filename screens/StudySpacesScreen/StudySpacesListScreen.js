@@ -14,8 +14,9 @@ import {
 import { Page } from "../../components/Containers"
 import StudySpaceSearchResult from "./components/StudySpaceResult"
 import StudySpaceFilters from './components/StudySpaceFilters'
-import { fetchSeatInfos, setSearchQuery } from "../../actions/studyspacesActions"
+import { fetchSeatInfos, setSearchQuery, setSortType } from "../../actions/studyspacesActions"
 import { matchingStudySpacesSelector, favouriteStudySpacesSelector } from '../../selectors/studyspacesSelectors'
+import { WORKSPACES_SORT_TYPES } from '../../constants/studyspacesConstants'
 
 const styles = StyleSheet.create({
   flatList: {
@@ -39,6 +40,8 @@ class StudySpacesListScreen extends React.Component {
     lastUpdated: PropTypes.oneOfType([momentObj, PropTypes.string]),
     token: PropTypes.string,
     fetchInfo: PropTypes.func,
+    sortType: PropTypes.string,
+    setSort: PropTypes.func,
   }
 
   static defaultProps = {
@@ -48,6 +51,8 @@ class StudySpacesListScreen extends React.Component {
     searchQuery: ``,
     token: ``,
     fetchInfo: () => { },
+    sortType: WORKSPACES_SORT_TYPES.NAME,
+    setSort: () => { },
   }
 
   static mapStateToProps = (state) => {
@@ -55,6 +60,7 @@ class StudySpacesListScreen extends React.Component {
       studyspaces: {
         lastStatusUpdate,
         searchQuery = ``,
+        sortType,
       },
       user: {
         token,
@@ -66,6 +72,7 @@ class StudySpacesListScreen extends React.Component {
       lastUpdated: lastStatusUpdate,
       token,
       searchQuery,
+      sortType,
     }
   }
 
@@ -73,6 +80,7 @@ class StudySpacesListScreen extends React.Component {
     fetchInfo: (ids, token) => dispatch(fetchSeatInfos(token, ids)),
     setQuery: (query: String) => dispatch(setSearchQuery(query)),
     clearQuery: () => dispatch(setSearchQuery(``)),
+    setSort: (sortType: String) => dispatch(setSortType(sortType)),
   })
 
   static findErrorneousSpaces = (spaces) => spaces.filter(
@@ -136,6 +144,8 @@ class StudySpacesListScreen extends React.Component {
       studyspaces,
       setQuery,
       searchQuery,
+      sortType,
+      setSort,
     } = this.props
     const errorneousSpaces = this.memoizeErrorneousSpaces(studyspaces)
     const isLoading = !loadedSeatInfo
@@ -169,6 +179,8 @@ class StudySpacesListScreen extends React.Component {
         <StudySpaceFilters
           query={searchQuery}
           onChangeQuery={setQuery}
+          sortType={sortType}
+          updateSortType={setSort}
         />
 
         <BodyText>
