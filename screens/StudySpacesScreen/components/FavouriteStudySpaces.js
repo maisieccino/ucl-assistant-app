@@ -5,10 +5,13 @@ import {
 } from "react-native"
 import { momentObj } from "react-moment-proptypes"
 
-import { BodyText, SubtitleText } from "../../../components/Typography"
+import { BodyText } from "../../../components/Typography"
 import StudySpaceResult from "./StudySpaceResult"
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+  },
   flatList: {
     paddingTop: 10,
   },
@@ -20,8 +23,7 @@ const FavouriteStudySpaces = ({
   style,
   lastUpdated,
 }) => (
-    <View style={style}>
-      <SubtitleText>Your Favourites</SubtitleText>
+    <View style={[styles.container, style]}>
       <BodyText>{`Last updated: ${lastUpdated}`}</BodyText>
       <FlatList
         contentContainerStyle={styles.flatList}

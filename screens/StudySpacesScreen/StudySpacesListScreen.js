@@ -75,6 +75,7 @@ class StudySpacesListScreen extends React.Component {
   static mapDispatchToProps = (dispatch) => ({
     fetchInfo: (ids, token) => dispatch(fetchSeatInfos(token, ids)),
     setQuery: (query: String) => dispatch(setSearchQuery(query)),
+    clearQuery: () => dispatch(setSearchQuery(``)),
   })
 
   static findErrorneousSpaces = (spaces) => spaces.filter(

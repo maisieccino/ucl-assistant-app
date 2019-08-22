@@ -11,7 +11,7 @@ import { Page } from "../../components/Containers"
 import Button from "../../components/Button"
 import Colors from "../../constants/Colors"
 import FavouriteStudySpaces from "./components/FavouriteStudySpaces"
-import { BodyText } from "../../components/Typography"
+import { SubtitleText, BodyText } from "../../components/Typography"
 
 const styles = StyleSheet.create({
   favourites: {
@@ -19,6 +19,10 @@ const styles = StyleSheet.create({
   },
   padder: {
     height: 125,
+  },
+  suggestion: {
+    marginBottom: 20,
+    marginTop: 20,
   },
 })
 
@@ -127,26 +131,23 @@ class StudySpaceFavouritesScreen extends Component {
     const { lastUpdated } = this.state
     const { navigation, favouriteSpaces } = this.props
     return (
-      <>
-        <FavouriteStudySpaces
-          lastUpdated={lastUpdated}
-          favouriteSpaces={favouriteSpaces}
-          navigation={navigation}
-          style={styles.favourites}
-        />
-        <Button onPress={this.viewStudySpacesList}>View All</Button>
-      </>
+      <FavouriteStudySpaces
+        lastUpdated={lastUpdated}
+        favouriteSpaces={favouriteSpaces}
+        navigation={navigation}
+        style={styles.favourites}
+      />
     )
   }
 
   renderSuggestion = () => (
-    <>
+    <View style={styles.suggestion}>
       <BodyText>
-        Mark a study space as a favourite and
+        Mark a study space as one of your favourites and
         {` `}
         it will appear here for easy reference
       </BodyText>
-    </>
+    </View>
   )
 
   render() {
@@ -167,11 +168,13 @@ class StudySpaceFavouritesScreen extends Component {
         onRefresh={this.fetchSeatInfo}
         refreshing={isLoading}
       >
+        <SubtitleText>Your Favourites</SubtitleText>
         {
           (favouriteSpaces.length > 0)
             ? this.renderFavouriteStudySpaces()
             : this.renderSuggestion()
         }
+        <Button onPress={this.viewStudySpacesList}>View All</Button>
         <View style={styles.padder} />
       </Page>
     )
