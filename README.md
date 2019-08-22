@@ -15,7 +15,9 @@ on Android. You'll want to create an API key on the
 [Google APIs console](https://console.developers.google.com/apis/) and then give
 the key access to the Google Maps Android API.
 
-Then you can start the app with `exp start` or by loading it in XDE.
+Install the necessary dependencies with `npm i`
+
+Then you can start the app with `npm run start`
 
 ## Which API server?
 
@@ -29,7 +31,21 @@ The app uses [redux-persist](https://github.com/rt2zz/redux-persist) to save the
 app state to the device storage. In the future, for extra security, the `user`
 reducer will be saved using the `Expo.SecureStore` API.
 
-## Releasing to Production
+## Deployment
+
+To publish the latest version of UCL Assistant over-the-air via Expo
+
+```
+$ npm run publish
+```
+
+To build a APK/IPA, which will also publish the current version of UCL Assistant
+
+```
+$ npm run build
+```
+
+### Details
 
 Expo allows us to update the app seamlessly OTA.
 

@@ -1,24 +1,19 @@
-import React, { Component } from "react";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { TextInput } from "../../components/Input";
-import { SmallButton } from "../../components/Button";
-import { CentredText } from "../../components/Typography";
-import SearchResult from "../../components/SearchResult";
-import ApiManager from "../../lib/ApiManager";
-import { Horizontal } from "../../components/Containers";
-import { addRecent } from "../../actions/roomsActions";
+// @flow
+import React, { Component } from "react"
+import { View, StyleSheet, ActivityIndicator } from "react-native"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import { SearchInput } from "../../components/Input"
+import { CentredText } from "../../components/Typography"
+import SearchResult from "../../components/SearchResult"
+import ApiManager from "../../lib/ApiManager"
+import { addRecent } from "../../actions/roomsActions"
 
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 20,
   },
-  textInput: {
-    flex: 1,
-    marginRight: 10,
-  },
-});
+})
 
 class SearchControl extends Component {
   static SEARCH_DELAY = 500;
@@ -26,95 +21,92 @@ class SearchControl extends Component {
   static propTypes = {
     token: PropTypes.string,
     navigation: PropTypes.shape().isRequired,
-    query: PropTypes.string,
     addRecentRoom: PropTypes.func,
-  };
+  }
 
   static defaultProps = {
-    token: "",
-    query: "",
-    addRecentRoom: () => {},
-  };
+    token: ``,
+    addRecentRoom: () => { },
+  }
 
-  static mapStateToProps = state => ({
+  static mapStateToProps = (state) => ({
     token: state.user.token,
-  });
+  })
 
-  static mapDispatchToProps = dispatch => ({
-    addRecentRoom: room => dispatch(addRecent(room)),
-  });
+  static mapDispatchToProps = (dispatch) => ({
+    addRecentRoom: (room) => dispatch(addRecent(room)),
+  })
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      query: "",
+      query: ``,
       error: null,
       isSearching: false,
       searchResults: [],
-    };
+    }
   }
 
   componentDidMount() {
-    const { navigation } = this.props;
+    const { navigation } = this.props
     this.subscriptions = [
-      navigation.addListener("didFocus", this.componentDidFocus),
-    ];
-    this.componentDidFocus({ state: navigation.state });
+      navigation.addListener(`didFocus`, this.componentDidFocus),
+    ]
+    this.componentDidFocus({ state: navigation.state })
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(sub => sub.remove());
+    this.subscriptions.forEach((sub) => sub.remove())
   }
 
-  componentDidFocus = payload => {
-    const { query } = this.state;
-    const queryExists = this.queryExists(payload.state);
+  componentDidFocus = (payload) => {
+    const { query } = this.state
+    const queryExists = this.queryExists(payload.state)
     if (queryExists && query !== payload.state.params.query) {
-      this.setState({ query: payload.state.params.query });
-      this.searchRooms(payload.state.params.query, true);
+      this.setState({ query: payload.state.params.query })
+      this.searchRooms(payload.state.params.query, true)
     }
   };
 
-  queryExists = navigationState =>
-    navigationState &&
-    navigationState.params &&
-    navigationState.params.query &&
-    navigationState.params.query.length > 0;
+  queryExists = (navigationState) => navigationState
+    && navigationState.params
+    && navigationState.params.query
+    && navigationState.params.query.length > 0;
 
   onChangeText = (query: String) => {
     if (query.length > 3) {
-      clearTimeout(this.searchTimer);
+      clearTimeout(this.searchTimer)
       this.searchTimer = setTimeout(
         () => this.searchRooms(query),
         SearchControl.SEARCH_DELAY,
-      );
+      )
     }
-    this.setState({ query });
-  };
+    this.setState({ query })
+  }
 
   searchRooms = async (query: String, autoNavigate = false) => {
-    const { token } = this.props;
+    const { token } = this.props
     try {
-      this.setState({ isSearching: true });
-      const results = await ApiManager.rooms.search(token, query);
+      this.setState({ isSearching: true })
+      const results = await ApiManager.rooms.search(token, query)
       if (autoNavigate && results.length === 1) {
-        this.navigateToRoomDetail(results[0])();
+        this.navigateToRoomDetail(results[0])()
       }
-      this.setState({ searchResults: results, isSearching: false });
+      this.setState({ searchResults: results, isSearching: false })
     } catch (error) {
-      this.setState({ error: error.message, isSearching: false });
+      this.setState({ error: error.message, isSearching: false })
     }
-  };
+  }
 
-  navigateToRoomDetail = room => () => {
-    const { navigation, addRecentRoom } = this.props;
-    addRecentRoom(room);
-    navigation.navigate("RoomDetail", { room });
-  };
+  navigateToRoomDetail = (room) => () => {
+    const { navigation, addRecentRoom } = this.props
+    addRecentRoom(room)
+    navigation.navigate(`RoomDetail`, { room })
+  }
 
-  clear = () => this.setState({ query: "", searchResults: [] });
+  clear = () => this.setState({ query: ``, searchResults: [] })
 
-  renderSearchResult = searchResult => (
+  renderSearchResult = (searchResult) => (
     <SearchResult
       key={searchResult.roomid}
       topText={searchResult.roomname}
@@ -123,25 +115,25 @@ class SearchControl extends Component {
       buttonText="View"
       onPress={this.navigateToRoomDetail(searchResult)}
     />
-  );
+  )
 
   render() {
-    const { query, error, isSearching, searchResults } = this.state;
+    const {
+      query, error, isSearching, searchResults,
+    } = this.state
     return (
       <View style={styles.container}>
-        <Horizontal>
-          <TextInput
-            placeholder="Search for a room or building name..."
-            onChangeText={this.onChangeText}
-            value={query}
-            clearButtonMode="always"
-            style={styles.textInput}
-          />
-          {query.length > 0 ? (
-            <SmallButton onPress={() => this.clear()}>Clear</SmallButton>
-          ) : null}
-        </Horizontal>
-        {error ? <CentredText>Error! {error} </CentredText> : null}
+        <SearchInput
+          placeholder="Search for a room or building name..."
+          onChangeQuery={this.onChangeText}
+          query={query}
+          clear={this.clear}
+        />
+        {error ? (
+          <CentredText>
+            {`Error! ${error} `}
+          </CentredText>
+        ) : null}
         {isSearching ? <ActivityIndicator /> : null}
         {query.length === 0 ? (
           <CentredText>Start typing to get search results</CentredText>
@@ -151,11 +143,11 @@ class SearchControl extends Component {
         ) : null}
         {searchResults.map(this.renderSearchResult)}
       </View>
-    );
+    )
   }
 }
 
 export default connect(
   SearchControl.mapStateToProps,
   SearchControl.mapDispatchToProps,
-)(SearchControl);
+)(SearchControl)

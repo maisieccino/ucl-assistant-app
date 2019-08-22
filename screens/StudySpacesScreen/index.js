@@ -1,1 +1,1 @@
-export { default } from "./StudySpacesScreen";
+export { default } from "./StudySpaceNavigator"

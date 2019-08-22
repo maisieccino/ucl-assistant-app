@@ -1,10 +1,11 @@
 {
   "extends": [
     "airbnb",
-    "prettier",
-    "prettier/flowtype",
-    "prettier/react",
-    "plugin:react-native/all"
+    "plugin:react-native/all",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:security/recommended",
+    "plugin:flowtype/recommended"
   ],
   "parser": "babel-eslint",
   "env": {
@@ -20,14 +21,26 @@
     "react",
     "react-native",
     "jsx-a11y",
-    "import"
+    "import",
+    "security",
+    "no-secrets",
+    "json",
+    "flowtype"
   ],
   "globals": {
     "__DEV__": true
   },
   "rules": {
+    "semi": [
+      "error",
+      "never"
+    ],
     "global-require": "off",
-    "react/no-typos": "off", // until https://github.com/yannickcr/eslint-plugin-react/issues/1389 fixed
+    "quotes": [
+      "error",
+      "backtick"
+    ],
+    "no-console": "off",
     "react/jsx-filename-extension": "off",
     "jsx-a11y/accessible-emoji": "off",
     "comma-dangle": [
@@ -35,7 +48,23 @@
       "always-multiline"
     ],
     "react-native/no-raw-text": "off",
-    "jsx-a11y/anchor-is-valid": "off"
+    "jsx-a11y/anchor-is-valid": "off",
+    "no-secrets/no-secrets": "error",
+    "security/detect-object-injection": "off",
+    "security/detect-non-literal-require": "off", // until https://github.com/nodesecurity/eslint-plugin-security/issues/27 is fixed
+    "react/jsx-indent": "off",
+    "react/jsx-indent-props": [
+      "error",
+      2
+    ],
+    "react/jsx-closing-bracket-location": [
+      "error"
+    ],
+    "react/static-property-placement": [
+      "error",
+      "static public field"
+    ],
+    "react/jsx-props-no-spreading": "off"
   },
   "overrides": [
     {

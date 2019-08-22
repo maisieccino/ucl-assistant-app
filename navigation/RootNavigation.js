@@ -1,13 +1,13 @@
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator, createAppContainer } from "react-navigation"
 
-import MainTabNavigator from "./MainTabNavigator";
-import SplashScreen from "../screens/SplashScreen";
-import TimetableDetailScreen from "../screens/TimetableDetailScreen";
-import PersonDetailScreen from "../screens/PersonDetailScreen";
-import StudySpaceDetailScreen from "../screens/StudySpaceDetailScreen";
-import FAQScreen from "../screens/FAQScreen";
-import LiveSeatingMapScreen from "../screens/LiveSeatingMapScreen";
-import RoomDetailScreen from "../screens/RoomDetailScreen";
+import MainTabNavigator from "./MainTabNavigator"
+import SplashScreen from "../screens/SplashScreen"
+import TimetableDetailScreen from "../screens/TimetableDetailScreen"
+import PersonDetailScreen from "../screens/PersonDetailScreen"
+import StudySpaceDetailScreen from "../screens/StudySpaceDetailScreen"
+import FAQScreen from "../screens/FAQScreen"
+import LiveSeatingMapScreen from "../screens/LiveSeatingMapScreen"
+import RoomDetailScreen from "../screens/RoomDetailScreen"
 
 const RootStackNavigator = createStackNavigator(
   {
@@ -42,11 +42,11 @@ const RootStackNavigator = createStackNavigator(
   {
     defaultNavigationOptions: () => ({
       headerTitleStyle: {
-        fontWeight: "normal",
-        fontFamily: "apercu",
+        fontWeight: `normal`,
+        fontFamily: `apercu`,
       },
     }),
   },
-);
+)
 
-export default createAppContainer(RootStackNavigator);
+export default createAppContainer(RootStackNavigator)

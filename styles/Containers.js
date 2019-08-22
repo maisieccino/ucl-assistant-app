@@ -1,9 +1,11 @@
-import { Dimensions, Platform, StyleSheet, StatusBar } from "react-native";
-import Colors from "../constants/Colors";
-import { BORDER_RADIUS } from "../constants/styleConstants";
-import Shadow from "../lib/Shadow";
+import {
+  Dimensions, Platform, StyleSheet, StatusBar,
+} from "react-native"
+import Colors from "../constants/Colors"
+import { BORDER_RADIUS } from "../constants/styleConstants"
+import Shadow from "../lib/Shadow"
 
-const { height, width } = Dimensions.get("window");
+const { height, width } = Dimensions.get(`window`)
 
 const cardShared = {
   padding: 10,
@@ -12,9 +14,9 @@ const cardShared = {
   marginTop: 5,
   borderRadius: BORDER_RADIUS,
   ...Shadow(3),
-  marginLeft: Platform.OS === "ios" ? 1 : 0,
-  marginRight: Platform.OS === "ios" ? 1 : 0,
-};
+  marginLeft: Platform.OS === `ios` ? 1 : 0,
+  marginRight: Platform.OS === `ios` ? 1 : 0,
+}
 
 export default StyleSheet.create({
   app: {
@@ -24,7 +26,7 @@ export default StyleSheet.create({
   card: StyleSheet.flatten([
     cardShared,
     {
-      flexDirection: "column",
+      flexDirection: `column`,
     },
   ]),
   circle: {
@@ -41,12 +43,12 @@ export default StyleSheet.create({
     padding: 10,
   },
   horizontal: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
+    alignItems: `center`,
+    flexDirection: `row`,
+    justifyContent: `center`,
   },
   image: {
-    alignSelf: "stretch",
+    alignSelf: `stretch`,
     backgroundColor: Colors.black,
     flex: 1,
     height: undefined,
@@ -73,7 +75,7 @@ export default StyleSheet.create({
   oldCard: StyleSheet.flatten([
     cardShared,
     {
-      flexDirection: "column",
+      flexDirection: `column`,
       backgroundColor: Colors.oldCardBackground,
     },
   ]),
@@ -89,7 +91,7 @@ export default StyleSheet.create({
   },
   pageContainer: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: `column`,
     backgroundColor: Colors.pageBackground,
     height,
     width,
@@ -118,4 +120,4 @@ export default StyleSheet.create({
   spacer: {
     flex: 1,
   },
-});
+})

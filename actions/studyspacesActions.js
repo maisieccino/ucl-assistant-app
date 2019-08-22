@@ -1,5 +1,5 @@
 // @flow
-import { WORKSPACES_URL } from "../constants/API";
+import { WORKSPACES_URL } from "../constants/API"
 import {
   WORKSPACES_FETCH_SEATINFOS_FAILURE,
   WORKSPACES_IS_FETCHING_SEATINFOS,
@@ -7,115 +7,98 @@ import {
   WORKSPACES_FETCH_HISTORIC_DATA_FAILURE,
   WORKSPACES_FETCH_HISTORIC_DATA_SUCCESS,
   WORKSPACES_IS_FETCHING_HISTORIC_DATA,
-  STUDYSPACE_TOGGLE_FAVOURITE,
-} from "../constants/studyspacesConstants";
+  WORKSPACES_TOGGLE_FAVOURITE,
+  WORKSPACES_SET_SEARCH_QUERY,
+  WORKSPACES_SET_SORT_TYPE,
+} from "../constants/studyspacesConstants"
 
 export const setIsFetchingSeatInfos = () => ({
   type: WORKSPACES_IS_FETCHING_SEATINFOS,
-});
+})
 
-export const fetchSeatInfosSuccess = data => ({
+export const fetchSeatInfosSuccess = (data) => ({
   data,
   type: WORKSPACES_FETCH_SEATINFOS_SUCCESS,
-});
+})
 
-export const fetchSeatInfosFailure = error => ({
+export const fetchSeatInfosFailure = (error) => ({
   error,
   type: WORKSPACES_FETCH_SEATINFOS_FAILURE,
-});
-
-// This action appears to be unused
-// export const fetchSeatInfo = (token, id) => async dispatch => {
-//   await dispatch(setIsFetchingSeatInfo([id]));
-//   try {
-//     const res = await fetch(`${WORKSPACES_URL}/${id}/seatinfo`, {
-//       headers: {
-//         authorization: `Bearer ${token}`,
-//       },
-//     });
-//     const json = await res.json();
-//     if (!res.ok) {
-//       throw new Error(json.error || "There was a problem");
-//     }
-//     return dispatch(
-//       fetchSeatInfoSuccess(id, {
-//         occupied: json.content.occupied,
-//         capacity: json.content.total,
-//       }),
-//     );
-//   } catch (error) {
-//     return dispatch(
-//       fetchSeatInfoFailure(
-//         id,
-//         typeof error === "string" ? error : error.message,
-//       ),
-//     );
-//   }
-// };
+})
 
 export const fetchSeatInfos = (token: String) => async (dispatch: Function) => {
-  await dispatch(setIsFetchingSeatInfos());
+  await dispatch(setIsFetchingSeatInfos())
   try {
     const res = await fetch(`${WORKSPACES_URL}/summary`, {
       headers: {
         authorization: `Bearer ${token}`,
       },
-    });
-    const json = await res.json();
+    })
+    const json = await res.json()
     if (!res.ok) {
-      throw new Error(json.error || "There was a problem");
+      throw new Error(json.error || `There was a problem`)
     }
-    return dispatch(fetchSeatInfosSuccess(json.content));
+    return dispatch(fetchSeatInfosSuccess(json.content))
   } catch (error) {
     return dispatch(
-      fetchSeatInfosFailure(typeof error === "string" ? error : error.message),
-    );
+      fetchSeatInfosFailure(typeof error === `string` ? error : error.message),
+    )
   }
-};
+}
 
-export const setIsFetchingAverages = id => ({
+export const setIsFetchingAverages = (id: Number) => ({
   id,
   type: WORKSPACES_IS_FETCHING_HISTORIC_DATA,
-});
+})
 
-export const fetchAveragesSuccess = (id, dailyAverages) => ({
+export const fetchAveragesSuccess = (id: Number, dailyAverages) => ({
   id,
   dailyAverages,
   type: WORKSPACES_FETCH_HISTORIC_DATA_SUCCESS,
-});
+})
 
-export const fetchAveragesFailure = (id, error) => ({
+export const fetchAveragesFailure = (id: Number, error) => ({
   id,
   error,
   type: WORKSPACES_FETCH_HISTORIC_DATA_FAILURE,
-});
+})
 
 export const fetchAverages = (token: String, id: Number) => async (
   dispatch: Function,
 ) => {
-  await dispatch(setIsFetchingAverages(id));
+  await dispatch(setIsFetchingAverages(id))
   try {
     const res = await fetch(`${WORKSPACES_URL}/historic?id=${id}`, {
       headers: {
         authorization: `Bearer ${token}`,
       },
-    });
-    const json = await res.json();
+    })
+    const json = await res.json()
     if (!res.ok) {
-      throw new Error(json.error || "There was a problem");
+      throw new Error(json.error || `There was a problem`)
     }
-    return dispatch(fetchAveragesSuccess(id, json.content));
+    return dispatch(fetchAveragesSuccess(id, json.content))
   } catch (error) {
     return dispatch(
       fetchAveragesFailure(
         id,
-        typeof error === "string" ? error : error.message,
+        typeof error === `string` ? error : error.message,
       ),
-    );
+    )
   }
-};
+}
 
-export const toggleFavourite = id => ({
+export const toggleFavourite = (id: Number) => ({
   id,
-  type: STUDYSPACE_TOGGLE_FAVOURITE,
-});
+  type: WORKSPACES_TOGGLE_FAVOURITE,
+})
+
+export const setSearchQuery = (query: String) => ({
+  query,
+  type: WORKSPACES_SET_SEARCH_QUERY,
+})
+
+export const setSortType = (sortType: String) => ({
+  sortType,
+  type: WORKSPACES_SET_SORT_TYPE,
+})
