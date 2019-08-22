@@ -15,7 +15,7 @@ import { Page } from "../../components/Containers"
 import StudySpaceSearchResult from "./components/StudySpaceResult"
 import StudySpaceFilters from './components/StudySpaceFilters'
 import { fetchSeatInfos, setSearchQuery, setSortType } from "../../actions/studyspacesActions"
-import { matchingStudySpacesSelector, favouriteStudySpacesSelector } from '../../selectors/studyspacesSelectors'
+import { matchingStudySpacesSelector } from '../../selectors/studyspacesSelectors'
 import { WORKSPACES_SORT_TYPES } from '../../constants/studyspacesConstants'
 
 const styles = StyleSheet.create({
@@ -67,7 +67,6 @@ class StudySpacesListScreen extends React.Component {
       },
     } = state
     return {
-      favouriteSpaces: favouriteStudySpacesSelector(state),
       studyspaces: matchingStudySpacesSelector(state),
       lastUpdated: lastStatusUpdate,
       token,

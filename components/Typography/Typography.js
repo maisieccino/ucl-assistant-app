@@ -2,7 +2,7 @@
 /* eslint react/no-unused-prop-types: 0 */
 import React from "react"
 import PropTypes from "prop-types"
-import { Text, View } from "react-native"
+import { Text, View, ViewPropTypes } from "react-native"
 import { Feather } from "@expo/vector-icons"
 import { Horizontal } from "../Containers"
 import Style from "../../styles/Typography"
@@ -10,7 +10,7 @@ import Colors from "../../constants/Colors"
 
 const propTypes = {
   children: PropTypes.node,
-  style: PropTypes.oneOfType([PropTypes.shape(), PropTypes.number]),
+  style: ViewPropTypes.style,
 }
 const defaultProps = {
   children: ``,

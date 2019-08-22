@@ -11,7 +11,7 @@ export const matchingStudySpacesSelector = createSelector(
   studySpacesSelector,
   studySpacesSearchQuerySelector,
   studySpacesSortTypeSelector,
-  (studyspaces, searchQuery, sortType) => {
+  (studyspaces, searchQuery = ``, sortType) => {
     const matchingStudySpaces = studyspaces.filter((studyspace) => {
       if (searchQuery.length === 0) {
         return true

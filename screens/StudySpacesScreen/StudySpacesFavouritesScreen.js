@@ -12,6 +12,7 @@ import Button from "../../components/Button"
 import Colors from "../../constants/Colors"
 import FavouriteStudySpaces from "./components/FavouriteStudySpaces"
 import { SubtitleText, BodyText } from "../../components/Typography"
+import { favouriteStudySpacesSelector } from '../../selectors/studyspacesSelectors'
 
 const styles = StyleSheet.create({
   favourites: {
@@ -56,20 +57,21 @@ class StudySpaceFavouritesScreen extends Component {
     favouriteSpaces: [],
   }
 
-  static mapStateToProps = ({
-    studyspaces: {
-      studyspaces,
-      lastStatusUpdate,
-      favourites,
-    },
-    user: {
+  static mapStateToProps = (state) => {
+    const {
+      studyspaces: {
+        lastStatusUpdate,
+      },
+      user: {
+        token,
+      },
+    } = state
+    return {
+      favouriteSpaces: favouriteStudySpacesSelector(state),
+      lastUpdated: lastStatusUpdate,
       token,
-    },
-  }) => ({
-    favouriteSpaces: studyspaces.filter((space) => favourites.includes(space.id)),
-    lastUpdated: lastStatusUpdate,
-    token,
-  })
+    }
+  }
 
   static mapDispatchToProps = (dispatch) => ({
     fetchInfo: (ids, token) => dispatch(fetchSeatInfos(token, ids)),

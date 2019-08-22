@@ -88,8 +88,9 @@ export default (state = initialState, action = null) => {
           state.studyspaces,
         )
         .filter(({ id: spaceId }) => {
-          const spaceIsRemoved = data.filter(({ id: fetchedSpaceId }) => fetchedSpaceId === spaceId)
-            .length === 0
+          const spaceIsRemoved = data.filter(
+            ({ id: fetchedSpaceId }) => fetchedSpaceId === spaceId
+          ).length === 0
           return !spaceIsRemoved
         })
       return {
