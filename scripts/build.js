@@ -44,6 +44,7 @@ const run = async () => {
 
   const confirmationQuestion = [{
     type: `confirm`,
+    // eslint-disable-next-line no-secrets/no-secrets
     name: `publishCommandCorrect`,
     message: `The following command will now be run: ${expoCommand}`,
     default: false,

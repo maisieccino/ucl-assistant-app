@@ -13,22 +13,12 @@ const executeCommandWithOutput = (command) => new Promise((resolve, reject) => {
 })
 
 const getPublishHistory = async () => {
-  let jsonResult
-  try {
-    jsonResult = JSON.parse(await executeCommandWithOutput(`expo publish:history --raw`))
-  } catch (error) {
-    throw error
-  }
+  const jsonResult = JSON.parse(await executeCommandWithOutput(`expo publish:history --raw`))
   return jsonResult
 }
 
 const getLastPublishVersion = async () => {
-  let publishHistory
-  try {
-    publishHistory = await getPublishHistory()
-  } catch (error) {
-    throw error
-  }
+  const publishHistory = await getPublishHistory()
   const {
     channel,
     publishedTime,
