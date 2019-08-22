@@ -64,7 +64,8 @@
       "error",
       "static public field"
     ],
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "react/forbid-foreign-prop-types": "off" // to use Text.propTypes.style
   },
   "overrides": [
     {

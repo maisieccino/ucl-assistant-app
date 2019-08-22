@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import {
-  Text, View, TextPropTypes,
+  Text, View,
 } from "react-native"
 import { Feather } from "@expo/vector-icons"
 import { Horizontal } from "../Containers"
@@ -10,7 +10,7 @@ import Colors from "../../constants/Colors"
 
 const propTypes = {
   children: PropTypes.node,
-  style: TextPropTypes.style,
+  style: Text.propTypes.style,
 }
 const defaultProps = {
   children: ``,
