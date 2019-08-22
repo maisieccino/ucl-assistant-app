@@ -13,6 +13,7 @@ import configureStore from "./configureStore"
 import RootNavigation from "./navigation/RootNavigation"
 import Styles from "./styles/Containers"
 import AnalyticsManager from "./lib/AnalyticsManager"
+import Colors from './constants/Colors'
 
 const { persistor, store } = configureStore
 
@@ -105,7 +106,11 @@ class App extends Component {
       <Provider store={stateStore}>
         <PersistGate persistor={statePersistor}>
           <View style={Styles.app}>
-            <StatusBar barStyle="light-content" hidden={false} />
+            <StatusBar
+              barStyle="dark-content"
+              hidden={false}
+              backgroundColor={Colors.pageBackground}
+            />
             <RootNavigation />
           </View>
         </PersistGate>
