@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import Colors from "../constants/Colors";
+import { StyleSheet } from "react-native"
+import Colors from "../constants/Colors"
 
 const buttonStyle = {
   padding: 8,
@@ -9,29 +9,16 @@ const buttonStyle = {
   elevation: 2,
   minHeight: 55,
   minWidth: 150,
-  alignItems: "center",
-  justifyContent: "center",
-  flexDirection: "row",
+  alignItems: `center`,
+  justifyContent: `center`,
+  flexDirection: `row`,
   shadowColor: Colors.accentColor,
   shadowOffset: { width: 0, height: 2 },
   shadowRadius: 3,
   shadowOpacity: 0.75,
-};
+}
 
 export default StyleSheet.create({
-  buttonWrapper: {
-    borderRadius: 8,
-    flex: 1,
-    justifyContent: "center",
-  },
-  roundButtonWrapper: {
-    borderRadius: 100,
-    width: 55,
-    height: 55,
-    marginTop: 5,
-    marginBottom: 5,
-    overflow: "hidden",
-  },
   button: StyleSheet.flatten([
     buttonStyle,
     {
@@ -39,6 +26,30 @@ export default StyleSheet.create({
       marginBottom: 5,
     },
   ]),
+  buttonWrapper: {
+    borderRadius: 8,
+    flex: 1,
+    justifyContent: `center`,
+  },
+  disabled: {
+    backgroundColor: Colors.disabledButtonBackground,
+  },
+  roundButton: StyleSheet.flatten([
+    buttonStyle,
+    {
+      minWidth: 55,
+      borderRadius: 30,
+      alignItems: `center`,
+    },
+  ]),
+  roundButtonWrapper: {
+    borderRadius: 100,
+    height: 55,
+    marginBottom: 5,
+    marginTop: 5,
+    overflow: `hidden`,
+    width: 55,
+  },
   smallButton: StyleSheet.flatten([
     buttonStyle,
     {
@@ -48,15 +59,4 @@ export default StyleSheet.create({
       minWidth: 90,
     },
   ]),
-  roundButton: StyleSheet.flatten([
-    buttonStyle,
-    {
-      minWidth: 55,
-      borderRadius: 30,
-      alignItems: "center",
-    },
-  ]),
-  disabled: {
-    backgroundColor: Colors.disabledButtonBackground,
-  },
-});
+})

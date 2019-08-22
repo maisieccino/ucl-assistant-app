@@ -2,12 +2,13 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import PropTypes from "prop-types"
 import { SearchInput } from '../../../components/Input'
+import { LightButton } from '../../../components/Button'
+import { Horizontal } from '../../../components/Containers'
 
 const styles = StyleSheet.create({
   container: {},
 })
 
-// eslint-disable-next-line react/prefer-stateless-function
 class StudySpaceFilters extends React.Component {
   static propTypes = {
     query: PropTypes.string,
@@ -17,11 +18,6 @@ class StudySpaceFilters extends React.Component {
   static defaultProps = {
     query: ``,
   }
-
-  // getMatchingStudySpaces = () => {
-  //   const { studyspaces } = this.props
-  //   studyspaces.sort((s1, s2) => s1.name.localeCompare(s2.name))
-  // }
 
   clearQuery = () => {
     const { onChangeQuery } = this.props
@@ -38,6 +34,10 @@ class StudySpaceFilters extends React.Component {
           query={query}
           clear={this.clearQuery}
         />
+        <Horizontal>
+          <LightButton>Name</LightButton>
+          <LightButton>Vacancies</LightButton>
+        </Horizontal>
       </View>
     )
   }

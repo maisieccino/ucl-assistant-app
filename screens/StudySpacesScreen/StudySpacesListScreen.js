@@ -15,6 +15,7 @@ import { Page } from "../../components/Containers"
 import StudySpaceSearchResult from "./components/StudySpaceResult"
 import StudySpaceFilters from './components/StudySpaceFilters'
 import { fetchSeatInfos, setSearchQuery } from "../../actions/studyspacesActions"
+import { matchingStudySpacesSelector, favouriteStudySpacesSelector } from '../../selectors/studyspacesSelectors'
 
 const styles = StyleSheet.create({
   flatList: {
@@ -49,28 +50,24 @@ class StudySpacesListScreen extends React.Component {
     fetchInfo: () => { },
   }
 
-  static mapStateToProps = ({
-    studyspaces: {
-      studyspaces,
-      lastStatusUpdate,
-      searchQuery = ``,
-      favourites,
-    },
-    user: {
+  static mapStateToProps = (state) => {
+    const {
+      studyspaces: {
+        lastStatusUpdate,
+        searchQuery = ``,
+      },
+      user: {
+        token,
+      },
+    } = state
+    return {
+      favouriteSpaces: favouriteStudySpacesSelector(state),
+      studyspaces: matchingStudySpacesSelector(state),
+      lastUpdated: lastStatusUpdate,
       token,
-    },
-  }) => ({
-    favouriteSpaces: studyspaces.filter((space) => favourites.includes(space.id)),
-    studyspaces: studyspaces.filter((studyspace) => {
-      if (searchQuery.length === 0) {
-        return true
-      }
-      return studyspace.name.toLowerCase().includes(searchQuery.toLowerCase())
-    }),
-    lastUpdated: lastStatusUpdate,
-    token,
-    searchQuery,
-  })
+      searchQuery,
+    }
+  }
 
   static mapDispatchToProps = (dispatch) => ({
     fetchInfo: (ids, token) => dispatch(fetchSeatInfos(token, ids)),

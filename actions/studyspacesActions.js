@@ -9,6 +9,7 @@ import {
   WORKSPACES_IS_FETCHING_HISTORIC_DATA,
   WORKSPACES_TOGGLE_FAVOURITE,
   WORKSPACES_SET_SEARCH_QUERY,
+  WORKSPACES_SET_SORT_TYPE,
 } from "../constants/studyspacesConstants"
 
 export const setIsFetchingSeatInfos = () => ({
@@ -95,4 +96,9 @@ export const toggleFavourite = (id: Number) => ({
 export const setSearchQuery = (query: String) => ({
   query,
   type: WORKSPACES_SET_SEARCH_QUERY,
+})
+
+export const setSortType = (sortType: String) => ({
+  sortType,
+  type: WORKSPACES_SET_SORT_TYPE,
 })

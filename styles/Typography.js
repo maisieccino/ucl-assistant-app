@@ -1,87 +1,78 @@
-import { StyleSheet } from "react-native";
-import Color from "../constants/Colors";
+import { StyleSheet } from "react-native"
+import Color from "../constants/Colors"
 
 export const style = StyleSheet.create({
   baseStyle: {
-    fontFamily: "apercu",
     color: Color.textColor,
+    fontFamily: `apercu`,
     fontSize: 16,
-    marginTop: 1,
     marginBottom: 1,
-  },
-  title: {
-    fontFamily: "apercu-bold",
-    fontSize: 35,
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 28,
-    marginTop: 8,
-    marginBottom: 2,
-  },
-  cardTitle: {
-    color: Color.accentColor,
-    marginTop: 0,
-    marginBottom: 0,
+    marginTop: 1,
   },
   buttonText: {
     color: Color.pageBackground,
     fontSize: 20,
-    textAlign: "center",
+    textAlign: `center`,
   },
-  smallButtonText: {
-    fontSize: 16,
-    flex: 1,
+  cardTitle: {
+    color: Color.accentColor,
+    marginBottom: 0,
+    marginTop: 0,
   },
   centredText: {
-    textAlign: "center",
     color: Color.lightTextColor,
-    marginTop: 5,
     marginBottom: 5,
+    marginTop: 5,
+    textAlign: `center`,
   },
-  searchResultTopText: {
-    fontFamily: "apercu-bold",
-    marginBottom: 0,
+  errorText: {
+    color: Color.errorColor,
   },
-  searchResultBottomText: {
-    marginTop: 0,
-    fontStyle: "italic",
-    color: Color.lightTextColor,
+  infoText: {
+    color: Color.infoColor,
   },
   infoTextContainer: {
     marginTop: 5,
   },
   informational: {
-    marginTop: -1,
     flex: 1,
     marginLeft: 5,
+    marginTop: -1,
   },
-  errorText: {
-    color: Color.errorColor,
+  searchResultBottomText: {
+    color: Color.lightTextColor,
+    fontStyle: `italic`,
+    marginTop: 0,
+  },
+  searchResultTopText: {
+    fontFamily: `apercu-bold`,
+    marginBottom: 0,
+  },
+  smallButtonText: {
+    flex: 1,
+    fontSize: 16,
+  },
+  subtitle: {
+    fontSize: 28,
+    marginBottom: 2,
+    marginTop: 8,
+  },
+  title: {
+    fontFamily: `apercu-bold`,
+    fontSize: 35,
+    marginBottom: 10,
   },
   warningText: {
     color: Color.warningColor,
   },
-  infoText: {
-    color: Color.infoColor,
-  },
-});
+})
 
 export default StyleSheet.create({
-  titleText: StyleSheet.flatten([style.baseStyle, style.title]),
-  subtitleText: StyleSheet.flatten([
-    style.baseStyle,
-    style.title,
-    style.subtitle,
-  ]),
   bodyText: StyleSheet.flatten([style.baseStyle]),
-  centredText: StyleSheet.flatten([style.baseStyle, style.centredText]),
+  bold: {
+    fontWeight: `bold`,
+  },
   buttonText: StyleSheet.flatten([style.baseStyle, style.buttonText]),
-  smallButtonText: StyleSheet.flatten([
-    style.baseStyle,
-    style.buttonText,
-    style.smallButtonText,
-  ]),
   cardTitle: StyleSheet.flatten([
     style.baseStyle,
     style.title,
@@ -90,28 +81,16 @@ export default StyleSheet.create({
   ]),
   cardTitleRect: {
     backgroundColor: Color.accentColor,
-    width: 30,
     height: 5,
-    marginLeft: 2,
     marginBottom: 5,
+    marginLeft: 2,
+    width: 30,
   },
-  searchResultTopText: StyleSheet.flatten([
-    style.baseStyle,
-    style.searchResultTopText,
-  ]),
-  searchResultBottomText: StyleSheet.flatten([
-    style.baseStyle,
-    style.searchResultBottomText,
-  ]),
+  centredText: StyleSheet.flatten([style.baseStyle, style.centredText]),
   errorText: StyleSheet.flatten([
     style.baseStyle,
     style.informational,
     style.errorText,
-  ]),
-  warningText: StyleSheet.flatten([
-    style.baseStyle,
-    style.informational,
-    style.warningText,
   ]),
   infoText: StyleSheet.flatten([
     style.baseStyle,
@@ -119,10 +98,31 @@ export default StyleSheet.create({
     style.infoText,
   ]),
   infoTextContainer: StyleSheet.flatten([style.infoTextContainer]),
-  bold: {
-    fontWeight: "bold",
-  },
+  searchResultBottomText: StyleSheet.flatten([
+    style.baseStyle,
+    style.searchResultBottomText,
+  ]),
+  searchResultTopText: StyleSheet.flatten([
+    style.baseStyle,
+    style.searchResultTopText,
+  ]),
   small: {
     fontSize: 12,
   },
-});
+  smallButtonText: StyleSheet.flatten([
+    style.baseStyle,
+    style.buttonText,
+    style.smallButtonText,
+  ]),
+  subtitleText: StyleSheet.flatten([
+    style.baseStyle,
+    style.title,
+    style.subtitle,
+  ]),
+  titleText: StyleSheet.flatten([style.baseStyle, style.title]),
+  warningText: StyleSheet.flatten([
+    style.baseStyle,
+    style.informational,
+    style.warningText,
+  ]),
+})

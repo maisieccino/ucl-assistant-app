@@ -9,6 +9,7 @@ import {
   WORKSPACES_TOGGLE_FAVOURITE,
   WORKSPACES_SORT_TYPES,
   WORKSPACES_SET_SEARCH_QUERY,
+  WORKSPACES_SET_SORT_TYPE,
 } from "../constants/studyspacesConstants"
 
 const sortStudySpaces = (s1, s2) => s1.id - s2.id
@@ -49,7 +50,7 @@ const updateStudyspaces = (studyspaces, id, newSpace) => {
 
 export default (state = initialState, action = null) => {
   const {
-    type, id, data, error, dailyAverages, query,
+    type, id, data, error, dailyAverages, query, sortType,
   } = action
   const oldSpace = id ? state.studyspaces.filter((s) => s.id === id)[0] : null
 
@@ -162,6 +163,13 @@ export default (state = initialState, action = null) => {
       return {
         ...state,
         searchQuery: query,
+      }
+    }
+
+    case WORKSPACES_SET_SORT_TYPE: {
+      return {
+        ...state,
+        sortType,
       }
     }
 
