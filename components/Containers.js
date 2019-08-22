@@ -10,6 +10,7 @@ import {
   View,
   ViewPropTypes,
   StyleSheet,
+  StatusBar,
 } from "react-native"
 import Styles from "../styles/Containers"
 import Colors from "../constants/Colors"
@@ -68,6 +69,7 @@ export const Page = ({
   ...props
 }) => (
     <>
+      <StatusBar hidden={false} />
       <SafeAreaView style={[styles.safeAreaViewTop, { backgroundColor: topColour }]} />
       <SafeAreaView style={[
         Styles.pageContainer,
