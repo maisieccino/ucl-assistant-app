@@ -69,7 +69,7 @@ export const Page = ({
   ...props
 }) => (
     <>
-      <StatusBar hidden={false} />
+      <StatusBar hidden={false} barStyle="light-content" />
       <SafeAreaView style={[styles.safeAreaViewTop, { backgroundColor: topColour }]} />
       <SafeAreaView style={[
         Styles.pageContainer,

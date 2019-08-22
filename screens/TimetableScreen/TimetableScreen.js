@@ -171,7 +171,7 @@ class TimetableScreen extends Component {
         onRefresh={() => this.onDateChanged(date, true)}
         refreshEnabled
         mainTabPage
-        bottomColour={Colors.tabBackground}
+        topColour={Colors.tabBackground}
       >
         {scopeNumber < 0 && (
           <View>
