@@ -134,7 +134,9 @@ PaddedIcon.propTypes = Feather.propTypes
 PaddedIcon.defaultProps = Feather.defaultProps
 
 export const CircularIcon = (props) => (
-  <Feather {...props} style={Styles.circularIcon} />
+  <View style={Styles.circularIcon}>
+    <Feather {...props} />
+  </View>
 )
 CircularIcon.propTypes = Feather.propTypes
 CircularIcon.defaultProps = Feather.defaultProps

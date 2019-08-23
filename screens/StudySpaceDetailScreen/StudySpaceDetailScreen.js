@@ -1,27 +1,27 @@
 // @flow
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { View, StyleSheet } from "react-native";
-import { connect } from "react-redux";
-import moment from "moment";
-import Timezones from "../../constants/Timezones";
-import LocalisationManager from "../../lib/LocalisationManager";
-import { fetchAverages } from "../../actions/studyspacesActions";
-import { Page, Horizontal } from "../../components/Containers";
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { View, StyleSheet } from "react-native"
+import { connect } from "react-redux"
+import moment from "moment"
+import Timezones from "../../constants/Timezones"
+import LocalisationManager from "../../lib/LocalisationManager"
+import { fetchAverages } from "../../actions/studyspacesActions"
+import { Page, Horizontal } from "../../components/Containers"
 import {
   BodyText,
   TitleText,
   SubtitleText,
   Link,
   InfoText,
-} from "../../components/Typography";
-import CapacityChart from "./CapacityChart";
-import LiveIndicator from "../../components/LiveIndicator";
+} from "../../components/Typography"
+import CapacityChart from "./CapacityChart"
+import LiveIndicator from "../../components/LiveIndicator"
 // import OpeningHours from "./OpeningHours";
-import FavouriteButton from "./FavouriteButton";
-import LiveSeatingMapList from "./LiveSeatingMapList";
-import Colors from "../../constants/Colors";
-import Shadow from "../../lib/Shadow";
+import FavouriteButton from "./FavouriteButton"
+import LiveSeatingMapList from "./LiveSeatingMapList"
+import Colors from "../../constants/Colors"
+import Shadow from "../../lib/Shadow"
 
 const busyText = (
   time = 0,
@@ -29,16 +29,16 @@ const busyText = (
   occupied = 0,
   capacity = 1,
 ) => {
-  const diff = data[time] - occupied;
-  const threshold = capacity > 100 ? 0.1 : 0.05;
+  const diff = data[time] - occupied
+  const threshold = capacity > 100 ? 0.1 : 0.05
   if (Math.abs(diff) / capacity < threshold) {
-    return "as busy as normal";
+    return `as busy as normal`
   }
   if (diff > 0) {
-    return "quieter than usual";
+    return `quieter than usual`
   }
-  return "busier than usual";
-};
+  return `busier than usual`
+}
 
 const styles = StyleSheet.create({
   cardHeader: {
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   liveIndicatorContainer: {
-    justifyContent: "flex-start",
+    justifyContent: `flex-start`,
     paddingRight: 40,
   },
   occupancySection: {
@@ -83,11 +83,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: -10,
   },
-});
+})
 
 class StudySpaceDetailScreen extends Component {
   static navigationOptions = {
-    title: "Study Space Detail",
+    title: `Study Space Detail`,
   };
 
   static propTypes = {
@@ -101,23 +101,23 @@ class StudySpaceDetailScreen extends Component {
 
   static defaultProps = {
     studyspaces: [],
-    token: "",
+    token: ``,
   }
 
   static getDerivedStateFromProps(props, state) {
     if (props.studyspaces && props.studyspaces.length > 0) {
-      const space = props.studyspaces.filter(s => s.id === state.id)[0];
-      return { data: space.dailyAverages, space };
+      const space = props.studyspaces.filter((s) => s.id === state.id)[0]
+      return { data: space.dailyAverages, space }
     }
-    return null;
+    return null
   }
 
-  static mapStateToProps = state => ({
+  static mapStateToProps = (state) => ({
     studyspaces: state.studyspaces.studyspaces,
     token: state.user.token,
   })
 
-  static mapDispatchToProps = dispatch => ({
+  static mapDispatchToProps = (dispatch) => ({
     fetchAverages: (token, id) => dispatch(fetchAverages(token, id)),
   })
 
@@ -127,8 +127,10 @@ class StudySpaceDetailScreen extends Component {
   }
 
   constructor(props) {
-    super(props);
-    const { id, name, occupied, total } = this.props.navigation.state.params;
+    super(props)
+    const {
+      id, name, occupied, total,
+    } = this.props.navigation.state.params
     this.state = {
       name,
       id,
@@ -140,47 +142,47 @@ class StudySpaceDetailScreen extends Component {
         isFetchingAverages: false,
       },
       survey: props.studyspaces.filter(
-        ({ id: surveyId }) =>
-          Number.parseInt(id, 10) === Number.parseInt(surveyId, 10),
+        ({ id: surveyId }) => Number.parseInt(id, 10) === Number.parseInt(surveyId, 10),
       )[0],
-    };
+    }
   }
 
   componentDidMount() {
-    const { fetchingData, id } = this.state;
-    const { token } = this.props;
+    const { fetchingData, id } = this.state
+    const { token } = this.props
     if (!fetchingData && token.length > 0) {
-      this.props.fetchAverages(token, id);
-      setTimeout(() => this.setState({ fetchingData: true }), 100);
+      this.props.fetchAverages(token, id)
+      setTimeout(() => this.setState({ fetchingData: true }), 100)
     }
   }
 
   navigateToLiveSeatMap = () => {
     const { navigation } = this.props
     const { survey } = this.state
-    navigation.navigate("LiveSeatingMap", { survey })
+    navigation.navigate(`LiveSeatingMap`, { survey })
   }
 
   render() {
-    const { navigation } = this.props;
-    const { id, name, data, total, occupied, space } = this.state;
-    const { isFetchingAverages, maps } = space;
+    const { navigation } = this.props
+    const {
+      id, name, data, total, occupied, space,
+    } = this.state
+    const { isFetchingAverages, maps } = space
     const hour = parseInt(
       moment()
         .tz(Timezones.London)
-        .format("HH"),
+        .format(`HH`),
       10,
     )
 
     const londonTimeOffset = moment()
       .tz(Timezones.London)
-      .utcOffset();
+      .utcOffset()
     const localTimeOffset = moment()
       .tz(LocalisationManager.getTimezone())
-      .utcOffset();
-    const hoursDifference = (localTimeOffset - londonTimeOffset) / 60;
-    const timezoneInfo =
-      londonTimeOffset !== localTimeOffset ? (
+      .utcOffset()
+    const hoursDifference = (localTimeOffset - londonTimeOffset) / 60
+    const timezoneInfo = londonTimeOffset !== localTimeOffset ? (
         <InfoText style={styles.timezoneInfo}>
           Using London time (
           {hoursDifference > 0
@@ -188,7 +190,7 @@ class StudySpaceDetailScreen extends Component {
             : `${Math.abs(hoursDifference)}h ahead`}
           ).
         </InfoText>
-      ) : null;
+    ) : null
     return (
       <View style={styles.container}>
         <Page>
@@ -223,8 +225,11 @@ class StudySpaceDetailScreen extends Component {
             <BodyText>
               {moment()
                 .tz(Timezones.London)
-                .format("h:mma")}{" "}
-              - {busyText(hour, data, occupied, total)}
+                .format(`h:mma`)}
+{` `}
+              -
+{` `}
+{busyText(hour, data, occupied, total)}
             </BodyText>
           </Horizontal>
           <LiveSeatingMapList
@@ -254,11 +259,11 @@ class StudySpaceDetailScreen extends Component {
         </Page>
         <FavouriteButton id={id} />
       </View>
-    );
+    )
   }
 }
 
 export default connect(
   StudySpaceDetailScreen.mapStateToProps,
   StudySpaceDetailScreen.mapDispatchToProps,
-)(StudySpaceDetailScreen);
+)(StudySpaceDetailScreen)
