@@ -1,8 +1,8 @@
-/* eslint react/require-default-props: 0 */
-/* eslint react/no-unused-prop-types: 0 */
 import React from "react"
 import PropTypes from "prop-types"
-import { Text, View, ViewPropTypes } from "react-native"
+import {
+  Text, View,
+} from "react-native"
 import { Feather } from "@expo/vector-icons"
 import { Horizontal } from "../Containers"
 import Style from "../../styles/Typography"
@@ -10,7 +10,7 @@ import Colors from "../../constants/Colors"
 
 const propTypes = {
   children: PropTypes.node,
-  style: ViewPropTypes.style,
+  style: Text.propTypes.style,
 }
 const defaultProps = {
   children: ``,
@@ -51,7 +51,7 @@ export const SmallButtonText = ({ children, style }) => (
   <Text style={[Style.smallButtonText, style]}>{children}</Text>
 )
 SmallButtonText.propTypes = propTypes
-SmallButtonText.defaultTextProps = defaultProps
+SmallButtonText.defaultProps = defaultProps
 
 export const CardTitleText = ({ children, style }) => (
   <View>
@@ -62,43 +62,43 @@ export const CardTitleText = ({ children, style }) => (
 CardTitleText.propTypes = propTypes
 CardTitleText.defaultProps = defaultProps
 
-export const ErrorText = ({ children }) => (
+export const ErrorText = ({ children, style }) => (
   <Horizontal style={Style.infoTextContainer}>
     <Feather size={18} color={Colors.errorColor} name="alert-circle" />
-    <Text style={Style.errorText}>{children}</Text>
+    <Text style={[Style.errorText, style]}>{children}</Text>
   </Horizontal>
 )
 ErrorText.propTypes = propTypes
 ErrorText.defaultProps = defaultProps
 
-export const WarningText = ({ children, icon }) => (
+export const WarningText = ({ children, icon, style }) => (
   <Horizontal style={Style.infoTextContainer}>
     <Feather size={18} color={Colors.warningColor} name={icon} />
-    <Text style={Style.warningText}>{children}</Text>
+    <Text style={[Style.warningText, style]}>{children}</Text>
   </Horizontal>
 )
 WarningText.propTypes = { ...propTypes, icon: PropTypes.string }
 WarningText.defaultProps = { ...defaultProps, icon: `info` }
 
 export const InfoText = ({ children, icon, style }) => (
-  <Horizontal style={[Style.infoTextContainer, style]}>
+  <Horizontal style={Style.infoTextContainer}>
     <Feather size={18} color={Colors.infoColor} name={icon} />
-    <Text style={Style.infoText}>{children}</Text>
+    <Text style={[Style.infoText, style]}>{children}</Text>
   </Horizontal>
 )
 InfoText.propTypes = { ...propTypes, icon: PropTypes.string }
 InfoText.defaultProps = { ...defaultProps, icon: `info` }
 
-export const SearchResultTopText = ({ children }) => (
-  <Text style={Style.searchResultTopText}>{children}</Text>
+export const SearchResultTopText = ({ children, style }) => (
+  <Text style={[Style.searchResultTopText, style]}>{children}</Text>
 )
 SearchResultTopText.propTypes = propTypes
-SearchResultTopText.defaultTextProps = defaultProps
+SearchResultTopText.defaultProps = defaultProps
 
-export const SearchResultBottomText = ({ children }) => (
-  <Text style={Style.searchResultBottomText}>{children}</Text>
+export const SearchResultBottomText = ({ children, style }) => (
+  <Text style={[Style.searchResultBottomText, style]}>{children}</Text>
 )
 SearchResultBottomText.propTypes = propTypes
-SearchResultBottomText.defaultTextProps = defaultProps
+SearchResultBottomText.defaultProps = defaultProps
 
 export default {}

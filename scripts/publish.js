@@ -6,7 +6,6 @@ const inquirer = require(`inquirer`)
 const Expo = require(`./expo`)
 
 const run = async () => {
-
   console.log(`This will publish the current version of UCL Assistant over-the-air via Expo to all eligible devices`)
 
   const {
@@ -39,6 +38,7 @@ const run = async () => {
 
   const confirmationQuestion = [{
     type: `confirm`,
+    // eslint-disable-next-line no-secrets/no-secrets
     name: `publishCommandCorrect`,
     message: `The following command will now be run: ${expoCommand}`,
     default: false,

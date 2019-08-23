@@ -1,7 +1,7 @@
-import { StyleSheet } from "react-native";
-import Colors from "../constants/Colors";
+import { StyleSheet } from "react-native"
+import Colors from "../constants/Colors"
 
-module.exports = StyleSheet.create({
+const SplashStyle = StyleSheet.create({
   button: {
     borderColor: Colors.pageBackground,
     borderWidth: 2,
@@ -12,7 +12,7 @@ module.exports = StyleSheet.create({
   },
   disclaimerLink: {
     color: Colors.cardBackground,
-    textDecorationLine: "underline",
+    textDecorationLine: `underline`,
   },
   disclaimerText: {
     color: Colors.cardBackground,
@@ -23,14 +23,16 @@ module.exports = StyleSheet.create({
   },
   text: {
     color: Colors.pageBackground,
-    textAlign: "center",
+    textAlign: `center`,
   },
   uclapiImage: {
-    alignSelf: "center",
+    alignSelf: `center`,
     flexBasis: 20,
     flexGrow: 0,
     height: 20,
     marginRight: 5,
     marginTop: 0,
   },
-});
+})
+
+export default SplashStyle

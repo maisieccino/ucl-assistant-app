@@ -13,6 +13,7 @@ import configureStore from "./configureStore"
 import RootNavigation from "./navigation/RootNavigation"
 import Styles from "./styles/Containers"
 import AnalyticsManager from "./lib/AnalyticsManager"
+import Colors from './constants/Colors'
 
 const { persistor, store } = configureStore
 
@@ -26,11 +27,23 @@ if (!__DEV__) {
 class App extends Component {
   static propTypes = {
     skipLoadingScreen: PropTypes.bool,
-  };
+  }
 
   static defaultProps = {
     skipLoadingScreen: false,
-  };
+  }
+
+  static getActiveRouteName(navigationState) {
+    if (!navigationState) {
+      return null
+    }
+    const route = navigationState.routes[navigationState.index]
+    // dive into nested navigators
+    if (route.routes) {
+      return App.getActiveRouteName(route)
+    }
+    return route.routeName
+  }
 
   constructor(props) {
     super(props)
@@ -73,18 +86,27 @@ class App extends Component {
       "apercu-bold": require(`./assets/fonts/somerandomfont-Bold.otf`),
       "apercu-light": require(`./assets/fonts/somerandomfont-Light.otf`),
     }),
-  ]);
+  ])
 
   handleLoadingError = (error) => {
-    // TODO: Setup remote error logging
+    Sentry.captureException(error)
     console.warn(error)
-  };
+  }
 
   handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true })
-  };
+  }
 
-  handleNotification = notification => console.log(`Received notification`, notification);
+  handleNotification = (notification) => console.log(`Received notification`, notification)
+
+  onNavigationStateChange = (prevState, currentState) => {
+    const currentScreen = App.getActiveRouteName(currentState)
+    const prevScreen = App.getActiveRouteName(prevState)
+
+    if (prevScreen !== currentScreen) {
+      AnalyticsManager.logScreenView(currentScreen)
+    }
+  }
 
   render() {
     const { isLoadingComplete } = this.state
@@ -105,8 +127,14 @@ class App extends Component {
       <Provider store={stateStore}>
         <PersistGate persistor={statePersistor}>
           <View style={Styles.app}>
-            <StatusBar barStyle="light-content" hidden={false} />
-            <RootNavigation />
+            <StatusBar
+              barStyle="dark-content"
+              hidden={false}
+              backgroundColor={Colors.pageBackground}
+            />
+            <RootNavigation
+              onNavigationStateChange={this.onNavigationStateChange}
+            />
           </View>
         </PersistGate>
       </Provider>

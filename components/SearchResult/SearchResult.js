@@ -9,7 +9,7 @@ import Colors from "../../constants/Colors"
 import Indicator from "./Indicator"
 import Styles from "../../styles/Containers"
 
-const getIcon = type => {
+const getIcon = (type) => {
   switch (type) {
     case `location`:
       return `map-pin`
@@ -42,7 +42,7 @@ const SearchResult = ({
         </View>
       </Horizontal>
     </TouchableOpacity>
-  )
+)
 
 SearchResult.propTypes = {
   style: ViewPropTypes.style,

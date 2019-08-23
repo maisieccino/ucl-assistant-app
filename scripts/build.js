@@ -6,7 +6,6 @@ const inquirer = require(`inquirer`)
 const Expo = require(`./expo`)
 
 const run = async () => {
-
   console.log(`This will build the current version of UCL Assistant`)
 
   const {
@@ -45,6 +44,7 @@ const run = async () => {
 
   const confirmationQuestion = [{
     type: `confirm`,
+    // eslint-disable-next-line no-secrets/no-secrets
     name: `publishCommandCorrect`,
     message: `The following command will now be run: ${expoCommand}`,
     default: false,
