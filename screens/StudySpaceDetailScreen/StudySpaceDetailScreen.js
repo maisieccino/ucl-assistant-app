@@ -97,12 +97,12 @@ class StudySpaceDetailScreen extends Component {
     /* eslint-enable react/no-unused-prop-types */
     fetchAverages: PropTypes.func.isRequired,
     token: PropTypes.string,
-  };
+  }
 
   static defaultProps = {
     studyspaces: [],
     token: "",
-  };
+  }
 
   static getDerivedStateFromProps(props, state) {
     if (props.studyspaces && props.studyspaces.length > 0) {
@@ -115,16 +115,16 @@ class StudySpaceDetailScreen extends Component {
   static mapStateToProps = state => ({
     studyspaces: state.studyspaces.studyspaces,
     token: state.user.token,
-  });
+  })
 
   static mapDispatchToProps = dispatch => ({
     fetchAverages: (token, id) => dispatch(fetchAverages(token, id)),
-  });
+  })
 
   static capacityTextStyle = {
     marginBottom: 0,
     marginTop: 5,
-  };
+  }
 
   constructor(props) {
     super(props);
@@ -156,10 +156,10 @@ class StudySpaceDetailScreen extends Component {
   }
 
   navigateToLiveSeatMap = () => {
-    const { navigation } = this.props;
-    const { survey } = this.state;
-    navigation.navigate("LiveSeatingMap", { survey });
-  };
+    const { navigation } = this.props
+    const { survey } = this.state
+    navigation.navigate("LiveSeatingMap", { survey })
+  }
 
   render() {
     const { navigation } = this.props;
@@ -170,7 +170,7 @@ class StudySpaceDetailScreen extends Component {
         .tz(Timezones.London)
         .format("HH"),
       10,
-    );
+    )
 
     const londonTimeOffset = moment()
       .tz(Timezones.London)

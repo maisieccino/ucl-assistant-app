@@ -4,7 +4,7 @@ import { clearTimetable } from "./timetableActions"
 import { ASSISTANT_API_URL } from "../constants/API"
 import configureStore from "../configureStore"
 
-import AnalyticsManager from '../lib'
+import AnalyticsManager from '../lib/AnalyticsManager'
 
 const { persistor } = configureStore
 
@@ -45,9 +45,10 @@ export const signIn = () => async (dispatch) => {
     )}`,
   })
   if (result.type === `success`) {
-    AnalyticsManager.setUserId(result.user.upi)
-    AnalyticsManager.setUserProperties(result.user)
-    return dispatch(signInSuccess(result))
+    const action = signInSuccess(result)
+    AnalyticsManager.setUserId(action.user.upi)
+    AnalyticsManager.setUserProperties(action.user)
+    return dispatch(action)
   }
   // login cancelled by user.
   return dispatch(signInCancel())

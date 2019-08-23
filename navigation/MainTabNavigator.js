@@ -77,7 +77,7 @@ export default createBottomTabNavigator(screens, {
     },
     style: {
       height: 60,
-      backgroundColor: Colors.pageBackground,
+      backgroundColor: Colors.tabBackground,
       // https://github.com/react-navigation/react-navigation/issues/5994
       // position: "absolute",
       left: 0,

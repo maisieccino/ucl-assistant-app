@@ -14,8 +14,6 @@ import {
 import Styles from "../styles/Containers"
 import Colors from "../constants/Colors"
 
-// const { height, width } = Dimensions.get("window");
-
 /* eslint-disable react/no-unused-prop-types */
 const propTypes = {
   children: PropTypes.node,
@@ -71,7 +69,6 @@ export const Page = ({
       <SafeAreaView style={[styles.safeAreaViewTop, { backgroundColor: topColour }]} />
       <SafeAreaView style={[
         Styles.pageContainer,
-        { backgroundColor: `#ced0d9` },
         safeAreaViewStyle,
       ]}
       >
@@ -79,7 +76,6 @@ export const Page = ({
           style={[
             Styles.pageContainer,
             mainTabPage ? Styles.mainTab : null,
-            { backgroundColor: `#ced0d9` },
             keyboardAvoidingViewStyle,
           ]}
           {...props}
