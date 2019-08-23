@@ -27,11 +27,23 @@ if (!__DEV__) {
 class App extends Component {
   static propTypes = {
     skipLoadingScreen: PropTypes.bool,
-  };
+  }
 
   static defaultProps = {
     skipLoadingScreen: false,
-  };
+  }
+
+  static getActiveRouteName(navigationState) {
+    if (!navigationState) {
+      return null
+    }
+    const route = navigationState.routes[navigationState.index]
+    // dive into nested navigators
+    if (route.routes) {
+      return App.getActiveRouteName(route)
+    }
+    return route.routeName
+  }
 
   constructor(props) {
     super(props)
@@ -74,18 +86,27 @@ class App extends Component {
       "apercu-bold": require(`./assets/fonts/somerandomfont-Bold.otf`),
       "apercu-light": require(`./assets/fonts/somerandomfont-Light.otf`),
     }),
-  ]);
+  ])
 
   handleLoadingError = (error) => {
-    // TODO: Setup remote error logging
+    Sentry.captureException(error)
     console.warn(error)
-  };
+  }
 
   handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true })
-  };
+  }
 
-  handleNotification = (notification) => console.log(`Received notification`, notification);
+  handleNotification = (notification) => console.log(`Received notification`, notification)
+
+  onNavigationStateChange = (prevState, currentState) => {
+    const currentScreen = App.getActiveRouteName(currentState)
+    const prevScreen = App.getActiveRouteName(prevState)
+
+    if (prevScreen !== currentScreen) {
+      AnalyticsManager.logScreenView(currentScreen)
+    }
+  }
 
   render() {
     const { isLoadingComplete } = this.state
@@ -111,7 +132,9 @@ class App extends Component {
               hidden={false}
               backgroundColor={Colors.pageBackground}
             />
-            <RootNavigation />
+            <RootNavigation
+              onNavigationStateChange={this.onNavigationStateChange}
+            />
           </View>
         </PersistGate>
       </Provider>
