@@ -32,6 +32,9 @@ export const style = StyleSheet.create({
     color: Color.infoColor,
   },
   infoTextContainer: {
+    alignContent: `center`,
+    alignItems: `center`,
+    flexDirection: `row`,
     marginTop: 5,
   },
   informational: {

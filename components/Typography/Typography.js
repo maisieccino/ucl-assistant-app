@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import {
-  Text, View,
+  Text, View, ViewPropTypes,
 } from "react-native"
 import { Feather } from "@expo/vector-icons"
 import { Horizontal } from "../Containers"
@@ -80,14 +80,16 @@ export const WarningText = ({ children, icon, style }) => (
 WarningText.propTypes = { ...propTypes, icon: PropTypes.string }
 WarningText.defaultProps = { ...defaultProps, icon: `info` }
 
-export const InfoText = ({ children, icon, style }) => (
-  <Horizontal style={Style.infoTextContainer}>
-    <Feather size={18} color={Colors.infoColor} name={icon} />
-    <Text style={[Style.infoText, style]}>{children}</Text>
-  </Horizontal>
+export const InfoText = ({
+  children, icon, style, containerStyle,
+}) => (
+    <Horizontal style={[Style.infoTextContainer, containerStyle]}>
+      <Feather size={18} color={Colors.infoColor} name={icon} />
+      <Text style={[Style.infoText, style]}>{children}</Text>
+    </Horizontal>
 )
-InfoText.propTypes = { ...propTypes, icon: PropTypes.string }
-InfoText.defaultProps = { ...defaultProps, icon: `info` }
+InfoText.propTypes = { ...propTypes, icon: PropTypes.string, containerStyle: ViewPropTypes.style }
+InfoText.defaultProps = { ...defaultProps, icon: `info`, containerStyle: {} }
 
 export const SearchResultTopText = ({ children, style }) => (
   <Text style={[Style.searchResultTopText, style]}>{children}</Text>
