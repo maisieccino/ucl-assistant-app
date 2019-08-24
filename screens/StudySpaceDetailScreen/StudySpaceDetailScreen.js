@@ -6,7 +6,7 @@ import { connect } from "react-redux"
 import moment from "moment"
 import Timezones from "../../constants/Timezones"
 import LocalisationManager from "../../lib/LocalisationManager"
-import { fetchAverages } from "../../actions/studyspacesActions"
+import { fetchAverages as fetchAveragesAction } from "../../actions/studyspacesActions"
 import { Page, Horizontal } from "../../components/Containers"
 import {
   BodyText,
@@ -118,7 +118,7 @@ class StudySpaceDetailScreen extends Component {
   })
 
   static mapDispatchToProps = (dispatch) => ({
-    fetchAverages: (token, id) => dispatch(fetchAverages(token, id)),
+    fetchAverages: (token, id) => dispatch(fetchAveragesAction(token, id)),
   })
 
   static capacityTextStyle = {
@@ -128,9 +128,10 @@ class StudySpaceDetailScreen extends Component {
 
   constructor(props) {
     super(props)
+    const { navigation } = this.props
     const {
       id, name, occupied, total,
-    } = this.props.navigation.state.params
+    } = navigation.state.params
     this.state = {
       name,
       id,
@@ -149,9 +150,9 @@ class StudySpaceDetailScreen extends Component {
 
   componentDidMount() {
     const { fetchingData, id } = this.state
-    const { token } = this.props
+    const { token, fetchAverages } = this.props
     if (!fetchingData && token.length > 0) {
-      this.props.fetchAverages(token, id)
+      fetchAverages(token, id)
       setTimeout(() => this.setState({ fetchingData: true }), 100)
     }
   }
@@ -183,13 +184,13 @@ class StudySpaceDetailScreen extends Component {
       .utcOffset()
     const hoursDifference = (localTimeOffset - londonTimeOffset) / 60
     const timezoneInfo = londonTimeOffset !== localTimeOffset ? (
-        <InfoText style={styles.timezoneInfo}>
-          Using London time (
+      <InfoText containerStyle={styles.timezoneInfo}>
+        Using London time (
           {hoursDifference > 0
             ? `${hoursDifference}h behind`
             : `${Math.abs(hoursDifference)}h ahead`}
-          ).
-        </InfoText>
+        ).
+      </InfoText>
     ) : null
     return (
       <View style={styles.container}>
@@ -226,10 +227,8 @@ class StudySpaceDetailScreen extends Component {
               {moment()
                 .tz(Timezones.London)
                 .format(`h:mma`)}
-{` `}
-              -
-{` `}
-{busyText(hour, data, occupied, total)}
+              {` - `}
+              {busyText(hour, data, occupied, total)}
             </BodyText>
           </Horizontal>
           <LiveSeatingMapList
@@ -238,9 +237,6 @@ class StudySpaceDetailScreen extends Component {
             surveyId={id}
             navigation={navigation}
           />
-          {/* {survey ? (
-            <Button onPress={this.navigateToLiveSeatMap}>Live Seat Map</Button>
-          ) : null} */}
           {/* <SubtitleText>Opening Hours</SubtitleText>
           <OpeningHours /> */}
           <View style={styles.facilities}>
