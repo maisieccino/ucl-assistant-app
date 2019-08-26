@@ -45,6 +45,16 @@ To build a APK/IPA, which will also publish the current version of UCL Assistant
 $ npm run build
 ```
 
+To upload the APK/IPA to the Play/App Store.
+
+```
+$ npm run upload
+```
+
+When uploading to the Play Store, there should be an `android.json` containing the credentials for the service account in the project root folder. This is the credentials JSON file that can be obtained from the [Google Developers Console](https://console.developers.google.com/project/685091039853/apiui/credential) (see `android.example.json`).
+
+When uploading to the App Store, there should be an `ios.json` containing the credentials for the App Store Connect account (see `ios.example.json`).
+
 ### Details
 
 Expo allows us to update the app seamlessly OTA.

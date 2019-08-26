@@ -13,3 +13,6 @@ yarn.lock
 .tmp
 .DS_Store
 *.rej
+
+android.json
+ios.json

@@ -40,7 +40,9 @@ const run = async () => {
     version,
   } = await inquirer.prompt(questions)
 
-  const expoCommand = `node node_modules/.bin/expo build:${platform} --release-channel=${environment}-${version}`
+  const options = (platform === `android` ? `-t app-bundle` : ``)
+
+  const expoCommand = `node node_modules/.bin/expo build:${platform} ${options} --release-channel=${environment}-${version}`
 
   const confirmationQuestion = [{
     type: `confirm`,
