@@ -37,11 +37,8 @@
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/"
     ],
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-    },
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|react-native-action-button|redux-persist.*)"
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|jest-expo/.*|@unimodules/.*|sentry-expo|native-base|react-native-action-button|redux-persist.*)"
     ]
   },
   "dependencies": {
@@ -90,10 +87,6 @@
     "shortid": "^2.2.14"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^5.1.11",
-    "@storybook/addon-knobs": "^5.1.11",
-    "@storybook/addon-links": "^5.1.11",
-    "@storybook/react-native": "^5.1.11",
     "babel-eslint": "^10.0.2",
     "babel-preset-expo": "^5.2.0",
     "eslint": "^6.2.1",
@@ -112,11 +105,9 @@
     "inquirer": "^7.0.0",
     "jest-expo": "^34.0.1",
     "lint-staged": "^9.2.3",
-    "metro-react-native-babel-preset": "^0.55.0",
     "prettier": "^1.18.2",
     "react-dom": "16.8.6",
-    "react-native-storybook-loader": "^1.8.0",
-    "react-test-renderer": "^16.8.6",
+    "react-test-renderer": "^16.9.0",
     "redux-logger": "^3.0.6"
   }
 }
