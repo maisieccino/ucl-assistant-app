@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "api-727498237492837-938420394",
+  "private_key_id": "8dfdf8sdf7sdfsdfsd8f7sd8f7sd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMHUGYUFGFYUDGSFGDSGFYUGjhhgyugYUFUFUF\n-----END PRIVATE KEY-----\n",
+  "client_email": "ucl-assistant@api-9148394072347-4832483294.iam.gserviceaccount.com",
+  "client_id": "2839740927498237423",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ucl-assistant@api-9148394072347-4832483294.iam.gserviceaccount.com"
+}
