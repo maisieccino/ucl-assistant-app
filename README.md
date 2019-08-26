@@ -73,3 +73,7 @@ Similarly, to create a new app binary (when native code is modified, e.g. for an
 
     expo build:android --release-channel production-[VERSION CODE]
     expo build:ios --release-channel production-[VERSION CODE]
+
+### Travis
+
+When updating `APP_JSON` in Travis, [use this format](https://github.com/travis-ci/travis-ci/issues/7715#issuecomment-362536708): `"$(echo -e '` `{JSON_CONTENT}` `')"` or simply wrap it with single quotes
