@@ -11,9 +11,9 @@ import {
   InfoText,
   SearchResultTopText,
   SearchResultBottomText,
-} from "./Typography";
+} from "./Typography"
 
-import Link from "./Link";
+import Link from "./Link"
 
 export {
   TitleText,
@@ -29,4 +29,4 @@ export {
   SearchResultTopText,
   SearchResultBottomText,
   Link,
-};
+}

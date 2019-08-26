@@ -1,10 +1,11 @@
 {
   "extends": [
     "airbnb",
-    "prettier",
-    "prettier/flowtype",
-    "prettier/react",
-    "plugin:react-native/all"
+    "plugin:react-native/all",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:security/recommended",
+    "plugin:flowtype/recommended"
   ],
   "parser": "babel-eslint",
   "env": {
@@ -16,28 +17,70 @@
       "jsx": true
     }
   },
-  "plugins": ["react", "react-native", "jsx-a11y", "import"],
+  "plugins": [
+    "react",
+    "react-native",
+    "jsx-a11y",
+    "import",
+    "security",
+    "no-secrets",
+    "json",
+    "flowtype"
+  ],
   "globals": {
     "__DEV__": true
   },
   "rules": {
+    "semi": [
+      "error",
+      "never"
+    ],
     "global-require": "off",
-    "react/no-typos": "off", // until https://github.com/yannickcr/eslint-plugin-react/issues/1389 fixed
+    "quotes": [
+      "error",
+      "backtick"
+    ],
+    "no-console": "off",
     "react/jsx-filename-extension": "off",
     "jsx-a11y/accessible-emoji": "off",
-    "comma-dangle": ["error", "always-multiline"],
+    "comma-dangle": [
+      "error",
+      "always-multiline"
+    ],
     "react-native/no-raw-text": "off",
-    "jsx-a11y/anchor-is-valid": "off"
+    "jsx-a11y/anchor-is-valid": "off",
+    "no-secrets/no-secrets": "error",
+    "security/detect-object-injection": "off",
+    "security/detect-non-literal-require": "off", // until https://github.com/nodesecurity/eslint-plugin-security/issues/27 is fixed
+    "react/jsx-indent": "off",
+    "react/jsx-indent-props": [
+      "error",
+      2
+    ],
+    "react/jsx-closing-bracket-location": [
+      "error"
+    ],
+    "react/static-property-placement": [
+      "error",
+      "static public field"
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "react/forbid-foreign-prop-types": "off" // to use Text.propTypes.style
   },
   "overrides": [
     {
-      "files": ["**/__tests__/*.{js,jsx}", "*.test.js"],
+      "files": [
+        "**/__tests__/*.{js,jsx}",
+        "*.test.js"
+      ],
       "env": {
         "jest": true
       }
     },
     {
-      "files": ["**/*-stories.js"],
+      "files": [
+        "**/*-stories.js"
+      ],
       "rules": {
         "import/no-extraneous-dependencies": [
           "error",
@@ -46,14 +89,20 @@
             "optionalDependencies": false,
             "peerDependencies": false
           }
-        ]
+        ],
+        "no-console": "warn"
       }
     }
   ],
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", ".android.js", ".ios.js"]
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".android.js",
+          ".ios.js"
+        ]
       }
     }
   }

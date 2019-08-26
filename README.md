@@ -8,14 +8,16 @@ You'll need the Expo XDE client or the Expo command line client. Get them from
 [here](https://expo.io/tools). You'll also need Yarn or NPM installed.
 
 Copy `app.example.json` to `app.json` and add your own Google Maps API key and
-either modify or delete the Sentry sourcemap hook. Remember to update the APP_JSON env variable in Travis if you modify  `app.json`.
+either modify or delete the Sentry sourcemap hook. Remember to update the APP_JSON env variable in Travis if you modify `app.json`.
 
 The Google Maps API key is optional but without it you won't be able to use Maps
 on Android. You'll want to create an API key on the
 [Google APIs console](https://console.developers.google.com/apis/) and then give
 the key access to the Google Maps Android API.
 
-Then you can start the app with `exp start` or by loading it in XDE.
+Install the necessary dependencies with `npm i`
+
+Then you can start the app with `npm run start`
 
 ## Which API server?
 
@@ -31,11 +33,23 @@ reducer will be saved using the `Expo.SecureStore` API.
 
 ## Deployment
 
+To publish the latest version of UCL Assistant over-the-air via Expo
+
+```
+$ npm run publish
+```
+
+To build a APK/IPA, which will also publish the current version of UCL Assistant
+
+```
+$ npm run build
+```
+
+### Details
+
 Expo allows us to update the app seamlessly OTA.
 
 ### Automatic Deployment
-
-
 
 ### Manual Deployment
 
@@ -49,4 +63,3 @@ Similarly, to create a new app binary (when native code is modified, e.g. for an
 
     expo build:android --release-channel production-[VERSION CODE]
     expo build:ios --release-channel production-[VERSION CODE]
-

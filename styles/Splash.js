@@ -1,36 +1,38 @@
-import { StyleSheet } from "react-native";
-import Colors from "../constants/Colors";
+import { StyleSheet } from "react-native"
+import Colors from "../constants/Colors"
 
-module.exports = StyleSheet.create({
-  page: {
-    paddingTop: 40,
-    paddingBottom: 20,
-  },
-  text: {
-    color: Colors.pageBackground,
-    textAlign: "center",
-  },
+const SplashStyle = StyleSheet.create({
   button: {
     borderColor: Colors.pageBackground,
     borderWidth: 2,
   },
   buttonText: {},
-  uclapiImage: {
-    marginRight: 5,
-    alignSelf: "center",
-    marginTop: 0,
-    height: 20,
-    flexGrow: 0,
-    flexBasis: 20,
-  },
   disclaimer: {
     marginTop: 20,
+  },
+  disclaimerLink: {
+    color: Colors.cardBackground,
+    textDecorationLine: `underline`,
   },
   disclaimerText: {
     color: Colors.cardBackground,
   },
-  disclaimerLink: {
-    color: Colors.cardBackground,
-    textDecorationLine: "underline",
+  page: {
+    paddingBottom: 20,
+    paddingTop: 60,
   },
-});
+  text: {
+    color: Colors.pageBackground,
+    textAlign: `center`,
+  },
+  uclapiImage: {
+    alignSelf: `center`,
+    flexBasis: 20,
+    flexGrow: 0,
+    height: 20,
+    marginRight: 5,
+    marginTop: 0,
+  },
+})
+
+export default SplashStyle
