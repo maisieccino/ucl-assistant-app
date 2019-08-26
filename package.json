@@ -1,13 +1,48 @@
 {
+  "name": "ucl-assistant-app",
+  "version": "1.1.2",
+  "private": true,
+  "description": "An app to manage your UCL life",
+  "license": "MIT",
+  "author": "UCL API",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "lint:staged": "lint-staged",
+    "build": "node scripts/build.js",
     "format": "eslint . --fix --ext .js --ext .jsx --cache --ignore-path .eslintignore",
-    "test": "jest --ci && yarn run lint:force",
-    "storybook": "storybook start -p 7007",
-    "prestorybook": "rnstl",
-    "start": "expo start",
+    "lint:staged": "lint-staged",
     "publish": "node scripts/publish.js",
-    "build": "node scripts/build.js"
+    "start": "expo start",
+    "prestorybook": "rnstl",
+    "storybook": "storybook start -p 7007",
+    "test": "jest --ci"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint:staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,json}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "config": {
+    "react-native-storybook-loader": {
+      "pattern": "**/*-stories.js"
+    }
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|react-native-action-button|redux-persist.*)"
+    ]
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.5",
@@ -71,51 +106,17 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-react": "7.14.3",
     "eslint-plugin-react-native": "^3.7.0",
-    "prettier": "^1.18.2",
-    "react-native-storybook-loader": "^1.8.0",
     "eslint-plugin-security": "^1.4.0",
     "expo-cli": "^3.0.10",
     "husky": "^3.0.4",
     "inquirer": "^7.0.0",
     "jest-expo": "^34.0.1",
     "lint-staged": "^9.2.3",
+    "metro-react-native-babel-preset": "^0.55.0",
+    "prettier": "^1.18.2",
     "react-dom": "16.8.6",
+    "react-native-storybook-loader": "^1.8.0",
     "react-test-renderer": "^16.8.6",
     "redux-logger": "^3.0.6"
-  },
-  "lint-staged": {
-    "*.{js,jsx,json}": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "jest": {
-    "preset": "jest-expo",
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/"
-    ],
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-    },
-    "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|react-native-action-button|redux-persist.*)"
-    ]
-  },
-  "license": "MIT",
-  "name": "ucl-assistant-app",
-  "version": "1.1.2",
-  "description": "An app to manage your UCL life",
-  "author": "UCL API",
-  "config": {
-    "react-native-storybook-loader": {
-      "pattern": "**/*-stories.js"
-    }
-  },
-  "private": true,
-  "main": "node_modules/expo/AppEntry.js",
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint:staged"
-    }
   }
 }
