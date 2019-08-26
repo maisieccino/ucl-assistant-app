@@ -14,7 +14,8 @@
     "start": "expo start",
     "prestorybook": "rnstl",
     "storybook": "storybook start -p 7007",
-    "test": "jest --ci && codecov"
+    "test": "jest --ci && codecov",
+    "upload": "node scripts/upload.js"
   },
   "husky": {
     "hooks": {

@@ -15,3 +15,5 @@ yarn.lock
 *.rej
 
 coverage
+android.json
+ios.json
