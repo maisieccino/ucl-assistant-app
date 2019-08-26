@@ -13,3 +13,5 @@ yarn.lock
 .tmp
 .DS_Store
 *.rej
+
+coverage

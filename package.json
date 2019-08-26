@@ -14,7 +14,7 @@
     "start": "expo start",
     "prestorybook": "rnstl",
     "storybook": "storybook start -p 7007",
-    "test": "jest --ci"
+    "test": "jest --ci && codecov"
   },
   "husky": {
     "hooks": {
@@ -39,7 +39,8 @@
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|jest-expo/.*|@unimodules/.*|sentry-expo|native-base|react-native-action-button|redux-persist.*)"
-    ]
+    ],
+    "collectCoverage": true
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.5",
@@ -93,6 +94,7 @@
     "@storybook/react-native": "^5.1.11",
     "babel-eslint": "^10.0.3",
     "babel-preset-expo": "^5.2.0",
+    "codecov": "^3.5.0",
     "eslint": "^6.2.2",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-flowtype": "^4.2.0",
