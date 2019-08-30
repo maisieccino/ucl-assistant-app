@@ -6,6 +6,8 @@ This information may also be shared with UCL.
 
 Certain diagnostic information relating to crashes and other issues with the app may also be shared with the error-tracking service Sentry.
 
-Updates to the app may be automatically downloaded over-the-air. This may at any time when your device is connected to the Internet and the app is running. UCL API is not liable for any charges that may be incurred as a result of the downloading of the updates over a mobile data connection. If there is a change in our privacy policy, you will be notified. 
+Updates to the app may be automatically downloaded over-the-air. This may occur at any time when your device is connected to the Internet and the app is running. UCL API is not liable for any charges that may be incurred as a result of the downloading of the updates over a mobile data connection.
+
+If there is a change in our privacy policy, you will be notified. 
 
 This app is subject to UCL's standard Privacy Policy: https://www.ucl.ac.uk/legal-services/privacy/general-privacy-policy.
