@@ -24,25 +24,39 @@ const run = async () => {
   }, {
     type: `list`,
     name: `environment`,
-    message: `Publish in which environment?`,
+    message: `Build for which environment?`,
     choices: [`development`, `staging`, `production`],
     default: `production`,
   }, {
     type: `input`,
     name: `version`,
-    message: `Publish to which version?`,
+    message: `What version is this build?`,
     default: lastVersion,
+  }, {
+    type: `confirm`,
+    name: `shouldPublish`,
+    message: `Publish JS code (no need if you've already done this before)`,
+    default: true,
   }]
 
   const {
     platform,
     environment,
     version,
+    shouldPublish,
   } = await inquirer.prompt(questions)
 
-  const options = (platform === `android` ? `-t app-bundle` : ``)
+  const options = []
+  if (platform === `android`) {
+    options.push(`-t app-bundle`)
+  }
+  if (!shouldPublish) {
+    options.push(`--no-publish`)
+  }
 
-  const expoCommand = `node node_modules/.bin/expo build:${platform} ${options} --release-channel=${environment}-${version}`
+  const expoCommand = `node node_modules/.bin/expo build:${platform} ${
+    options.join(` `)
+  } --release-channel=${environment}-${version}`
 
   const confirmationQuestion = [{
     type: `confirm`,
