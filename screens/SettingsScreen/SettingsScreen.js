@@ -88,9 +88,7 @@ class SettingsScreen extends Component {
     } else {
       // is iOS
       Linking.openURL(
-        `app-settings://notification/${
-          Constants.manifest.ios.bundleIdentifier
-        }`,
+        `app-settings://notification/${Constants.manifest.ios.bundleIdentifier}`,
       );
     }
   }

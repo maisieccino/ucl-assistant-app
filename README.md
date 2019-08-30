@@ -8,7 +8,7 @@ You'll need the Expo XDE client or the Expo command line client. Get them from
 [here](https://expo.io/tools). You'll also need Yarn or NPM installed.
 
 Copy `app.example.json` to `app.json` and add your own Google Maps API key and
-either modify or delete the Sentry sourcemap hook.
+either modify or delete the Sentry sourcemap hook. Remember to update the APP_JSON env variable in Travis if you modify `app.json`.
 
 The Google Maps API key is optional but without it you won't be able to use Maps
 on Android. You'll want to create an API key on the
@@ -59,6 +59,12 @@ When uploading to the App Store, there should be an `ios.json` containing the cr
 
 Expo allows us to update the app seamlessly OTA.
 
+### Automatic Deployment
+
+### Manual Deployment
+
+To manually publish:
+
     expo publish --release-channel production-[VERSION CODE]
 
 `[VERSION CODE]` should follow semantic versioning, e.g. 2.0.0.
@@ -67,3 +73,7 @@ Similarly, to create a new app binary (when native code is modified, e.g. for an
 
     expo build:android --release-channel production-[VERSION CODE]
     expo build:ios --release-channel production-[VERSION CODE]
+
+### Travis
+
+When updating `APP_JSON` in Travis, [use this format](https://github.com/travis-ci/travis-ci/issues/7715#issuecomment-362536708): `"$(echo -e '` `{JSON_CONTENT}` `')"` or simply wrap it with single quotes

@@ -97,7 +97,6 @@ class SearchControl extends Component {
             <SmallButton onPress={() => this.clear()}>Clear</SmallButton>
           ) : null}
         </Horizontal>
-
         {error.length > 0 && query.length > 2 && (
           <CentredText>Error! {error} </CentredText>
         )}
@@ -107,7 +106,6 @@ class SearchControl extends Component {
         {query.length === 0 && (
           <CentredText>Start typing to get search results</CentredText>
         )}
-
         {query.length > 0 && searchResults.length === 0 && (
           <CentredText>No results found.</CentredText>
         )}
