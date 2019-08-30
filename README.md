@@ -3,7 +3,7 @@
 [![Powered by UCL API](https://img.shields.io/badge/Powered%20By-UCL%20API-11b57a%20)](https://uclapi.com)
 [![Build Status](https://travis-ci.org/uclapi/ucl-assistant-app.svg?branch=master)](https://travis-ci.org/uclapi/ucl-assistant-app)
 
-UCL Assistant is 
+UCL Assistant is a new and beautiful app to manage your student life at UCL!
 
 <a href='https://play.google.com/store/apps/details?id=com.uclapi.uclassistant&utm_source=github&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='200' /></a>
 
