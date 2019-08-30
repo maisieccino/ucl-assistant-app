@@ -1,8 +1,15 @@
-# UCL Assistant - App
+# UCL Assistant
 
-App source code for UCL Assistant.
+[![Powered by UCL API](https://img.shields.io/badge/Powered%20By-UCL%20API-11b57a%20)](https://uclapi.com)
+[![Build Status](https://travis-ci.org/uclapi/ucl-assistant-app.svg?branch=master)](https://travis-ci.org/uclapi/ucl-assistant-app)
 
-## Getting up and running
+UCL Assistant is a new and beautiful app to manage your student life at UCL!
+
+<a href='https://play.google.com/store/apps/details?id=com.uclapi.uclassistant&utm_source=github&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='200' /></a>
+
+## Contributing
+
+### Building from source
 
 You'll need the Expo XDE client or the Expo command line client. Get them from
 [here](https://expo.io/tools). You'll also need Yarn or NPM installed.
@@ -19,21 +26,24 @@ Install the necessary dependencies with `npm i`
 
 Then you can start the app with `npm run start`
 
-## Which API server?
+### Which API server?
 
-production mode: uses ucl-assistant.uclapi.com
+Source code for the UCL Assistant API Server is available [here](https://github.com/uclapi/ucl-assistant-api/)
 
-development mode: uses ucl-assistant.herokuapp.com
+Production mode: uses ucl-assistant.uclapi.com
 
-## Saving user data
+Development mode: uses ucl-assistant.herokuapp.com
+
+### Saving user data
 
 The app uses [redux-persist](https://github.com/rt2zz/redux-persist) to save the
 app state to the device storage. In the future, for extra security, the `user`
 reducer will be saved using the `Expo.SecureStore` API.
 
-## Deployment
+### Deployment
 
-To publish the latest version of UCL Assistant over-the-air via Expo
+
+Expo allows us to update the app seamlessly OTA. To publish the latest version of UCL Assistant over-the-air via Expo:
 
 ```
 $ npm run publish
@@ -55,13 +65,7 @@ When uploading to the Play Store, there should be an `android.json` containing t
 
 When uploading to the App Store, there should be an `ios.json` containing the credentials for the App Store Connect account (see `ios.example.json`).
 
-### Details
-
-Expo allows us to update the app seamlessly OTA.
-
-### Automatic Deployment
-
-### Manual Deployment
+#### Manual Deployment
 
 To manually publish:
 
