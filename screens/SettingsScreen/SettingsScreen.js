@@ -214,7 +214,7 @@ class SettingsScreen extends Component {
           <BodyText style={styles.textWithUpperMargin}>
             Currently managed by the UCL API Team: a group of students working
             together within ISD to improve UCL by building a platform on top of
-            {`UCL's`}
+            {` UCL's `}
             digital services for students.
           </BodyText>
           <BodyText style={styles.textWithUpperMargin}>
