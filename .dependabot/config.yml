@@ -10,3 +10,10 @@ update_configs:
       - match:
           dependency_type: "production"
           update_type: "semver:patch"
+    ignored_updates:
+      - match:
+          dependency_name: "babel-core"
+      - match:
+          dependency_name: "react"
+      - match:
+          dependency_name: "react-native*"
