@@ -1,1 +1,1 @@
-export { default } from "./PeopleScreen";
+export { default } from "./PeopleScreen"

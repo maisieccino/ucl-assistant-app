@@ -1,23 +1,23 @@
-import React, { Component } from "react";
-import { ActivityIndicator } from "react-native";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { fetchPerson } from "../actions/peopleActions";
-import MailManager from "../lib/MailManager";
-import Button from "../components/Button";
-import { PaddedIcon, PageNoScroll, Spacer } from "../components/Containers";
+import React, { Component } from "react"
+import { ActivityIndicator } from "react-native"
+import { connect } from "react-redux"
+import PropTypes from "prop-types"
+import { fetchPerson as fetchPersonAction } from "../actions/peopleActions"
+import MailManager from "../lib/MailManager"
+import Button from "../components/Button"
+import { PaddedIcon, PageNoScroll, Spacer } from "../components/Containers"
 import {
   BodyText,
   ErrorText,
   TitleText,
   ButtonText,
-} from "../components/Typography";
-import Colors from "../constants/Colors";
+} from "../components/Typography"
+import Colors from "../constants/Colors"
 
 class PersonDetailScreen extends Component {
   static navigationOptions = {
-    title: "Person Detail",
-  };
+    title: `Person Detail`,
+  }
 
   static propTypes = {
     navigation: PropTypes.shape().isRequired,
@@ -31,20 +31,20 @@ class PersonDetailScreen extends Component {
     isFetching: PropTypes.bool,
     error: PropTypes.string,
     /* eslint-enable react/no-unused-prop-types */
-  };
+  }
 
   static defaultProps = {
-    token: "",
-    fetchPerson: () => {},
-    name: "",
-    department: "",
-    email: "",
-    status: "",
+    token: ``,
+    fetchPerson: () => { },
+    name: ``,
+    department: ``,
+    email: ``,
+    status: ``,
     isFetching: false,
-    error: "",
-  };
+    error: ``,
+  }
 
-  static mapStateToProps = state => ({
+  static mapStateToProps = (state) => ({
     name: state.people.person.name,
     department: state.people.person.department,
     email: state.people.person.email,
@@ -52,52 +52,64 @@ class PersonDetailScreen extends Component {
     token: state.user.token,
     isFetching: state.people.isFetching,
     error: state.people.fetchError,
-  });
+  })
 
-  static mapDispatchToProps = dispatch => ({
-    fetchPerson: (token, email) => dispatch(fetchPerson(token, email)),
-  });
+  static mapDispatchToProps = (dispatch) => ({
+    fetchPerson: (token, email) => dispatch(fetchPersonAction(token, email)),
+  })
 
   constructor(props) {
-    super(props);
-    const { params } = props.navigation.state;
-    this.state = { ...params };
+    super(props)
+    const { params } = props.navigation.state
+    this.state = { ...params }
   }
 
   componentDidMount() {
-    this.props.fetchPerson(this.props.token, this.state.email);
+    const { fetchPerson, token } = this.props
+    const { email } = this.state
+    fetchPerson(token, email)
   }
+
   sendEmail = () => {
+    const { email } = this.state
     MailManager.composeAsync({
-      recipients: [this.state.email],
-    });
-  };
+      recipients: [email],
+    })
+  }
 
   render() {
-    const { name, status, department, email, isFetching, error } = this.props;
+    const {
+      name, status, department, email, isFetching, error,
+    } = this.props
     return isFetching ? (
       <PageNoScroll>
         <ActivityIndicator size="large" />
       </PageNoScroll>
     ) : (
-      <PageNoScroll>
-        <TitleText>{name}</TitleText>
-        {error.length > 0 && <ErrorText>Error: {error}</ErrorText>}
-        <BodyText>
-          {status}, {department}
-        </BodyText>
-        <BodyText>Email: {email}</BodyText>
-        <Spacer />
-        <Button onPress={this.sendEmail}>
-          <PaddedIcon name="mail" size={24} color={Colors.pageBackground} />
-          <ButtonText>Send Email</ButtonText>
-        </Button>
-      </PageNoScroll>
-    );
+        <PageNoScroll>
+          <TitleText>{name}</TitleText>
+          {error.length > 0 && (
+            <ErrorText>
+              {`Error: ${error}`}
+            </ErrorText>
+          )}
+          <BodyText>
+            {`${status}, ${department}`}
+          </BodyText>
+          <BodyText>
+            {`Email: ${email}`}
+          </BodyText>
+          <Spacer />
+          <Button onPress={this.sendEmail}>
+            <PaddedIcon name="mail" size={24} color={Colors.pageBackground} />
+            <ButtonText>Send Email</ButtonText>
+          </Button>
+        </PageNoScroll>
+    )
   }
 }
 
 export default connect(
   PersonDetailScreen.mapStateToProps,
   PersonDetailScreen.mapDispatchToProps,
-)(PersonDetailScreen);
+)(PersonDetailScreen)

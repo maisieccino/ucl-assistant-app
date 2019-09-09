@@ -1,43 +1,43 @@
 // @flow
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { View } from "react-native";
-import { generate } from "shortid";
-import { clearRecents } from "../../actions/peopleActions";
-import Button from "../../components/Button";
-import { SubtitleText, CentredText } from "../../components/Typography";
-import SearchResult from "../../components/SearchResult";
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import { View } from "react-native"
+import { generate } from "shortid"
+import { clearRecents as clearRecentsAction } from "../../actions/peopleActions"
+import Button from "../../components/Button"
+import { SubtitleText, CentredText } from "../../components/Typography"
+import SearchResult from "../../components/SearchResult"
 
 class RecentResults extends Component {
   static propTypes = {
     recents: PropTypes.arrayOf(PropTypes.shape()),
     navigation: PropTypes.shape().isRequired,
     clearRecents: PropTypes.func,
-  };
+  }
 
   static defaultProps = {
     recents: [],
-    clearRecents: () => {},
-  };
+    clearRecents: () => { },
+  }
 
-  static mapStateToProps = state => ({
+  static mapStateToProps = (state) => ({
     recents: state.people.recents,
-  });
+  })
 
-  static mapDispatchToProps = dispatch => ({
-    clearRecents: () => dispatch(clearRecents()),
-  });
+  static mapDispatchToProps = (dispatch) => ({
+    clearRecents: () => dispatch(clearRecentsAction()),
+  })
 
   render() {
-    const { navigation, recents } = this.props;
+    const { navigation, recents, clearRecents } = this.props
     if (recents.length === 0) {
-      return null;
+      return null
     }
     return (
       <View>
         <SubtitleText>Recently Searched</SubtitleText>
-        {recents.map(res => (
+        {recents.map((res = {}) => (
           <SearchResult
             key={generate()}
             topText={res.name}
@@ -45,21 +45,21 @@ class RecentResults extends Component {
             type="person"
             buttonText="View"
             onPress={() => {
-              navigation.navigate("PersonDetail", res);
+              navigation.navigate(`PersonDetail`, res)
             }}
           />
         ))}
         {recents.length > 0 ? (
-          <Button onPress={() => this.props.clearRecents()}>Clear</Button>
+          <Button onPress={clearRecents}>Clear</Button>
         ) : (
-          <CentredText>Recent results will appear here.</CentredText>
+            <CentredText>Recent results will appear here.</CentredText>
         )}
       </View>
-    );
+    )
   }
 }
 
 export default connect(
   RecentResults.mapStateToProps,
   RecentResults.mapDispatchToProps,
-)(RecentResults);
+)(RecentResults)
