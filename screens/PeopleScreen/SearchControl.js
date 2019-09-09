@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
   },
 })
 
+const MIN_QUERY_LENGTH = 4
+
 class SearchControl extends Component {
   static propTypes = {
     searchResults: PropTypes.arrayOf(PropTypes.shape()),
@@ -31,7 +33,7 @@ class SearchControl extends Component {
     clear: PropTypes.func,
     token: PropTypes.string,
     navigation: PropTypes.shape().isRequired,
-  };
+  }
 
   static defaultProps = {
     searchResults: [],
@@ -40,19 +42,19 @@ class SearchControl extends Component {
     search: () => { },
     clear: () => { },
     token: ``,
-  };
+  }
 
   static mapStateToProps = (state) => ({
     searchResults: state.people.searchResults,
     isSearching: state.people.isSearching,
     error: state.people.searchError,
     token: state.user.token,
-  });
+  })
 
   static mapDispatchToProps = (dispatch) => ({
     search: (token: String, query: String) => dispatch(searchAction(token, query)),
     clear: () => dispatch(searchClearAction()),
-  });
+  })
 
   static SEARCH_DELAY = 500;
 
@@ -84,6 +86,20 @@ class SearchControl extends Component {
     this.setState({ query: `` })
   }
 
+  renderStatusText = () => {
+    const { query, searchResults } = this.state
+    if (query.length === 0) {
+      return <CentredText>Start typing to get search results</CentredText>
+    }
+    if (query.length < MIN_QUERY_LENGTH && searchResults.length === 0) {
+      return <CentredText>Please enter a few more characters</CentredText>
+    }
+    if (query.length > 0 && searchResults.length === 0) {
+      return <CentredText>No results found.</CentredText>
+    }
+    return null
+  }
+
   render() {
     const { query } = this.state
     const {
@@ -109,12 +125,7 @@ class SearchControl extends Component {
 
         {isSearching && <ActivityIndicator />}
 
-        {query.length === 0 && (
-          <CentredText>Start typing to get search results</CentredText>
-        )}
-        {query.length > 0 && searchResults.length === 0 && (
-          <CentredText>No results found.</CentredText>
-        )}
+        {this.renderStatusText()}
 
         {searchResults.map((res = {}) => (
           <SearchResult
