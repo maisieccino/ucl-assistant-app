@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { Feather } from "@expo/vector-icons";
-import PropTypes from "prop-types";
-import { TitleText } from "../../components/Typography";
-import { Page } from "../../components/Containers";
-import Colors from "../../constants/Colors";
+import React, { Component } from "react"
+import { Feather } from "@expo/vector-icons"
+import PropTypes from "prop-types"
+import { TitleText } from "../../components/Typography"
+import { Page } from "../../components/Containers"
+import Colors from "../../constants/Colors"
 
-import SearchControl from "./SearchControl";
-import RecentResults from "./RecentResults";
+import SearchControl from "./SearchControl"
+import RecentResults from "./RecentResults"
 
 class RoomsScreen extends Component {
   static navigationOptions = {
@@ -18,22 +18,22 @@ class RoomsScreen extends Component {
         color={focused ? Colors.pageBackground : Colors.textColor}
       />
     ),
-  };
+  }
 
   static propTypes = {
     navigation: PropTypes.shape().isRequired,
-  };
+  }
 
   render() {
-    const { navigation } = this.props;
+    const { navigation } = this.props
     return (
       <Page mainTabPage>
         <TitleText>Rooms</TitleText>
         <SearchControl navigation={navigation} />
         <RecentResults navigation={navigation} />
       </Page>
-    );
+    )
   }
 }
 
-export default RoomsScreen;
+export default RoomsScreen

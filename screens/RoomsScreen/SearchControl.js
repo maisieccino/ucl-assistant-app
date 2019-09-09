@@ -15,6 +15,8 @@ const styles = StyleSheet.create({
   },
 })
 
+const MIN_QUERY_LENGTH = 4
+
 class SearchControl extends Component {
   static SEARCH_DELAY = 500;
 
@@ -74,7 +76,7 @@ class SearchControl extends Component {
     && navigationState.params.query.length > 0;
 
   onChangeText = (query: String) => {
-    if (query.length > 3) {
+    if (query.length >= MIN_QUERY_LENGTH) {
       clearTimeout(this.searchTimer)
       this.searchTimer = setTimeout(
         () => this.searchRooms(query),
@@ -117,6 +119,20 @@ class SearchControl extends Component {
     />
   )
 
+  renderStatusText = () => {
+    const { query, searchResults } = this.state
+    if (query.length === 0) {
+      return <CentredText>Start typing to get search results</CentredText>
+    }
+    if (query.length < MIN_QUERY_LENGTH && searchResults.length === 0) {
+      return <CentredText>Please enter a few more characters</CentredText>
+    }
+    if (query.length > 0 && searchResults.length === 0) {
+      return <CentredText>No results found.</CentredText>
+    }
+    return null
+  }
+
   render() {
     const {
       query, error, isSearching, searchResults,
@@ -135,12 +151,7 @@ class SearchControl extends Component {
           </CentredText>
         ) : null}
         {isSearching ? <ActivityIndicator /> : null}
-        {query.length === 0 ? (
-          <CentredText>Start typing to get search results</CentredText>
-        ) : null}
-        {query.length > 0 && searchResults.length === 0 ? (
-          <CentredText>No results found.</CentredText>
-        ) : null}
+        {this.renderStatusText()}
         {searchResults.map(this.renderSearchResult)}
       </View>
     )
