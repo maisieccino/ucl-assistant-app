@@ -66,28 +66,29 @@ class SearchControl extends Component {
     }
   }
 
-  onQueryChange(query: String) {
+  onQueryChange = (query: String) => {
     clearTimeout(this.searchTimer)
     this.searchTimer = setTimeout(
-      this.search.bind(this, query),
+      () => this.search(query),
       SearchControl.SEARCH_DELAY,
     )
     this.setState({ query })
   }
 
-  search(query: String) {
+  search = (query: String) => {
     const { search, token } = this.props
     search(token, query)
   }
 
-  clear() {
+  clear = () => {
     const { clear } = this.props
     clear()
     this.setState({ query: `` })
   }
 
   renderStatusText = () => {
-    const { query, searchResults } = this.state
+    const { query } = this.state
+    const { searchResults } = this.props
     if (query.length === 0) {
       return <CentredText>Start typing to get search results</CentredText>
     }
