@@ -5,7 +5,8 @@
 
 UCL Assistant is a new and beautiful app to manage your student life at UCL!
 
-<a href='https://play.google.com/store/apps/details?id=com.uclapi.uclassistant&utm_source=github&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='200' /></a>
+<a href='https://apps.apple.com/gb/app/ucl-assistant/id1462767418'><img src='https://raw.githubusercontent.com/Volorf/Badges/master/App%20Store/App%20Store%20Badge.svg?sanitize=true' alt='Get it on the App Store' width='200' /></a>
+<a href='https://play.google.com/store/apps/details?id=com.uclapi.uclassistant&utm_source=github&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://raw.githubusercontent.com/Volorf/Badges/master/Google%20Play/Google%20Play%20Badge.svg?sanitize=true' width='200' /></a>
 
 ## Contributing
 
@@ -28,11 +29,7 @@ Then you can start the app with `npm run start`
 
 ### Which API server?
 
-Source code for the UCL Assistant API Server is available [here](https://github.com/uclapi/ucl-assistant-api/)
-
-Production mode: uses ucl-assistant.uclapi.com
-
-Development mode: uses ucl-assistant.herokuapp.com
+Source code for the UCL Assistant API Server is available [here](https://github.com/uclapi/ucl-assistant-api/). It is hosted at [ucl-assistant.uclapi.com](https://ucl-assistant.uclapi.com)
 
 ### Saving user data
 
