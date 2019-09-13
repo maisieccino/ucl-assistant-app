@@ -19,6 +19,7 @@ import CustomButton from "../components/Button"
 import Colors from "../constants/Colors"
 import Styles from "../styles/Containers"
 import SplashStyle from "../styles/Splash"
+import { AssetManager } from "../lib"
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -115,7 +116,7 @@ class SplashScreen extends Component {
         >
           <SafeAreaView style={styles.safeAreaView}>
             <Image
-              source={require(`../assets/images/icon-fg.png`)}
+              source={AssetManager.uclapi.iconForeground}
               resizeMethod="scale"
               style={Styles.image}
               resizeMode="contain"
@@ -131,7 +132,7 @@ class SplashScreen extends Component {
             >
               <Horizontal>
                 <Image
-                  source={require(`../assets/images/uclapi.png`)}
+                  source={AssetManager.uclapi.smallIcon}
                   resizeMethod="scale"
                   resizeMode="contain"
                   style={[Styles.image, SplashStyle.uclapiImage]}

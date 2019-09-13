@@ -4,7 +4,7 @@ import moment from "moment"
 import PropTypes from "prop-types"
 import React, { Component } from "react"
 import { momentObj } from "react-moment-proptypes"
-import { View, StyleSheet } from "react-native"
+import { View, StyleSheet, Image } from "react-native"
 import { connect } from "react-redux"
 import { fetchSeatInfos } from "../../actions/studyspacesActions"
 import { Page } from "../../components/Containers"
@@ -13,8 +13,14 @@ import Colors from "../../constants/Colors"
 import FavouriteStudySpaces from "./components/FavouriteStudySpaces"
 import { SubtitleText, BodyText } from "../../components/Typography"
 import { favouriteStudySpacesSelector } from '../../selectors/studyspacesSelectors'
+import Styles from "../../styles/Containers"
+import { AssetManager } from "../../lib"
 
 const styles = StyleSheet.create({
+  emptyImage: {
+    height: 200,
+    marginTop: 5,
+  },
   favourites: {
     paddingBottom: 20,
   },
@@ -145,10 +151,15 @@ class StudySpaceFavouritesScreen extends Component {
   renderSuggestion = () => (
     <View style={styles.suggestion}>
       <BodyText>
-        Mark a study space as one of your favourites and
-        {` `}
+        Mark a study space as one of your favourites and&nbsp;
         it will appear here for easy reference
       </BodyText>
+      <Image
+        source={AssetManager.undraw.studying}
+        resizeMethod="scale"
+        style={[Styles.image, styles.emptyImage]}
+        resizeMode="contain"
+      />
     </View>
   )
 
