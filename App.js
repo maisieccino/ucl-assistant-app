@@ -7,22 +7,17 @@ import { AppLoading, Notifications } from "expo"
 import * as Font from "expo-font"
 import { Asset } from "expo-asset"
 import { Feather } from "@expo/vector-icons"
-import Sentry from "sentry-expo"
 import { NotificationChannels } from "./constants/notificationsConstants"
 import configureStore from "./configureStore"
 import RootNavigation from "./navigation/RootNavigation"
 import Styles from "./styles/Containers"
 import AnalyticsManager from "./lib/AnalyticsManager"
 import Colors from './constants/Colors'
+import ErrorManager from "./lib/ErrorManager"
 
 const { persistor, store } = configureStore
 
-if (!__DEV__) {
-  Sentry.config(
-    // eslint-disable-next-line no-secrets/no-secrets
-    `https://329dca168bf14b1fbcf0eb462ce86dc6@sentry.io/1379891`,
-  ).install()
-}
+ErrorManager.initialise()
 
 class App extends Component {
   static propTypes = {
@@ -89,8 +84,7 @@ class App extends Component {
   ])
 
   handleLoadingError = (error) => {
-    Sentry.captureException(error)
-    console.warn(error)
+    ErrorManager.captureError(error)
   }
 
   handleFinishLoading = () => {
