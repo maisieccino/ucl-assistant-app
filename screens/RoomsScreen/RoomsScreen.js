@@ -7,6 +7,7 @@ import Colors from "../../constants/Colors"
 
 import SearchControl from "./SearchControl"
 import RecentResults from "./RecentResults"
+import EmptyRooms from "./EmptyRooms"
 
 class RoomsScreen extends Component {
   static navigationOptions = {
@@ -31,6 +32,7 @@ class RoomsScreen extends Component {
         <TitleText>Rooms</TitleText>
         <SearchControl navigation={navigation} />
         <RecentResults navigation={navigation} />
+        <EmptyRooms navigation={navigation} />
       </Page>
     )
   }

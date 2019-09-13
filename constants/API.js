@@ -7,4 +7,5 @@ export const WORKSPACES_URL = `${ASSISTANT_API_URL}/workspaces`
 export const NOTIFICATIONS_URL = `${ASSISTANT_API_URL}/notifications`
 export const ROOMS_URL = `${ASSISTANT_API_URL}/search/rooms`
 export const ROOMBOOKINGS_URL = `${ASSISTANT_API_URL}/roombookings`
+export const FREE_ROOMS_URL = `${ASSISTANT_API_URL}/freerooms`
 export const EQUIPMENT_URL = `${ASSISTANT_API_URL}/equipment`
