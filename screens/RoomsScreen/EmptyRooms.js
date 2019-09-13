@@ -1,9 +1,23 @@
 import React from 'react'
 import { connect } from "react-redux"
-import { View } from 'react-native'
+import { ActivityIndicator, View, StyleSheet } from 'react-native'
 import PropTypes from "prop-types"
-import { SubtitleText, BodyText } from "../../components/Typography"
+import { generate } from "shortid"
+import { SubtitleText, BodyText, CentredText } from "../../components/Typography"
 import ApiManager from "../../lib/ApiManager"
+import SearchResult from "../../components/SearchResult"
+
+const styles = StyleSheet.create({
+  bodyText: {
+    marginBottom: 10,
+  },
+  container: {
+    paddingBottom: 20,
+  },
+  subtitle: {
+    marginBottom: 5,
+  },
+})
 
 class EmptyRooms extends React.Component {
   static propTypes = {
@@ -23,6 +37,8 @@ class EmptyRooms extends React.Component {
     super()
     this.state = {
       emptyRooms: [],
+      loadingEmptyRooms: true,
+      error: null,
     }
   }
 
@@ -32,15 +48,53 @@ class EmptyRooms extends React.Component {
 
   fetchEmptyRooms = async () => {
     const { token } = this.props
-    const emptyRooms = await ApiManager.rooms.getEmptyRooms(token)
-    console.log(emptyRooms)
+    try {
+      const emptyRooms = await ApiManager.rooms.getEmptyRooms(token)
+      this.setState({ emptyRooms, loadingEmptyRooms: false })
+    } catch (error) {
+      this.setState({ error: error.message })
+    }
+  }
+
+  navigateToRoomDetail = (room) => () => {
+    const { navigation } = this.props
+    navigation.navigate(`RoomDetail`, { room })
+  }
+
+  renderEmptyRoom = (room = {}) => (
+    <SearchResult
+      key={generate()}
+      topText={room.roomname}
+      bottomText={room.classification_name}
+      type="location"
+      buttonText="View"
+      onPress={this.navigateToRoomDetail(room)}
+    />
+  )
+
+  renderResults = () => {
+    const { emptyRooms, loadingEmptyRooms } = this.state
+    if (!loadingEmptyRooms && emptyRooms.length === 0) {
+      return (
+        <CentredText>No empty rooms found :(</CentredText>
+      )
+    }
+    if (!loadingEmptyRooms) {
+      return emptyRooms.map(this.renderEmptyRoom)
+    }
+    return <ActivityIndicator />
   }
 
   render() {
+    const { error } = this.state
+    if (error) {
+      return <BodyText>{`Could not fetch empty rooms: ${error}`}</BodyText>
+    }
     return (
-      <View>
-        <SubtitleText>Empty Rooms</SubtitleText>
-        <BodyText>vacant for the next hour</BodyText>
+      <View style={styles.container}>
+        <SubtitleText style={styles.subtitle}>Empty Rooms</SubtitleText>
+        <BodyText style={styles.bodyText}>vacant for the next hour</BodyText>
+        {this.renderResults()}
       </View>
     )
   }
