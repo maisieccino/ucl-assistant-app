@@ -65,7 +65,16 @@
       "static public field"
     ],
     "react/jsx-props-no-spreading": "off",
-    "react/forbid-foreign-prop-types": "off" // to use Text.propTypes.style
+    "react/forbid-foreign-prop-types": "off", // to use Text.propTypes.style
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "packageDir": "./",
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }
+    ]
   },
   "overrides": [
     {
