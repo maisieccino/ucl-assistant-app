@@ -5,7 +5,6 @@ import MapView from "react-native-maps"
 import { generate } from "shortid"
 import moment from "moment"
 import PropTypes from "prop-types"
-import MapsManager from "../../lib/MapsManager"
 import Button from "../../components/Button"
 import { Page, Horizontal } from "../../components/Containers"
 import {
@@ -16,9 +15,14 @@ import {
   SearchResultTopText,
 } from "../../components/Typography"
 import MapStyle from "../../styles/Map"
-import ApiManager from "../../lib/ApiManager"
+import {
+  ApiManager,
+  ErrorManager,
+  MapsManager,
+  Shadow,
+} from "../../lib"
 import Colors from "../../constants/Colors"
-import Shadow from "../../lib/Shadow"
+import FavouriteButton from "./FavouriteButton"
 
 const styles = StyleSheet.create({
   address: {
@@ -48,6 +52,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
     padding: 20,
     ...Shadow(2),
+  },
+  container: {
+    flex: 1,
   },
   coordinatesError: {
     marginBottom: 10,
@@ -113,6 +120,7 @@ class RoomDetailScreen extends Component {
       this.setState({ equipment })
     } catch (error) {
       this.setState({ fetchEquipmentError: error.message })
+      ErrorManager.captureError(error)
     }
   }
 
@@ -125,6 +133,7 @@ class RoomDetailScreen extends Component {
       this.setState({ roombookings })
     } catch (error) {
       this.setState({ fetchBookingsError: error.message })
+      ErrorManager.captureError(error)
     }
   }
 
@@ -201,62 +210,65 @@ class RoomDetailScreen extends Component {
       : MapsManager.navigateToCoords({ lat: latitude, lng: longitude }))
 
     return (
-      <Page>
-        <TitleText>{name}</TitleText>
-        <Horizontal style={styles.details}>
-          <BodyText>{classification}</BodyText>
-          <BodyText>{`Capacity: ${capacity}`}</BodyText>
-        </Horizontal>
-        <View style={styles.address}>
-          <BodyText>{addressString}</BodyText>
-        </View>
-        {invalidCoordinates ? (
-          <View style={styles.coordinatesError}>
-            <ErrorText>
-              Error: We couldn&apos;t fetch coordinates for this venue,&nbsp;
-              so the location displayed on the map may be incorrect.
-            </ErrorText>
+      <View style={styles.container}>
+        <Page>
+          <TitleText>{name}</TitleText>
+          <Horizontal style={styles.details}>
+            <BodyText>{classification}</BodyText>
+            <BodyText>{`Capacity: ${capacity}`}</BodyText>
+          </Horizontal>
+          <View style={styles.address}>
+            <BodyText>{addressString}</BodyText>
           </View>
-        ) : null}
-        <MapView
-          style={MapStyle.wideMap}
-          initialRegion={initialRegion}
-          region={{
-            latitude,
-            longitude,
-            latitudeDelta: initialRegion.latitudeDelta,
-            longitudeDelta: initialRegion.longitudeDelta,
-          }}
-        >
-          <MapView.Marker coordinate={{ latitude, longitude }} />
-        </MapView>
-        <View style={styles.navigate}>
-          <Button onPress={navigateToLocation}>Directions</Button>
-        </View>
-        {fetchEquipmentError ? (
-          <ErrorText>Error: We couldn&apos;t fetch equipment data for this venue.</ErrorText>
-        ) : null}
-        {equipment.length > 0 ? (
-          <View>
-            <SubtitleText style={styles.cardHeader}>In This Room</SubtitleText>
-            <View style={styles.cardList}>
-              {equipment.map(this.renderEquipment)}
+          {invalidCoordinates ? (
+            <View style={styles.coordinatesError}>
+              <ErrorText>
+                Error: We couldn&apos;t fetch coordinates for this venue,&nbsp;
+                so the location displayed on the map may be incorrect.
+              </ErrorText>
             </View>
+          ) : null}
+          <MapView
+            style={MapStyle.wideMap}
+            initialRegion={initialRegion}
+            region={{
+              latitude,
+              longitude,
+              latitudeDelta: initialRegion.latitudeDelta,
+              longitudeDelta: initialRegion.longitudeDelta,
+            }}
+          >
+            <MapView.Marker coordinate={{ latitude, longitude }} />
+          </MapView>
+          <View style={styles.navigate}>
+            <Button onPress={navigateToLocation}>Directions</Button>
           </View>
-        ) : null}
-        {fetchBookingsError ? (
-          <ErrorText>Error: We couldn&apos;t fetch room booking data for this venue.</ErrorText>
-        ) : null}
-        {roombookings.length > 0 ? (
-          <View style={styles.bookingList}>
-            <SubtitleText style={styles.cardHeader}>
-              Bookings Today
-            </SubtitleText>
-            {roombookings.map(this.renderBooking)}
-          </View>
-        ) : null}
-        <View style={styles.padder} />
-      </Page>
+          {fetchEquipmentError ? (
+            <ErrorText>Error: We couldn&apos;t fetch equipment data for this venue.</ErrorText>
+          ) : null}
+          {equipment.length > 0 ? (
+            <View>
+              <SubtitleText style={styles.cardHeader}>In This Room</SubtitleText>
+              <View style={styles.cardList}>
+                {equipment.map(this.renderEquipment)}
+              </View>
+            </View>
+          ) : null}
+          {fetchBookingsError ? (
+            <ErrorText>Error: We couldn&apos;t fetch room booking data for this venue.</ErrorText>
+          ) : null}
+          {roombookings.length > 0 ? (
+            <View style={styles.bookingList}>
+              <SubtitleText style={styles.cardHeader}>
+                Bookings Today
+              </SubtitleText>
+              {roombookings.map(this.renderBooking)}
+            </View>
+          ) : null}
+          <View style={styles.padder} />
+        </Page>
+        <FavouriteButton room={room} />
+      </View>
     )
   }
 }

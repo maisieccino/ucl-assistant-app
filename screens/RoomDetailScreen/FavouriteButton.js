@@ -4,23 +4,31 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { Platform, ToastAndroid } from "react-native"
 import { FloatingHeartButton } from "../../components/Button"
-import { toggleFavourite as toggleFavouriteAction } from "../../actions/studyspacesActions"
+import { toggleFavourite as toggleFavouriteAction } from "../../actions/roomsActions"
+
+const getUniqueId = (room) => {
+  const { roomid, siteid } = room
+  if (!roomid || !siteid) {
+    return null
+  }
+  return `${roomid}|${siteid}`
+}
 
 class FavouriteButton extends Component {
   static propTypes = {
     toggleFavourite: PropTypes.func,
-    id: PropTypes.number,
-    favourites: PropTypes.arrayOf(PropTypes.number),
+    room: PropTypes.shape(),
+    favourites: PropTypes.arrayOf(PropTypes.string),
   }
 
   static defaultProps = {
-    id: -1,
+    room: {},
     toggleFavourite: () => { },
     favourites: [],
   }
 
   static mapStateToProps = (state) => ({
-    favourites: state.studyspaces.favourites,
+    favourites: state.rooms.favourites,
   })
 
   static mapDispatchToProps = (dispatch) => ({
@@ -28,7 +36,8 @@ class FavouriteButton extends Component {
   })
 
   componentDidUpdate(prevProps) {
-    const { id, favourites } = this.props
+    const { room, favourites } = this.props
+    const id = getUniqueId(room)
     const wasFavourite = prevProps.favourites.includes(id)
     const isFavourite = favourites.includes(id)
     if (!wasFavourite && isFavourite && Platform.OS === `android`) {
@@ -36,13 +45,20 @@ class FavouriteButton extends Component {
     }
   }
 
+  toggleFavourite = () => {
+    const { toggleFavourite, room } = this.props
+    const id = getUniqueId(room)
+    toggleFavourite(id)
+  }
+
   render() {
-    const { id, favourites, toggleFavourite } = this.props
+    const { room, favourites } = this.props
+    const id = getUniqueId(room)
     const isFavourite = favourites.includes(id)
     return (
       <FloatingHeartButton
         active={isFavourite}
-        onPress={() => toggleFavourite(id)}
+        onPress={this.toggleFavourite}
       />
     )
   }
