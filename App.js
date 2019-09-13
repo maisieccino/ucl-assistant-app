@@ -6,14 +6,12 @@ import { Platform, StatusBar, View } from "react-native"
 import { AppLoading, Notifications } from "expo"
 import * as Font from "expo-font"
 import { Asset } from "expo-asset"
-import { Feather } from "@expo/vector-icons"
 import { NotificationChannels } from "./constants/notificationsConstants"
 import configureStore from "./configureStore"
 import RootNavigation from "./navigation/RootNavigation"
 import Styles from "./styles/Containers"
-import AnalyticsManager from "./lib/AnalyticsManager"
 import Colors from './constants/Colors'
-import ErrorManager from "./lib/ErrorManager"
+import { AnalyticsManager, AssetManager, ErrorManager } from "./lib"
 
 const { persistor, store } = configureStore
 
@@ -65,21 +63,9 @@ class App extends Component {
   }
 
   loadResourcesAsync = async () => Promise.all([
-    Asset.loadAsync([
-      require(`./assets/images/undraw_calendar.png`),
-      require(`./assets/images/undraw_relaxation.png`),
-      require(`./assets/images/undraw_graduation.png`),
-      require(`./assets/images/undraw_building_blocks.png`),
-    ]),
+    Asset.loadAsync(Object.values(AssetManager.undraw)),
     Font.loadAsync({
-      // This is the font that we are using for our tab bar
-      ...Feather.font,
-      // We include SpaceMono because we use it in HomeScreen.js. Feel free
-      // to remove this if you are not using it in your app
-      "space-mono": require(`./assets/fonts/SpaceMono-Regular.ttf`),
-      apercu: require(`./assets/fonts/somerandomfont.otf`),
-      "apercu-bold": require(`./assets/fonts/somerandomfont-Bold.otf`),
-      "apercu-light": require(`./assets/fonts/somerandomfont-Light.otf`),
+      ...AssetManager.font,
     }),
   ])
 
