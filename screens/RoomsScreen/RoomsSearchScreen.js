@@ -15,7 +15,7 @@ class RoomsSearchScreen extends Component {
   render() {
     const { navigation } = this.props
     return (
-      <Page mainTabPage>
+      <Page>
         <TitleText>Rooms</TitleText>
         <SearchControl navigation={navigation} />
         <RecentResults navigation={navigation} />
