@@ -11,6 +11,7 @@ import {
 import { NavigationActions, StackActions } from "react-navigation"
 import PropTypes from "prop-types"
 import * as IntentLauncherAndroid from "expo-intent-launcher"
+import { StoreReview } from "expo"
 import Constants from "expo-constants"
 import { connect } from "react-redux"
 import {
@@ -28,12 +29,16 @@ import TextInput from "../../components/Input/TextInput"
 // import NotificationSwitch from "./NotificationSwitch"
 import LiveIndicator from "../../components/LiveIndicator"
 import common from "../../styles/common"
+import { AnalyticsManager, MailManager } from "../../lib"
 
 const { version } = require(`../../package.json`)
 
 const styles = StyleSheet.create({
   faqButton: {
     marginBottom: 10,
+  },
+  feedbackButton: {
+    alignSelf: `flex-start`,
   },
   // notificationSettingsButton: {
   //   marginTop: 10,
@@ -126,12 +131,38 @@ class SettingsScreen extends Component {
   navigateToFAQs = () => {
     const { navigation } = this.props
     navigation.navigate(`FAQ`)
+    AnalyticsManager.logEvent(AnalyticsManager.event.SETTINGS_VIEW_FAQS)
   }
 
-  async copyTokenToClipboard() {
-    const { user } = this.props
-    await Clipboard.setString(user.token)
+  copyTokenToClipboard = async () => {
+    const { user: { token } } = this.props
+    await Clipboard.setString(token)
     Alert.alert(`Copied`, `Token copied to clipboard.`)
+  }
+
+  giveFeedback = () => {
+    const { user: { upi } } = this.props
+    const { deviceName, platform, manifest: { releaseChannel } } = Constants
+    MailManager.composeAsync({
+      recipients: [`isd.apiteam@ucl.ac.uk`],
+      subject: `Feedback about UCL Assistant`,
+      body: `I've been using UCL Assistant and I just wanted to tell you ... \n\n`
+        + `Technical Information\n${JSON.stringify({
+          deviceName,
+          platform,
+          releaseChannel,
+          upi,
+        }, null, 2)}`,
+    })
+    AnalyticsManager.logEvent(AnalyticsManager.event.SETTINGS_GIVE_FEEDBACK)
+  }
+
+  rateApp = () => {
+    const isSupported = StoreReview.isSupported()
+    if (isSupported) {
+      StoreReview.requestReview()
+    }
+    AnalyticsManager.logEvent(AnalyticsManager.event.SETTINGS_RATE_APP, { isSupported })
   }
 
   render() {
@@ -205,11 +236,24 @@ class SettingsScreen extends Component {
           <Link href="https://github.com/uclapi/ucl-assistant-app">
             Source Code
           </Link>
+          <Button
+            style={styles.feedbackButton}
+            onPress={this.giveFeedback}
+          >
+            Send Us Feedback
+          </Button>
+          {/* <Horizontal>
+            <Button onPress={this.rateApp}>
+              Rate Us
+            </Button>
+          </Horizontal> */}
         </View>
         <View style={styles.section}>
           <SubtitleText>Author</SubtitleText>
           <BodyText>
-            Created by Matt Bell (class of 2018) using the UCL API.
+            Created by Matt Bell (class of 2018) using the&nbsp;
+            <Link href="https://uclapi.com">UCL API</Link>
+            .
           </BodyText>
           <BodyText style={styles.textWithUpperMargin}>
             Currently managed by the UCL API Team: a group of students working
