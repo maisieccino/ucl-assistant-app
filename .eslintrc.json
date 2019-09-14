@@ -28,7 +28,8 @@
     "json-format",
     "flowtype",
     "simple-import-sort",
-    "sonarjs"
+    "sonarjs",
+    "sort-keys-fix"
   ],
   "globals": {
     "__DEV__": true
@@ -78,7 +79,8 @@
         "peerDependencies": false
       }
     ],
-    "simple-import-sort/sort": "error"
+    "simple-import-sort/sort": "error",
+    "sort-keys-fix/sort-keys-fix": "warn"
   },
   "overrides": [
     {
