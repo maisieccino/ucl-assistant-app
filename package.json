@@ -34,14 +34,14 @@
     }
   },
   "jest": {
+    "collectCoverage": true,
     "preset": "jest-expo",
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/"
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|jest-expo/.*|@unimodules/.*|sentry-expo|native-base|react-native-action-button|redux-persist.*)"
-    ],
-    "collectCoverage": true
+    ]
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.5",
@@ -100,13 +100,15 @@
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-flowtype": "^4.3.0",
     "eslint-plugin-import": "2.18.2",
-    "eslint-plugin-json": "^1.4.0",
+    "eslint-plugin-json-format": "^2.0.1",
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-no-secrets": "^0.3.3",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-react": "7.14.3",
     "eslint-plugin-react-native": "^3.7.0",
     "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-simple-import-sort": "^4.0.0",
+    "eslint-plugin-sonarjs": "^0.4.0",
     "expo-cli": "^3.0.10",
     "husky": "^3.0.5",
     "inquirer": "^7.0.0",
