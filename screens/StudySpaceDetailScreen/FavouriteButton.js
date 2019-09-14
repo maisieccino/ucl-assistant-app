@@ -9,15 +9,15 @@ import { FloatingButton } from "../../components/Button"
 
 class FavouriteButton extends Component {
   static propTypes = {
-    toggleFavourite: PropTypes.func,
-    id: PropTypes.number,
     favourites: PropTypes.arrayOf(PropTypes.number),
+    id: PropTypes.number,
+    toggleFavourite: PropTypes.func,
   }
 
   static defaultProps = {
+    favourites: [],
     id: -1,
     toggleFavourite: () => { },
-    favourites: [],
   }
 
   static mapStateToProps = (state) => ({
@@ -44,8 +44,8 @@ class FavouriteButton extends Component {
       <FloatingButton
         active={isFavourite}
         onPress={() => toggleFavourite(id)}
-        icon="heart"
-        activeIcon="heart-outlined"
+        icon="heart-outlined"
+        activeIcon="heart"
       />
     )
   }

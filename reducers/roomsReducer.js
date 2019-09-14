@@ -4,12 +4,19 @@ import {
   ROOMS_MAX_RECENTS,
   ROOMS_TOGGLE_FAVOURITE,
 } from "../constants/roomsConstants"
-
 import { addToRecents } from "./utils"
 
 export const initialState = {
-  recents: [],
   favourites: [],
+  recents: [],
+}
+
+export const getRoomUniqueId = (room) => {
+  const { roomid, siteid } = room
+  if (!roomid || !siteid) {
+    return null
+  }
+  return `${roomid}|${siteid}`
 }
 
 export default (state = initialState, action = null) => {
@@ -26,19 +33,19 @@ export default (state = initialState, action = null) => {
     }
 
     case ROOMS_TOGGLE_FAVOURITE: {
-      const { id } = action
-      if (id) {
+      const { room } = action
+      if (room) {
         if (!Array.isArray(state.favourites)) {
           return {
             ...state,
-            favourites: [id],
+            favourites: [room],
           }
         }
         return {
           ...state,
-          favourites: state.favourites.includes(id)
-            ? state.favourites.filter((x) => x !== id)
-            : [...state.favourites, id],
+          favourites: state.favourites.map(getRoomUniqueId).includes(getRoomUniqueId(room))
+            ? state.favourites.filter((fav) => getRoomUniqueId(fav) !== getRoomUniqueId(room))
+            : [...state.favourites, room],
         }
       }
       return state

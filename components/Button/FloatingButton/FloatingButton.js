@@ -8,22 +8,24 @@ import Colors from "../../../constants/Colors"
 class FloatingButton extends Component {
   static propTypes = {
     active: PropTypes.bool,
-    onPress: PropTypes.func,
-    icon: PropTypes.string.isRequired,
-    activeIcon: PropTypes.string.isRequired,
-    iconColor: PropTypes.string,
+    activeButtonColor: PropTypes.string,
+    activeIcon: PropTypes.string,
     activeIconColor: PropTypes.string,
     buttonColor: PropTypes.string,
-    activeButtonColor: PropTypes.string,
+    icon: PropTypes.string,
+    iconColor: PropTypes.string,
+    onPress: PropTypes.func,
   }
 
   static defaultProps = {
     active: false,
-    onPress: () => { },
-    iconColor: Colors.errorColor,
-    activeIconColor: Colors.pageBackground,
-    buttonColor: Colors.errorColor,
     activeButtonColor: Colors.disabledButtonBackground,
+    activeIcon: `heart`,
+    activeIconColor: Colors.errorColor,
+    buttonColor: Colors.errorColor,
+    icon: `heart-outlined`,
+    iconColor: Colors.pageBackground,
+    onPress: () => { },
   }
 
   renderIcon = () => {

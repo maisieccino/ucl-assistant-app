@@ -6,15 +6,15 @@ import {
 } from "../constants/roomsConstants"
 
 export const addRecent = (room) => ({
-  type: ROOMS_ADD_RECENT,
   room,
+  type: ROOMS_ADD_RECENT,
 })
 
 export const clearRecents = () => ({
   type: ROOMS_CLEAR_RECENTS,
 })
 
-export const toggleFavourite = (id: String) => ({
-  id,
+export const toggleFavourite = (room) => ({
+  room,
   type: ROOMS_TOGGLE_FAVOURITE,
 })

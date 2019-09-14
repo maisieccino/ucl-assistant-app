@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+
 import { WORKSPACES_SORT_TYPES } from '../constants/studyspacesConstants'
 
 const studySpacesSelector = (state) => state.studyspaces.studyspaces
