@@ -1,8 +1,9 @@
 import { createStackNavigator } from 'react-navigation'
-import StudySpacesListScreen from './StudySpacesListScreen'
-import StudySpacesFavouritesScreen from './StudySpacesFavouritesScreen'
 
-const RootStackNavigator = createStackNavigator(
+import StudySpacesFavouritesScreen from './StudySpacesFavouritesScreen'
+import StudySpacesListScreen from './StudySpacesListScreen'
+
+const StudySpaceNavigator = createStackNavigator(
   {
     StudySpacesFavourites: {
       screen: StudySpacesFavouritesScreen,
@@ -22,4 +23,4 @@ const RootStackNavigator = createStackNavigator(
   }
 )
 
-export default RootStackNavigator
+export default StudySpaceNavigator

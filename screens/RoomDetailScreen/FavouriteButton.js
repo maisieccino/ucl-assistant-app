@@ -1,10 +1,11 @@
 /* eslint react-native/split-platform-components: 0 */
-import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { connect } from "react-redux"
+import React, { Component } from "react"
 import { Platform, ToastAndroid } from "react-native"
-import { FloatingHeartButton } from "../../components/Button"
+import { connect } from "react-redux"
+
 import { toggleFavourite as toggleFavouriteAction } from "../../actions/roomsActions"
+import { FloatingButton } from "../../components/Button"
 
 const getUniqueId = (room) => {
   const { roomid, siteid } = room
@@ -56,9 +57,11 @@ class FavouriteButton extends Component {
     const id = getUniqueId(room)
     const isFavourite = favourites.includes(id)
     return (
-      <FloatingHeartButton
+      <FloatingButton
         active={isFavourite}
         onPress={this.toggleFavourite}
+        icon="heart"
+        activeIcon="heart-outlined"
       />
     )
   }

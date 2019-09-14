@@ -1,11 +1,12 @@
 import React, { Component } from "react"
 import { ActivityIndicator, Platform } from "react-native"
-import { propTypes, defaultProps } from "./props"
-import ActiveButton from "./ActiveButton"
-import DisabledButton from "./DisabledButton"
-import { ButtonText, SmallButtonText } from "../Typography"
+
 import Colors from "../../constants/Colors"
 import Styles from "../../styles/Button"
+import { ButtonText, SmallButtonText } from "../Typography"
+import ActiveButton from "./ActiveButton"
+import DisabledButton from "./DisabledButton"
+import { defaultProps, propTypes } from "./props"
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Button extends Component {
@@ -62,5 +63,5 @@ SmallButton.defaultProps = defaultProps
 
 export default Button
 export { default as RoundButton } from "./RoundButton"
-export { default as FloatingHeartButton } from "./FloatingHeartButton"
+export { default as FloatingButton } from "./FloatingButton"
 export { default as LightButton } from './LightButton'
