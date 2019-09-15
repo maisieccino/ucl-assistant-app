@@ -1,13 +1,14 @@
 // @flow
-import React, { Component } from "react"
-import { View, StyleSheet, ActivityIndicator } from "react-native"
 import PropTypes from "prop-types"
+import React, { Component } from "react"
+import { ActivityIndicator, StyleSheet, View } from "react-native"
 import { connect } from "react-redux"
-import { SearchInput } from "../../components/Input"
-import { CentredText } from "../../components/Typography"
-import SearchResult from "../../components/SearchResult"
-import ApiManager from "../../lib/ApiManager"
+
 import { addRecent } from "../../actions/roomsActions"
+import { SearchInput } from "../../components/Input"
+import SearchResult from "../../components/SearchResult"
+import { CentredText } from "../../components/Typography"
+import ApiManager from "../../lib/ApiManager"
 
 const styles = StyleSheet.create({
   container: {
@@ -21,14 +22,14 @@ class SearchControl extends Component {
   static SEARCH_DELAY = 500;
 
   static propTypes = {
-    token: PropTypes.string,
-    navigation: PropTypes.shape().isRequired,
     addRecentRoom: PropTypes.func,
+    navigation: PropTypes.shape().isRequired,
+    token: PropTypes.string,
   }
 
   static defaultProps = {
-    token: ``,
     addRecentRoom: () => { },
+    token: ``,
   }
 
   static mapStateToProps = (state) => ({
@@ -42,9 +43,9 @@ class SearchControl extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      query: ``,
       error: null,
       isSearching: false,
+      query: ``,
       searchResults: [],
     }
   }
@@ -94,7 +95,7 @@ class SearchControl extends Component {
       if (autoNavigate && results.length === 1) {
         this.navigateToRoomDetail(results[0])()
       }
-      this.setState({ searchResults: results, isSearching: false })
+      this.setState({ isSearching: false, searchResults: results })
     } catch (error) {
       this.setState({ error: error.message, isSearching: false })
     }

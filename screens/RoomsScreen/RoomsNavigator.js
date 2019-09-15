@@ -6,24 +6,24 @@ import RoomsSearchScreen from './RoomsSearchScreen'
 
 const RoomsNavigator = createStackNavigator(
   {
+    EmptyRooms: {
+      screen: EmptyRoomsScreen,
+    },
     RoomsFavourites: {
       screen: RoomsFavouritesScreen,
     },
     RoomsSearch: {
       screen: RoomsSearchScreen,
     },
-    EmptyRooms: {
-      screen: EmptyRoomsScreen,
-    },
   },
   {
-    initialRouteName: `RoomsFavourites`,
     defaultNavigationOptions: () => ({
       headerTitleStyle: {
-        fontWeight: `normal`,
         fontFamily: `apercu`,
+        fontWeight: `normal`,
       },
     }),
+    initialRouteName: `RoomsFavourites`,
   }
 )
 

@@ -12,7 +12,7 @@ class SearchButton extends Component {
 
   navigateToRoomSearch = () => {
     const { navigation } = this.props
-    navigation.navigate(`EmptyRooms`)
+    navigation.navigate(`RoomsSearch`)
   }
 
   render() {

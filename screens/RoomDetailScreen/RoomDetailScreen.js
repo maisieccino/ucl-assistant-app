@@ -1,27 +1,28 @@
-import React, { Component } from "react"
-import { View, StyleSheet } from "react-native"
-import { connect } from "react-redux"
-import MapView from "react-native-maps"
-import { generate } from "shortid"
 import moment from "moment"
 import PropTypes from "prop-types"
+import React, { Component } from "react"
+import { StyleSheet, View } from "react-native"
+import MapView from "react-native-maps"
+import { connect } from "react-redux"
+import { generate } from "shortid"
+
 import Button from "../../components/Button"
-import { Page, Horizontal } from "../../components/Containers"
+import { Horizontal, Page } from "../../components/Containers"
 import {
   BodyText,
-  TitleText,
   ErrorText,
-  SubtitleText,
   SearchResultTopText,
+  SubtitleText,
+  TitleText,
 } from "../../components/Typography"
-import MapStyle from "../../styles/Map"
+import Colors from "../../constants/Colors"
 import {
   ApiManager,
   ErrorManager,
   MapsManager,
   Shadow,
 } from "../../lib"
-import Colors from "../../constants/Colors"
+import MapStyle from "../../styles/Map"
 import FavouriteButton from "./FavouriteButton"
 
 const styles = StyleSheet.create({
@@ -70,8 +71,8 @@ const styles = StyleSheet.create({
 
 const initialRegion = {
   latitude: 51.5246586,
-  longitude: -0.1339784,
   latitudeDelta: 0.0012,
+  longitude: -0.1339784,
   longitudeDelta: 0.0071,
 }
 
@@ -96,10 +97,10 @@ class RoomDetailScreen extends Component {
   constructor() {
     super()
     this.state = {
-      roombookings: [],
       equipment: [],
-      fetchEquipmentError: null,
       fetchBookingsError: null,
+      fetchEquipmentError: null,
+      roombookings: [],
     }
   }
 
@@ -233,8 +234,8 @@ class RoomDetailScreen extends Component {
             initialRegion={initialRegion}
             region={{
               latitude,
-              longitude,
               latitudeDelta: initialRegion.latitudeDelta,
+              longitude,
               longitudeDelta: initialRegion.longitudeDelta,
             }}
           >

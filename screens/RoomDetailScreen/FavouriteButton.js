@@ -8,7 +8,7 @@ import { getRoomUniqueId } from '../../reducers/roomsReducer'
 
 class FavouriteButton extends Component {
   static propTypes = {
-    favourites: PropTypes.arrayOf(PropTypes.string),
+    favourites: PropTypes.arrayOf(PropTypes.shape()),
     room: PropTypes.shape(),
     toggleFavourite: PropTypes.func,
   }

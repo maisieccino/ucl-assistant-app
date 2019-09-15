@@ -2,12 +2,15 @@ import PropTypes from "prop-types"
 import React, { Component } from "react"
 
 import { Page } from "../../components/Containers"
-import { TitleText } from "../../components/Typography"
 import RecentResults from "./RecentResults"
 import SearchControl from "./SearchControl"
 
 // eslint-disable-next-line react/prefer-stateless-function
 class RoomsSearchScreen extends Component {
+  static navigationOptions = {
+    title: `Rooms`,
+  }
+
   static propTypes = {
     navigation: PropTypes.shape().isRequired,
   }
@@ -16,7 +19,6 @@ class RoomsSearchScreen extends Component {
     const { navigation } = this.props
     return (
       <Page>
-        <TitleText>Rooms</TitleText>
         <SearchControl navigation={navigation} />
         <RecentResults navigation={navigation} />
       </Page>

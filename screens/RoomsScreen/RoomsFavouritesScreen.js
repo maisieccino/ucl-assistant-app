@@ -6,9 +6,11 @@ import { connect } from "react-redux"
 
 import Button from "../../components/Button"
 import { Page } from "../../components/Containers"
+import SearchResult from "../../components/SearchResult"
 import { BodyText, SubtitleText } from "../../components/Typography"
 import Colors from "../../constants/Colors"
 import { AssetManager } from '../../lib'
+import { getRoomUniqueId } from '../../reducers/roomsReducer'
 import Styles from "../../styles/Containers"
 import SearchButton from './SearchButton'
 
@@ -22,6 +24,9 @@ const styles = StyleSheet.create({
   },
   emptyRoomsButton: {
     marginTop: 25,
+  },
+  subtitle: {
+    marginBottom: 20,
   },
 })
 
@@ -50,8 +55,18 @@ class RoomsFavouritesScreen extends React.Component {
     favouriteRooms: state.rooms.favourites,
   })
 
+  navigateToEmptyRoomsScreen = () => {
+    const { navigation: { navigate } } = this.props
+    navigate(`EmptyRooms`)
+  }
+
+  navigateToRoomDetail = (room) => () => {
+    const { navigation: { navigate } } = this.props
+    navigate(`RoomDetail`, { room })
+  }
+
   renderSuggestion = () => (
-    <View style={styles.suggestion}>
+    <>
       <BodyText>
         Mark a room as one of your favourite rooms and&nbsp;
         it will appear here for easy reference
@@ -62,24 +77,41 @@ class RoomsFavouritesScreen extends React.Component {
         style={[Styles.image, styles.emptyImage]}
         resizeMode="contain"
       />
-    </View>
+    </>
   )
 
-  renderFavouriteStudySpaces = () => null
+  renderFavouriteRooms = () => {
+    const { favouriteRooms } = this.props
+    return (
+      <>
+        {favouriteRooms.map((room) => (
+          <SearchResult
+            key={getRoomUniqueId(room)}
+            topText={room.roomname}
+            bottomText={room.classification_name}
+            type="location"
+            buttonText="View"
+            onPress={this.navigateToRoomDetail(room)}
+          />
+        ))}
+      </>
+    )
+  }
 
   render() {
     const { navigation, favouriteRooms } = this.props
     return (
       <View style={styles.container}>
         <Page mainTabPage>
-          <SubtitleText>Your Favourites</SubtitleText>
+          <SubtitleText style={styles.subtitle}>Your Favourites</SubtitleText>
           {
             (favouriteRooms.length > 0)
-              ? this.renderFavouriteStudySpaces()
+              ? this.renderFavouriteRooms()
               : this.renderSuggestion()
           }
           <Button
             style={styles.emptyRoomsButton}
+            onPress={this.navigateToEmptyRoomsScreen}
           >
             Find Empty Room
           </Button>
@@ -90,4 +122,7 @@ class RoomsFavouritesScreen extends React.Component {
   }
 }
 
-export default connect()(RoomsFavouritesScreen)
+export default connect(
+  RoomsFavouritesScreen.mapStateToProps,
+  () => ({})
+)(RoomsFavouritesScreen)
