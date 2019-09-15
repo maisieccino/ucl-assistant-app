@@ -1,35 +1,36 @@
 /* eslint-disable react/no-unused-state */
+import { StoreReview } from "expo"
+import Constants from "expo-constants"
+import * as IntentLauncherAndroid from "expo-intent-launcher"
+import PropTypes from "prop-types"
 import React, { Component } from "react"
 import {
   Alert,
-  Platform,
-  View,
   Clipboard,
-  StyleSheet,
   Linking,
+  Platform,
+  StyleSheet,
+  View,
 } from "react-native"
 import { NavigationActions, StackActions } from "react-navigation"
-import PropTypes from "prop-types"
-import * as IntentLauncherAndroid from "expo-intent-launcher"
-import { StoreReview } from "expo"
-import Constants from "expo-constants"
 import { connect } from "react-redux"
-import {
-  TitleText,
-  BodyText,
-  SubtitleText,
-  ButtonText,
-  Link,
-} from "../../components/Typography"
-import { Page, Horizontal, PaddedIcon } from "../../components/Containers"
+
 import { signOut as signOutAction } from "../../actions/userActions"
 import Button, { SmallButton } from "../../components/Button"
-import Colors from "../../constants/Colors"
+import { Horizontal, PaddedIcon, Page } from "../../components/Containers"
 import TextInput from "../../components/Input/TextInput"
 // import NotificationSwitch from "./NotificationSwitch"
 import LiveIndicator from "../../components/LiveIndicator"
-import common from "../../styles/common"
+import {
+  BodyText,
+  ButtonText,
+  Link,
+  SubtitleText,
+  TitleText,
+} from "../../components/Typography"
+import Colors from "../../constants/Colors"
 import { AnalyticsManager, MailManager } from "../../lib"
+import common from "../../styles/common"
 
 const { version } = require(`../../package.json`)
 
@@ -58,14 +59,14 @@ class SettingsScreen extends Component {
   }
 
   static propTypes = {
-    signOut: PropTypes.func,
     navigation: PropTypes.shape(),
+    signOut: PropTypes.func,
     user: PropTypes.shape(),
   }
 
   static defaultProps = {
-    signOut: () => { },
     navigation: {},
+    signOut: () => { },
     user: {},
   }
 
@@ -98,9 +99,9 @@ class SettingsScreen extends Component {
   }
 
   static releaseChannelStyle = {
+    alignItems: `center`,
     flexDirection: `row`,
     justifyContent: `flex-start`,
-    alignItems: `center`,
     marginBottom: 10,
   }
 
@@ -115,8 +116,8 @@ class SettingsScreen extends Component {
     const { user, navigation } = this.props
     if (prevState.isSigningOut && user.token === ``) {
       const action = StackActions.reset({
-        index: 0,
         actions: [NavigationActions.navigate({ routeName: `Splash` })],
+        index: 0,
       })
       navigation.dispatch(action)
     }
@@ -131,7 +132,7 @@ class SettingsScreen extends Component {
   navigateToFAQs = () => {
     const { navigation } = this.props
     navigation.navigate(`FAQ`)
-    AnalyticsManager.logEvent(AnalyticsManager.event.SETTINGS_VIEW_FAQS)
+    AnalyticsManager.logEvent(AnalyticsManager.events.SETTINGS_VIEW_FAQS)
   }
 
   copyTokenToClipboard = async () => {
@@ -144,8 +145,6 @@ class SettingsScreen extends Component {
     const { user: { upi } } = this.props
     const { deviceName, platform, manifest: { releaseChannel } } = Constants
     MailManager.composeAsync({
-      recipients: [`isd.apiteam@ucl.ac.uk`],
-      subject: `Feedback about UCL Assistant`,
       body: `I've been using UCL Assistant and I just wanted to tell you ... \n\n`
         + `Technical Information\n${JSON.stringify({
           deviceName,
@@ -153,8 +152,10 @@ class SettingsScreen extends Component {
           releaseChannel,
           upi,
         }, null, 2)}`,
+      recipients: [`isd.apiteam@ucl.ac.uk`],
+      subject: `Feedback about UCL Assistant`,
     })
-    AnalyticsManager.logEvent(AnalyticsManager.event.SETTINGS_GIVE_FEEDBACK)
+    AnalyticsManager.logEvent(AnalyticsManager.events.SETTINGS_GIVE_FEEDBACK)
   }
 
   rateApp = () => {
@@ -162,7 +163,7 @@ class SettingsScreen extends Component {
     if (isSupported) {
       StoreReview.requestReview()
     }
-    AnalyticsManager.logEvent(AnalyticsManager.event.SETTINGS_RATE_APP, { isSupported })
+    AnalyticsManager.logEvent(AnalyticsManager.events.SETTINGS_RATE_APP, { isSupported })
   }
 
   render() {
