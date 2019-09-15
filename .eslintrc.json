@@ -5,7 +5,8 @@
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:security/recommended",
-    "plugin:flowtype/recommended"
+    "plugin:flowtype/recommended",
+    "plugin:sonarjs/recommended"
   ],
   "parser": "babel-eslint",
   "env": {
@@ -24,8 +25,11 @@
     "import",
     "security",
     "no-secrets",
-    "json",
-    "flowtype"
+    "json-format",
+    "flowtype",
+    "simple-import-sort",
+    "sonarjs",
+    "sort-keys-fix"
   ],
   "globals": {
     "__DEV__": true
@@ -74,7 +78,9 @@
         "optionalDependencies": false,
         "peerDependencies": false
       }
-    ]
+    ],
+    "simple-import-sort/sort": "error",
+    "sort-keys-fix/sort-keys-fix": "warn"
   },
   "overrides": [
     {

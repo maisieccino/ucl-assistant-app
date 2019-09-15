@@ -1,1 +1,1 @@
-export { default } from "./RoomsScreen";
+export { default } from "./RoomsNavigator"

@@ -2,27 +2,56 @@ import {
   ROOMS_ADD_RECENT,
   ROOMS_CLEAR_RECENTS,
   ROOMS_MAX_RECENTS,
-} from "../constants/roomsConstants";
-
-import { addToRecents } from "./utils";
+  ROOMS_TOGGLE_FAVOURITE,
+} from "../constants/roomsConstants"
+import { addToRecents } from "./utils"
 
 export const initialState = {
+  favourites: [],
   recents: [],
-};
+}
+
+export const getRoomUniqueId = (room) => {
+  const { roomid, siteid } = room
+  if (!roomid || !siteid) {
+    return null
+  }
+  return `${roomid}|${siteid}`
+}
 
 export default (state = initialState, action = null) => {
-  const { type, room } = action;
+  const { type } = action
   switch (type) {
     case ROOMS_ADD_RECENT: {
-      const newRecents = addToRecents(state.recents, room, ROOMS_MAX_RECENTS);
-      return { ...state, recents: newRecents };
+      const { room } = action
+      const newRecents = addToRecents(state.recents, room, ROOMS_MAX_RECENTS)
+      return { ...state, recents: newRecents }
     }
 
     case ROOMS_CLEAR_RECENTS: {
-      return { ...state, recents: [] };
+      return { ...state, recents: [] }
+    }
+
+    case ROOMS_TOGGLE_FAVOURITE: {
+      const { room } = action
+      if (room) {
+        if (!Array.isArray(state.favourites)) {
+          return {
+            ...state,
+            favourites: [room],
+          }
+        }
+        return {
+          ...state,
+          favourites: state.favourites.map(getRoomUniqueId).includes(getRoomUniqueId(room))
+            ? state.favourites.filter((fav) => getRoomUniqueId(fav) !== getRoomUniqueId(room))
+            : [...state.favourites, room],
+        }
+      }
+      return state
     }
 
     default:
-      return state;
+      return state
   }
-};
+}

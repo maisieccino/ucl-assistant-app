@@ -4,17 +4,18 @@ import moment from "moment"
 import PropTypes from "prop-types"
 import React, { Component } from "react"
 import { momentObj } from "react-moment-proptypes"
-import { View, StyleSheet, Image } from "react-native"
+import { Image, StyleSheet, View } from "react-native"
 import { connect } from "react-redux"
+
 import { fetchSeatInfos } from "../../actions/studyspacesActions"
-import { Page } from "../../components/Containers"
 import Button from "../../components/Button"
+import { Page } from "../../components/Containers"
+import { BodyText, SubtitleText } from "../../components/Typography"
 import Colors from "../../constants/Colors"
-import FavouriteStudySpaces from "./components/FavouriteStudySpaces"
-import { SubtitleText, BodyText } from "../../components/Typography"
+import { AssetManager } from "../../lib"
 import { favouriteStudySpacesSelector } from '../../selectors/studyspacesSelectors'
 import Styles from "../../styles/Containers"
-import { AssetManager } from "../../lib"
+import FavouriteStudySpaces from "./components/FavouriteStudySpaces"
 
 const styles = StyleSheet.create({
   emptyImage: {

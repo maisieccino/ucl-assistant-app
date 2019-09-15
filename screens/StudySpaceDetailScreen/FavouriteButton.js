@@ -1,53 +1,57 @@
 /* eslint react-native/split-platform-components: 0 */
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Platform, ToastAndroid } from "react-native";
-import { FloatingHeartButton } from "../../components/Button";
-import { toggleFavourite } from "../../actions/studyspacesActions";
+import PropTypes from "prop-types"
+import React, { Component } from "react"
+import { Platform, ToastAndroid } from "react-native"
+import { connect } from "react-redux"
+
+import { toggleFavourite as toggleFavouriteAction } from "../../actions/studyspacesActions"
+import { FloatingButton } from "../../components/Button"
 
 class FavouriteButton extends Component {
   static propTypes = {
-    toggleFavourite: PropTypes.func,
-    id: PropTypes.number,
     favourites: PropTypes.arrayOf(PropTypes.number),
-  };
+    id: PropTypes.number,
+    toggleFavourite: PropTypes.func,
+  }
 
   static defaultProps = {
-    id: -1,
-    toggleFavourite: () => {},
     favourites: [],
-  };
+    id: -1,
+    toggleFavourite: () => { },
+  }
 
-  static mapStateToProps = state => ({
+  static mapStateToProps = (state) => ({
     favourites: state.studyspaces.favourites,
-  });
+  })
 
-  static mapDispatchToProps = dispatch => ({
-    toggleFavourite: id => dispatch(toggleFavourite(id)),
-  });
+  static mapDispatchToProps = (dispatch) => ({
+    toggleFavourite: (id) => dispatch(toggleFavouriteAction(id)),
+  })
 
   componentDidUpdate(prevProps) {
-    const wasFavourite = prevProps.favourites.includes(this.props.id);
-    const isFavourite = this.props.favourites.includes(this.props.id);
-    if (!wasFavourite && isFavourite && Platform.OS === "android") {
-      ToastAndroid.show("Added to favourites", ToastAndroid.SHORT);
+    const { id, favourites } = this.props
+    const wasFavourite = prevProps.favourites.includes(id)
+    const isFavourite = favourites.includes(id)
+    if (!wasFavourite && isFavourite && Platform.OS === `android`) {
+      ToastAndroid.show(`Added to favourites`, ToastAndroid.SHORT)
     }
   }
 
   render() {
-    const isFavourite = this.props.favourites.includes(this.props.id);
-    const { id } = this.props;
+    const { id, favourites, toggleFavourite } = this.props
+    const isFavourite = favourites.includes(id)
     return (
-      <FloatingHeartButton
+      <FloatingButton
         active={isFavourite}
-        onPress={() => this.props.toggleFavourite(id)}
+        onPress={() => toggleFavourite(id)}
+        icon="heart-outlined"
+        activeIcon="heart"
       />
-    );
+    )
   }
 }
 
 export default connect(
   FavouriteButton.mapStateToProps,
   FavouriteButton.mapDispatchToProps,
-)(FavouriteButton);
+)(FavouriteButton)

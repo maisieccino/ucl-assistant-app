@@ -1,12 +1,13 @@
-import React from "react"
+import { Feather } from "@expo/vector-icons"
 import PropTypes from "prop-types"
+import React from "react"
 import {
   Text, View, ViewPropTypes,
 } from "react-native"
-import { Feather } from "@expo/vector-icons"
-import { Horizontal } from "../Containers"
-import Style from "../../styles/Typography"
+
 import Colors from "../../constants/Colors"
+import Style from "../../styles/Typography"
+import { Horizontal } from "../Containers"
 
 const propTypes = {
   children: PropTypes.node,
@@ -88,8 +89,8 @@ export const InfoText = ({
       <Text style={[Style.infoText, style]}>{children}</Text>
     </Horizontal>
 )
-InfoText.propTypes = { ...propTypes, icon: PropTypes.string, containerStyle: ViewPropTypes.style }
-InfoText.defaultProps = { ...defaultProps, icon: `info`, containerStyle: {} }
+InfoText.propTypes = { ...propTypes, containerStyle: ViewPropTypes.style, icon: PropTypes.string }
+InfoText.defaultProps = { ...defaultProps, containerStyle: {}, icon: `info` }
 
 export const SearchResultTopText = ({ children, style }) => (
   <Text style={[Style.searchResultTopText, style]}>{children}</Text>

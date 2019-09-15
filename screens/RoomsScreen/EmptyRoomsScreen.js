@@ -1,25 +1,28 @@
-import React from 'react'
-import { connect } from "react-redux"
-import { ActivityIndicator, View, StyleSheet } from 'react-native'
 import PropTypes from "prop-types"
+import React from 'react'
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import { connect } from "react-redux"
 import { generate } from "shortid"
-import { SubtitleText, BodyText, CentredText } from "../../components/Typography"
-import ApiManager from "../../lib/ApiManager"
+
+import { Page } from "../../components/Containers"
 import SearchResult from "../../components/SearchResult"
+import { BodyText, CentredText } from "../../components/Typography"
+import ApiManager from "../../lib/ApiManager"
 
 const styles = StyleSheet.create({
-  bodyText: {
-    marginBottom: 10,
-  },
   container: {
     paddingBottom: 20,
   },
   subtitle: {
-    marginBottom: 5,
+    marginBottom: 10,
   },
 })
 
-class EmptyRooms extends React.Component {
+class EmptyRoomsScreen extends React.Component {
+  static navigationOptions = {
+    title: `Empty Rooms`,
+  }
+
   static propTypes = {
     navigation: PropTypes.shape().isRequired,
     token: PropTypes.string,
@@ -37,8 +40,8 @@ class EmptyRooms extends React.Component {
     super()
     this.state = {
       emptyRooms: [],
-      loadingEmptyRooms: true,
       error: null,
+      loadingEmptyRooms: true,
     }
   }
 
@@ -91,16 +94,17 @@ class EmptyRooms extends React.Component {
       return <BodyText>{`Could not fetch empty rooms: ${error}`}</BodyText>
     }
     return (
-      <View style={styles.container}>
-        <SubtitleText style={styles.subtitle}>Empty Rooms</SubtitleText>
-        <BodyText style={styles.bodyText}>vacant for the next hour</BodyText>
-        {this.renderResults()}
-      </View>
+      <Page>
+        <View style={styles.container}>
+          <BodyText style={styles.subtitle}>Rooms vacant for the next hour:</BodyText>
+          {this.renderResults()}
+        </View>
+      </Page>
     )
   }
 }
 
 export default connect(
-  EmptyRooms.mapStateToProps,
+  EmptyRoomsScreen.mapStateToProps,
   () => ({}),
-)(EmptyRooms)
+)(EmptyRoomsScreen)
