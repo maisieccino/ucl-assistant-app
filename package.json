@@ -15,6 +15,7 @@
     "prestorybook": "rnstl",
     "storybook": "storybook start -p 7007",
     "test": "jest --ci && codecov",
+    "test:dev": "jest --watch --coverage=false",
     "upload": "node scripts/upload.js"
   },
   "husky": {
@@ -115,9 +116,9 @@
     "inquirer": "^7.0.0",
     "jest-expo": "^34.0.1",
     "lint-staged": "^9.2.5",
-    "react-dom": "16.8.6",
+    "react-dom": "^16.8.3",
     "react-native-storybook-loader": "^1.8.0",
-    "react-test-renderer": "^16.9.0",
+    "react-test-renderer": "^16.8.3",
     "redux-logger": "^3.0.6"
   }
 }
