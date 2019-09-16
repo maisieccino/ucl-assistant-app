@@ -1,20 +1,21 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import PropTypes from "prop-types";
-import MapView from "react-native-maps";
-import moment from "moment";
+import moment from "moment"
+import PropTypes from "prop-types"
+import React from "react"
+import { StyleSheet, View } from "react-native"
+import MapView from "react-native-maps"
+
+import Button from "../../components/Button"
+import { Page } from "../../components/Containers"
 import {
-  ErrorText,
-  TitleText,
-  SubtitleText,
   BodyText,
+  ErrorText,
   Link,
-} from "../../components/Typography";
-import Button from "../../components/Button";
-import { Page } from "../../components/Containers";
-import MapStyle from "../../styles/Map";
-import MapsManager from "../../lib/MapsManager";
-import MailManager from "../../lib/MailManager";
+  SubtitleText,
+  TitleText,
+} from "../../components/Typography"
+import MailManager from "../../lib/MailManager"
+import MapsManager from "../../lib/MapsManager"
+import MapStyle from "../../styles/Map"
 
 const styles = StyleSheet.create({
   contactPerson: {
@@ -24,53 +25,128 @@ const styles = StyleSheet.create({
   emailButton: {
     marginTop: 10,
   },
-});
+})
 
 class TimetableDetailView extends React.Component {
+  static propTypes = {
+    contact: PropTypes.string,
+    date: PropTypes.string,
+    end_time: PropTypes.string,
+    initialRegion: PropTypes.shape({
+      latitude: PropTypes.number,
+      latitudeDelta: PropTypes.number,
+      longitude: PropTypes.number,
+      longitudeDelta: PropTypes.number,
+    }),
+    location: PropTypes.shape({
+      address: PropTypes.arrayOf(PropTypes.string),
+      coordinates: PropTypes.shape({
+        lat: PropTypes.string,
+        lng: PropTypes.string,
+      }),
+      name: PropTypes.string,
+      type: PropTypes.string,
+    }),
+    module: PropTypes.shape({
+      department_name: PropTypes.string,
+      email: PropTypes.string,
+      lecturer: PropTypes.shape({
+        department_id: PropTypes.string,
+        department_name: PropTypes.string,
+        email: PropTypes.string,
+        name: PropTypes.string,
+      }),
+      name: PropTypes.string,
+    }),
+    navigation: PropTypes.shape().isRequired,
+    session_group: PropTypes.string,
+    session_type_str: PropTypes.string,
+    start_time: PropTypes.string,
+  }
+
+  static defaultProps = {
+    contact: ``,
+    date: `2019-01-01`,
+    end_time: ``,
+    initialRegion: {
+      latitude: 51.5246586,
+      latitudeDelta: 0.0012,
+      longitude: -0.1339784,
+      longitudeDelta: 0.0071,
+    },
+    location: {
+      address: [],
+      coordinates: {
+        lat: `51.5246586`,
+        lng: `-0.1339784`,
+      },
+      name: ``,
+      type: `DB`,
+    },
+    module: {
+      department_name: ``,
+      email: ``,
+      lecturer: {
+        department_id: ``,
+        department_name: ``,
+        email: ``,
+        name: ``,
+      },
+      name: ``,
+    },
+    session_group: ``,
+    session_type_str: ``,
+    start_time: ``,
+  }
+
   navigateToLocation = ({ lat, lng, address }) => () => {
     if (lat && lng) {
-      MapsManager.navigateToCoords({ lat, lng });
+      MapsManager.navigateToCoords({ lat, lng })
     } else {
-      MapsManager.navigateToAddress(address.join());
+      MapsManager.navigateToAddress(address.join())
     }
-  };
+  }
 
-  sendEmail = email => () => {
-    MailManager.composeAsync({
-      recipients: [email],
-    });
-  };
+  sendEmail = (email) => () => MailManager.composeAsync({
+    recipients: [email],
+  })
 
-  openRoomSearch = roomName => () => {
-    const { navigation } = this.props;
-    navigation.navigate("Rooms", { query: roomName });
-  };
+  openRoomSearch = (roomName) => () => {
+    const { navigation } = this.props
+    navigation.navigate(`RoomsSearch`, { query: roomName })
+  }
 
-  // openRoomDetail = () => {
-  //   const {
-  //     navigation,
-  //     location: {
-  //       name: locationName,
-  //       capacity,
-  //       address,
-  //       coordinates,
-  //     },
-  //   } = this.props;
-  //   // note that classification_name is not present and hence
-  //   // is not passed in room
-  //   const room = {
-  //     roomname: locationName,
-  //     capacity,
-  //     location: {
-  //       address,
-  //       coordinates,
-  //     },
-  //   }
-  //   navigation.navigate("RoomDetail", { room });
-  // };
+  renderContactPerson = ({
+    contactTypeStr,
+    contactPerson,
+    departmentName,
+    email,
+  }) => {
+    const validContactPerson = contactPerson && contactPerson.length > 0
+    const validDepartment = departmentName && departmentName.length > 0
+    const validEmail = email && email.length > 0
+    if (!validContactPerson && !validEmail) {
+      return null
+    }
+    return (
+      <View style={styles.contactPerson}>
+        <SubtitleText>{contactTypeStr}</SubtitleText>
+        {validContactPerson ? (
+          <BodyText>
+            {`${contactPerson} ${validDepartment ? departmentName : null}`}
+          </BodyText>
+        ) : null}
+        {validEmail ? (
+          <Button onPress={this.sendEmail(email)} style={styles.emailButton}>
+            Send Email
+          </Button>
+        ) : null}
+      </View>
+    )
+  }
 
   render() {
-    let contactTypeStr = "";
+    let contactTypeStr = ``
     const {
       date,
       location,
@@ -81,52 +157,55 @@ class TimetableDetailView extends React.Component {
       session_group: sessionGroup,
       start_time: startTime,
       end_time: endTime,
-    } = this.props;
-    const sessionType = sessionTypeStr.toLowerCase();
+    } = this.props
+    const sessionType = sessionTypeStr.toLowerCase()
     switch (true) {
-      case sessionType === "lecture":
-      case sessionType === "seminar": {
-        contactTypeStr = "Lecturer";
-        break;
+      case sessionType === `lecture`:
+      case sessionType === `seminar`: {
+        contactTypeStr = `Lecturer`
+        break
       }
-      case sessionType === "practical":
-      case sessionType === "problem based learning": {
-        contactTypeStr = "Instructor";
-        break;
+      case sessionType === `practical`:
+      case sessionType === `problem based learning`: {
+        contactTypeStr = `Instructor`
+        break
       }
       default: {
-        contactTypeStr = "Contact";
+        contactTypeStr = `Contact`
       }
     }
 
-    const { lat, lng } = location.coordinates;
-    const latitude = parseFloat(lat, 10) || initialRegion.latitude;
-    const longitude = parseFloat(lng, 10) || initialRegion.longitude;
-    const { address, type: locationType, name: locationName } = location;
+    const { lat, lng } = location.coordinates
+    const latitude = parseFloat(lat, 10) || initialRegion.latitude
+    const longitude = parseFloat(lng, 10) || initialRegion.longitude
+    const { address, type: locationType, name: locationName } = location
 
     return (
       <Page>
         <TitleText>{moduleName}</TitleText>
-        <BodyText>{moment(date).format("dddd, Do MMMM YYYY")}</BodyText>
+        <BodyText>{moment(date).format(`dddd, Do MMMM YYYY`)}</BodyText>
         <BodyText>
-          {startTime} - {endTime}
+          {`${startTime} - ${endTime}`}
         </BodyText>
-        {locationType === "CB" ? (
-          // <Link onPress={this.openRoomDetail}>
+        {locationType === `CB` ? (
           <Link onPress={this.openRoomSearch(locationName)}>
             {locationName}
           </Link>
         ) : (
-          <BodyText>{locationName}</BodyText>
+            <BodyText>{locationName}</BodyText>
         )}
-        <BodyText>Type: {sessionTypeStr}</BodyText>
+        <BodyText>
+          {`Type: ${sessionTypeStr}`}
+        </BodyText>
         {sessionGroup && sessionGroup.length > 0 ? (
-          <BodyText>Group {sessionGroup}</BodyText>
+          <BodyText>
+            {`Group ${sessionGroup}`}
+          </BodyText>
         ) : null}
         {(!lat || !lng) && (
           <ErrorText>
-            Error: We couldn{"'"}t fetch coordinates for this venue, so the map
-            may be incorrect.
+            Error: We couldn&apos;t fetch coordinates for this venue,
+            &nbsp;so the map may be incorrect.
           </ErrorText>
         )}
         <MapView
@@ -134,114 +213,23 @@ class TimetableDetailView extends React.Component {
           initialRegion={initialRegion}
           region={{
             latitude,
-            longitude,
             latitudeDelta: initialRegion.latitudeDelta,
+            longitude,
             longitudeDelta: initialRegion.longitudeDelta,
           }}
         >
           <MapView.Marker coordinate={{ latitude, longitude }} />
         </MapView>
-        <Button
-          onPress={() => {
-            if (lat && lng) {
-              MapsManager.navigateToCoords({ lat, lng });
-            } else {
-              MapsManager.navigateToAddress(address.join());
-            }
-          }}
-        >
+        <Button onPress={this.navigateToLocation({ address, lat, lng })}>
           Directions
         </Button>
 
-        <View style={styles.contactPerson}>
-          <SubtitleText>{contactTypeStr}</SubtitleText>
-          {contactPerson && contactPerson.length > 0 ? (
-            <BodyText>
-              {contactPerson}{" "}
-              {departmentName && departmentName.length > 0
-                ? `(${departmentName})`
-                : null}
-            </BodyText>
-          ) : null}
-          {email && email.length > 0 ? (
-            <Button onPress={this.sendEmail(email)} style={styles.emailButton}>
-              Send Email
-            </Button>
-          ) : null}
-        </View>
-
-        {__DEV__ && <SubtitleText>Debug Information</SubtitleText>}
-        {__DEV__ && <BodyText>{JSON.stringify(this.props, "\n", 2)}</BodyText>}
+        {this.renderContactPerson({
+          contactPerson, contactTypeStr, departmentName, email,
+        })}
       </Page>
-    );
+    )
   }
 }
 
-TimetableDetailView.propTypes = {
-  initialRegion: PropTypes.shape({
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-    latitudeDelta: PropTypes.number,
-    longitudeDelta: PropTypes.number,
-  }),
-  date: PropTypes.string,
-  start_time: PropTypes.string,
-  end_time: PropTypes.string,
-  contact: PropTypes.string,
-  location: PropTypes.shape({
-    name: PropTypes.string,
-    address: PropTypes.arrayOf(PropTypes.string),
-    coordinates: PropTypes.shape({
-      lat: PropTypes.string,
-      lng: PropTypes.string,
-    }),
-    type: PropTypes.string,
-  }),
-  module: PropTypes.shape({
-    name: PropTypes.string,
-    lecturer: PropTypes.shape({
-      department_id: PropTypes.string,
-      department_name: PropTypes.string,
-      email: PropTypes.string,
-      name: PropTypes.string,
-    }),
-  }),
-  session_type_str: PropTypes.string,
-  session_group: PropTypes.string,
-  navigation: PropTypes.shape().isRequired,
-};
-
-TimetableDetailView.defaultProps = {
-  initialRegion: {
-    latitude: 51.5246586,
-    longitude: -0.1339784,
-    latitudeDelta: 0.0012,
-    longitudeDelta: 0.0071,
-  },
-  date: "2019-01-01",
-  start_time: "",
-  end_time: "",
-  contact: "",
-  location: {
-    name: "",
-    address: [],
-    coordinates: {
-      lat: "51.5246586",
-      lng: "-0.1339784",
-    },
-    type: "DB",
-  },
-  module: {
-    name: "",
-    lecturer: {
-      department_id: "",
-      department_name: "",
-      email: "",
-      name: "",
-    },
-  },
-  session_type_str: "",
-  session_group: "",
-};
-
-export default TimetableDetailView;
+export default TimetableDetailView
