@@ -92,7 +92,7 @@
   "devDependencies": {
     "@storybook/addon-actions": "^5.1.11",
     "@storybook/addon-knobs": "^5.1.11",
-    "@storybook/addon-links": "^5.1.11",
+    "@storybook/addon-links": "^5.2.0",
     "@storybook/react-native": "^5.1.11",
     "babel-eslint": "^10.0.3",
     "babel-preset-expo": "^5.2.0",
