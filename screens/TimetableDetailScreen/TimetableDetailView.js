@@ -107,15 +107,42 @@ class TimetableDetailView extends React.Component {
     }
   }
 
-  sendEmail = (email) => () => {
-    MailManager.composeAsync({
-      recipients: [email],
-    })
-  }
+  sendEmail = (email) => () => MailManager.composeAsync({
+    recipients: [email],
+  })
 
   openRoomSearch = (roomName) => () => {
     const { navigation } = this.props
     navigation.navigate(`RoomsSearch`, { query: roomName })
+  }
+
+  renderContactPerson = ({
+    contactTypeStr,
+    contactPerson,
+    departmentName,
+    email,
+  }) => {
+    const validContactPerson = contactPerson && contactPerson.length > 0
+    const validDepartment = departmentName && departmentName.length > 0
+    const validEmail = email && email.length > 0
+    if (!validContactPerson && !validEmail) {
+      return null
+    }
+    return (
+      <View style={styles.contactPerson}>
+        <SubtitleText>{contactTypeStr}</SubtitleText>
+        {validContactPerson ? (
+          <BodyText>
+            {`${contactPerson} ${validDepartment ? departmentName : null}`}
+          </BodyText>
+        ) : null}
+        {validEmail ? (
+          <Button onPress={this.sendEmail(email)} style={styles.emailButton}>
+            Send Email
+          </Button>
+        ) : null}
+      </View>
+    )
   }
 
   render() {
@@ -197,23 +224,9 @@ class TimetableDetailView extends React.Component {
           Directions
         </Button>
 
-        <View style={styles.contactPerson}>
-          <SubtitleText>{contactTypeStr}</SubtitleText>
-          {contactPerson && contactPerson.length > 0 ? (
-            <BodyText>
-              {contactPerson}
-              {` `}
-              {departmentName && departmentName.length > 0
-                ? `(${departmentName})`
-                : null}
-            </BodyText>
-          ) : null}
-          {email && email.length > 0 ? (
-            <Button onPress={this.sendEmail(email)} style={styles.emailButton}>
-              Send Email
-            </Button>
-          ) : null}
-        </View>
+        {this.renderContactPerson({
+          contactPerson, contactTypeStr, departmentName, email,
+        })}
       </Page>
     )
   }
