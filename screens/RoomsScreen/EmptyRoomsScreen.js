@@ -64,16 +64,21 @@ class EmptyRoomsScreen extends React.Component {
     navigation.navigate(`RoomDetail`, { room })
   }
 
-  renderEmptyRoom = (room = {}) => (
-    <SearchResult
-      key={generate()}
-      topText={room.roomname}
-      bottomText={room.classification_name}
-      type="location"
-      buttonText="View"
-      onPress={this.navigateToRoomDetail(room)}
-    />
-  )
+  renderEmptyRoom = (room = null) => {
+    if (room === null) {
+      return null
+    }
+    return (
+      <SearchResult
+        key={generate()}
+        topText={room.roomname}
+        bottomText={room.classification_name}
+        type="location"
+        buttonText="View"
+        onPress={this.navigateToRoomDetail(room)}
+      />
+    )
+  }
 
   renderResults = () => {
     const { emptyRooms, loadingEmptyRooms } = this.state

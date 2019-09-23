@@ -1,24 +1,25 @@
 // @flow
-import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { connect } from "react-redux"
+import React, { Component } from "react"
 import { View } from "react-native"
+import { connect } from "react-redux"
 import { generate } from "shortid"
+
 import { clearRecents as clearRecentsAction } from "../../actions/peopleActions"
 import Button from "../../components/Button"
-import { SubtitleText, CentredText } from "../../components/Typography"
 import SearchResult from "../../components/SearchResult"
+import { CentredText, SubtitleText } from "../../components/Typography"
 
 class RecentResults extends Component {
   static propTypes = {
-    recents: PropTypes.arrayOf(PropTypes.shape()),
-    navigation: PropTypes.shape().isRequired,
     clearRecents: PropTypes.func,
+    navigation: PropTypes.shape().isRequired,
+    recents: PropTypes.arrayOf(PropTypes.shape()),
   }
 
   static defaultProps = {
-    recents: [],
     clearRecents: () => { },
+    recents: [],
   }
 
   static mapStateToProps = (state) => ({
@@ -29,26 +30,36 @@ class RecentResults extends Component {
     clearRecents: () => dispatch(clearRecentsAction()),
   })
 
+  viewPerson = (person) => () => {
+    const { navigation } = this.props
+    navigation.navigate(`PersonDetail`, person)
+  }
+
+  renderRecent = (recent = null) => {
+    if (recent === null) {
+      return null
+    }
+    return (
+      <SearchResult
+        key={generate()}
+        topText={recent.name}
+        bottomText={recent.department}
+        type="person"
+        buttonText="View"
+        onPress={this.viewPerson(recent)}
+      />
+    )
+  }
+
   render() {
-    const { navigation, recents, clearRecents } = this.props
+    const { recents, clearRecents } = this.props
     if (recents.length === 0) {
       return null
     }
     return (
       <View>
         <SubtitleText>Recently Searched</SubtitleText>
-        {recents.map((res = {}) => (
-          <SearchResult
-            key={generate()}
-            topText={res.name}
-            bottomText={res.department}
-            type="person"
-            buttonText="View"
-            onPress={() => {
-              navigation.navigate(`PersonDetail`, res)
-            }}
-          />
-        ))}
+        {recents.map(this.renderRecent)}
         {recents.length > 0 ? (
           <Button onPress={clearRecents}>Clear</Button>
         ) : (
