@@ -1,19 +1,19 @@
 // @flow
-/* eslint-disable react-native/no-inline-styles */
-import React, { Component } from "react"
 import PropTypes from "prop-types"
+import React, { Component } from "react"
+import { ActivityIndicator, StyleSheet, View } from "react-native"
 import { connect } from "react-redux"
-import { ActivityIndicator, View, StyleSheet } from "react-native"
 import { generate } from "shortid"
-import { CentredText } from "../../components/Typography"
-import { TextInput } from "../../components/Input"
-import { SmallButton } from "../../components/Button"
-import SearchResult from "../../components/SearchResult"
+
 import {
   search as searchAction,
   searchClear as searchClearAction,
 } from "../../actions/peopleActions"
+import { SmallButton } from "../../components/Button"
 import { Horizontal } from "../../components/Containers"
+import { TextInput } from "../../components/Input"
+import SearchResult from "../../components/SearchResult"
+import { CentredText } from "../../components/Typography"
 
 const styles = StyleSheet.create({
   textInput: {
@@ -26,34 +26,34 @@ const MIN_QUERY_LENGTH = 4
 
 class SearchControl extends Component {
   static propTypes = {
-    searchResults: PropTypes.arrayOf(PropTypes.shape()),
-    isSearching: PropTypes.bool,
-    error: PropTypes.string,
-    search: PropTypes.func,
     clear: PropTypes.func,
-    token: PropTypes.string,
+    error: PropTypes.string,
+    isSearching: PropTypes.bool,
     navigation: PropTypes.shape().isRequired,
+    search: PropTypes.func,
+    searchResults: PropTypes.arrayOf(PropTypes.shape()),
+    token: PropTypes.string,
   }
 
   static defaultProps = {
-    searchResults: [],
-    isSearching: false,
-    error: ``,
-    search: () => { },
     clear: () => { },
+    error: ``,
+    isSearching: false,
+    search: () => { },
+    searchResults: [],
     token: ``,
   }
 
   static mapStateToProps = (state) => ({
-    searchResults: state.people.searchResults,
-    isSearching: state.people.isSearching,
     error: state.people.searchError,
+    isSearching: state.people.isSearching,
+    searchResults: state.people.searchResults,
     token: state.user.token,
   })
 
   static mapDispatchToProps = (dispatch) => ({
-    search: (token: String, query: String) => dispatch(searchAction(token, query)),
     clear: () => dispatch(searchClearAction()),
+    search: (token: String, query: String) => dispatch(searchAction(token, query)),
   })
 
   static SEARCH_DELAY = 500;
@@ -101,10 +101,33 @@ class SearchControl extends Component {
     return null
   }
 
+  viewPerson = (person) => {
+    const { navigation } = this.props
+    navigation.navigate(`PersonDetail`, person)
+  }
+
+  renderResult = (res = null) => {
+    if (res === null) {
+      return null
+    }
+    return (
+      <SearchResult
+        key={generate()}
+        topText={res.name}
+        bottomText={res.department}
+        type="person"
+        buttonText="View"
+        onPress={this.viewPerson(res)}
+      />
+    )
+  }
+
   render() {
     const { query } = this.state
     const {
-      error, isSearching, navigation, searchResults,
+      error,
+      isSearching,
+      searchResults,
     } = this.props
     return (
       <View>
@@ -128,18 +151,7 @@ class SearchControl extends Component {
 
         {this.renderStatusText()}
 
-        {searchResults.map((res = {}) => (
-          <SearchResult
-            key={generate()}
-            topText={res.name}
-            bottomText={res.department}
-            type="person"
-            buttonText="View"
-            onPress={() => {
-              navigation.navigate(`PersonDetail`, res)
-            }}
-          />
-        ))}
+        {searchResults.map(this.renderResult)}
       </View>
     )
   }

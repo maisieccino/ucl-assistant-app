@@ -1,10 +1,10 @@
 import { AuthSession } from "expo"
-import * as constants from "../constants/userConstants"
-import { clearTimetable } from "./timetableActions"
-import { ASSISTANT_API_URL } from "../constants/API"
-import configureStore from "../configureStore"
 
+import configureStore from "../configureStore"
+import { ASSISTANT_API_URL } from "../constants/API"
+import * as constants from "../constants/userConstants"
 import AnalyticsManager from '../lib/AnalyticsManager'
+import { clearTimetable } from "./timetableActions"
 
 const { persistor } = configureStore
 
@@ -15,21 +15,21 @@ export const isSigningIn = () => ({
 export const signInSuccess = (result) => ({
   type: constants.SIGN_IN_SUCCESS,
   user: {
-    token: result.params.token,
     apiToken: result.params.apiToken,
-    scopeNumber: parseInt(result.params.scopeNumber, 10),
+    cn: result.params.cn,
+    department: result.params.department,
     email: result.params.email,
     fullName: result.params.full_name,
     givenName: result.params.given_name,
-    cn: result.params.cn,
+    scopeNumber: parseInt(result.params.scopeNumber, 10),
+    token: result.params.token,
     upi: result.params.upi,
-    department: result.params.department,
   },
 })
 
 export const signInFailure = (error) => ({
-  type: constants.SIGN_IN_FAILURE,
   error,
+  type: constants.SIGN_IN_FAILURE,
 })
 
 export const signInCancel = () => ({
