@@ -37,6 +37,9 @@
   "jest": {
     "collectCoverage": true,
     "preset": "jest-expo",
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/"
     ],
@@ -97,6 +100,9 @@
     "babel-eslint": "^10.0.3",
     "babel-preset-expo": "^5.2.0",
     "codecov": "^3.5.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "enzyme-to-json": "^3.4.0",
     "eslint": "^6.4.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-flowtype": "^4.3.0",

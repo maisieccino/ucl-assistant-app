@@ -1,37 +1,66 @@
 import "react-native"
 
+import Enzyme, { shallow } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 import React from "react"
 import renderer from "react-test-renderer"
 
 import { RecentResults } from "../../screens/PeopleScreen/RecentResults"
-// import { PeopleScreen } from "../../screens/PeopleScreen"
+import { SearchControl } from "../../screens/PeopleScreen/SearchControl"
 
-// it(`renders the PeopleScreen`, async () => {
-//   const mockNavigation = {
-//     navigate: jest.fn(),
-//   }
-//   const props = {
-//     isSearching: false,
-//     navigation: mockNavigation,
-//     recents: [],
-//     searchResults: [],
-//   }
-//   const tree = renderer.create(
-//     <PeopleScreen
-//       {...props}
-//     />
-//   ).toJSON()
-//   expect(tree).toMatchSnapshot()
-// })
+Enzyme.configure({ adapter: new Adapter() })
 
-it(`renders an empty RecentResults`, async () => {
+describe(`RecentResults`, () => {
+  it(`renders an empty RecentResults component`, async () => {
+    const props = {
+      clearRecents: jest.fn(),
+      navigation: {
+        navigate: jest.fn(),
+      },
+      recents: [],
+    }
+    const tree = renderer.create(<RecentResults {...props} />).toJSON()
+    expect(tree).toBe(null)
+  })
+
+  it(`renders a filled RecentResults component`, async () => {
+    const props = {
+      clearRecents: jest.fn(),
+      navigation: {
+        navigate: jest.fn(),
+      },
+      recents: [
+        {
+          department: `Department of Agriculture`,
+          name: `Mr Potato`,
+        },
+        {
+          department: `Faculty of Medical Sciences`,
+          name: `Chris P Bacon`,
+        },
+        {
+          department: `Philosophy Department`,
+          name: `Jeremy Bentham`,
+        },
+      ],
+    }
+    const tree = renderer.create(<RecentResults {...props} />).toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+})
+
+it(`renders a SearchControl component`, async () => {
   const props = {
-    clearRecents: jest.fn(),
+    clear: jest.fn(),
+    error: ``,
+    isSearching: false,
     navigation: {
       navigate: jest.fn(),
     },
-    recents: [],
+    search: jest.fn(),
+    searchResults: [],
+    token: ``,
   }
-  const tree = renderer.create(<RecentResults {...props} />).toJSON()
-  expect(tree).toBe(null)
+  const component = shallow(<SearchControl {...props} />)
+  expect(component).toMatchSnapshot()
 })
