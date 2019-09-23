@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 
 const MIN_QUERY_LENGTH = 4
 
-class SearchControl extends Component {
+export class SearchControl extends Component {
   static propTypes = {
     clear: PropTypes.func,
     error: PropTypes.string,
