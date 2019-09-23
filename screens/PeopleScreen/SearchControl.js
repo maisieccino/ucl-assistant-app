@@ -101,7 +101,7 @@ class SearchControl extends Component {
     return null
   }
 
-  viewPerson = (person) => {
+  viewPerson = (person) => () => {
     const { navigation } = this.props
     navigation.navigate(`PersonDetail`, person)
   }
