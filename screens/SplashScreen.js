@@ -1,25 +1,30 @@
+import { Feather } from "@expo/vector-icons"
+import { LinearGradient } from "expo-linear-gradient"
+import PropTypes from "prop-types"
 import React, { Component } from "react"
 import {
-  Alert, Image, View, SafeAreaView, StyleSheet,
+  Alert,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  View,
 } from "react-native"
-import { LinearGradient } from "expo-linear-gradient"
-import { connect } from "react-redux"
-import PropTypes from "prop-types"
 import { NavigationActions, StackActions } from "react-navigation"
-import { Feather } from "@expo/vector-icons"
+import { connect } from "react-redux"
+
 import { signIn as signInAction } from "../actions/userActions"
-import {
-  ButtonText,
-  SubtitleText,
-  Link,
-  BodyText,
-} from "../components/Typography"
-import { Spacer, Horizontal } from "../components/Containers"
 import CustomButton from "../components/Button"
+import { Horizontal, Spacer } from "../components/Containers"
+import {
+  BodyText,
+  ButtonText,
+  Link,
+  SubtitleText,
+} from "../components/Typography"
 import Colors from "../constants/Colors"
+import { AssetManager } from "../lib"
 import Styles from "../styles/Containers"
 import SplashStyle from "../styles/Splash"
-import { AssetManager } from "../lib"
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -40,23 +45,23 @@ class SplashScreen extends Component {
   }
 
   static propTypes = {
-    navigation: PropTypes.shape().isRequired,
-    isSigningIn: PropTypes.bool,
     error: PropTypes.string,
-    token: PropTypes.string,
+    isSigningIn: PropTypes.bool,
+    navigation: PropTypes.shape().isRequired,
     signIn: PropTypes.func,
+    token: PropTypes.string,
   }
 
   static defaultProps = {
-    isSigningIn: false,
     error: ``,
-    token: ``,
+    isSigningIn: false,
     signIn: () => { },
+    token: ``,
   }
 
   static mapStateToProps = (state) => ({
-    isSigningIn: state.user.signIn.isSigningIn,
     error: state.user.signIn.error,
+    isSigningIn: state.user.signIn.isSigningIn,
     token: state.user.token,
   })
 
@@ -98,8 +103,8 @@ class SplashScreen extends Component {
   goHome() {
     const { navigation } = this.props
     const resetAction = StackActions.reset({
-      index: 0,
       actions: [NavigationActions.navigate({ routeName: `Main` })],
+      index: 0,
     })
     navigation.dispatch(resetAction)
   }
