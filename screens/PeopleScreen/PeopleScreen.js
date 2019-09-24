@@ -1,16 +1,16 @@
+import { Feather } from "@expo/vector-icons"
+import PropTypes from "prop-types"
 import React, { Component } from "react"
 import { Image, StyleSheet } from 'react-native'
 import { connect } from "react-redux"
-import PropTypes from "prop-types"
-import { Feather } from "@expo/vector-icons"
-import { TitleText } from "../../components/Typography"
+
 import { Page } from "../../components/Containers"
+import { TitleText } from "../../components/Typography"
 import Colors from "../../constants/Colors"
 import { AssetManager } from "../../lib"
 import Styles from "../../styles/Containers"
-
-import SearchControl from "./SearchControl"
 import RecentResults from "./RecentResults"
+import SearchControl from "./SearchControl"
 
 const styles = StyleSheet.create({
   emptyImage: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
 })
 
-class PeopleScreen extends Component {
+export class PeopleScreen extends Component {
   static navigationOptions = {
     header: null,
     tabBarIcon: ({ focused }) => (
@@ -32,22 +32,22 @@ class PeopleScreen extends Component {
   }
 
   static propTypes = {
-    recents: PropTypes.arrayOf(PropTypes.shape()),
-    navigation: PropTypes.shape().isRequired,
     isSearching: PropTypes.bool,
+    navigation: PropTypes.shape().isRequired,
+    recents: PropTypes.arrayOf(PropTypes.shape()),
     searchResults: PropTypes.arrayOf(PropTypes.shape()),
   }
 
   static defaultProps = {
-    recents: [],
     isSearching: false,
+    recents: [],
     searchResults: false,
   }
 
   static mapStateToProps = (state) => ({
+    isSearching: state.people.isSearching,
     recents: state.people.recents,
     searchResults: state.people.searchResults,
-    isSearching: state.people.isSearching,
   })
 
   render() {
