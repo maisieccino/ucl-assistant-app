@@ -10,7 +10,7 @@ import Button from "../../components/Button"
 import SearchResult from "../../components/SearchResult"
 import { CentredText, SubtitleText } from "../../components/Typography"
 
-class RecentResults extends Component {
+export class RecentResults extends Component {
   static propTypes = {
     clearRecents: PropTypes.func,
     navigation: PropTypes.shape().isRequired,

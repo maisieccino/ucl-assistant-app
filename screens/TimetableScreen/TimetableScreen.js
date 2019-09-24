@@ -1,22 +1,21 @@
 /* eslint class-methods-use-this: 0 */
 import { Feather } from "@expo/vector-icons"
-import { Notifications } from "expo"
-import * as Permissions from "expo-permissions"
 import moment from "moment"
 import PropTypes from "prop-types"
 import React, { Component } from "react"
 import { View } from "react-native"
 import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
+
 import { fetchTimetable as fetchTimetableAction } from "../../actions/timetableActions"
 import Button from "../../components/Button"
 import { Page } from "../../components/Containers"
-import { BodyText, TitleText, ErrorText } from "../../components/Typography"
+import { BodyText, ErrorText, TitleText } from "../../components/Typography"
 import Colors from "../../constants/Colors"
 import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants"
+import { PushNotificationsManager } from "../../lib"
 import DateControls from "./DateControls"
 import TimetableComponent from "./TimetableComponent"
-import { ASSISTANT_API_URL } from "../../constants/API"
 
 class TimetableScreen extends Component {
   static navigationOptions = {
@@ -31,29 +30,27 @@ class TimetableScreen extends Component {
   };
 
   static propTypes = {
-    navigation: PropTypes.shape().isRequired,
-    user: PropTypes.shape(),
-    timetable: PropTypes.shape(),
-    /* eslint-disable react/no-unused-prop-types */
-    error: PropTypes.string,
-    /* eslint-enable react/no-unused-prop-types */
     fetchTimetable: PropTypes.func,
     isFetchingTimetable: PropTypes.bool,
+    /* eslint-disable react/no-unused-prop-types */
+    navigation: PropTypes.shape().isRequired,
+    /* eslint-enable react/no-unused-prop-types */
+    timetable: PropTypes.shape(),
+    user: PropTypes.shape(),
   };
 
   static defaultProps = {
-    user: {},
-    timetable: {},
-    error: ``,
     fetchTimetable: () => { },
     isFetchingTimetable: false,
+    timetable: {},
+    user: {},
   };
 
   static mapStateToProps = (state) => ({
-    user: state.user,
-    timetable: state.timetable.timetable,
-    isFetchingTimetable: state.timetable.isFetching,
     error: state.timetable.error,
+    isFetchingTimetable: state.timetable.isFetching,
+    timetable: state.timetable.timetable,
+    user: state.user,
   });
 
   static mapDispatchToProps = (dispatch) => ({
@@ -73,8 +70,7 @@ class TimetableScreen extends Component {
     if (this.loginCheck(this.props) && token !== ``) {
       fetchTimetable(token, date)
     }
-
-    // this.registerForPushNotificationsAsync();
+    PushNotificationsManager.registerForPushNotifications()
   }
 
   async onDateChanged(newDate, forceUpdate = false) {
@@ -99,57 +95,15 @@ class TimetableScreen extends Component {
     }
   }
 
-  async registerForPushNotificationsAsync() {
-    const { status: existingStatus } = await Permissions.getAsync(
-      Permissions.NOTIFICATIONS,
-    )
-    let finalStatus = existingStatus
-
-    // only ask if permissions have not already been determined, because
-    // iOS won't necessarily prompt the user a second time.
-    if (existingStatus !== `granted`) {
-      // Android remote notification permissions are granted during the app
-      // install, so this will only ask on iOS
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
-      finalStatus = status
-    }
-
-    // Stop here if the user did not grant permissions
-    if (finalStatus !== `granted`) {
-      return
-    }
-
-    // Get the token that uniquely identifies this device
-    const pushToken = await Notifications.getExpoPushTokenAsync()
-    const { user: { token } } = this.props
-    try {
-      const res = await fetch(`${ASSISTANT_API_URL}/notifications/register`, {
-        method: `POST`,
-        headers: {
-          "Content-Type": `application/json`,
-          Authorization: `Bearer ${token}`,
-          Accept: `application/json`,
-        },
-        body: JSON.stringify({ token: pushToken }),
-      })
-      console.log(await res.text())
-    } catch (error) {
-      console.log(error.message)
-      this.setState({ error: error.message })
-    }
-  }
-
   loginCheck(props) {
     const { user, navigation } = props
-    if (Object.keys(user).length > 0) {
-      if (user.scopeNumber < 0) {
-        const resetAction = StackActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName: `Splash` })],
-        })
-        navigation.dispatch(resetAction)
-        return false
-      }
+    if (Object.keys(user).length > 0 && user.scopeNumber < 0) {
+      const resetAction = StackActions.reset({
+        actions: [NavigationActions.navigate({ routeName: `Splash` })],
+        index: 0,
+      })
+      navigation.dispatch(resetAction)
+      return false
     }
     return true
   }
