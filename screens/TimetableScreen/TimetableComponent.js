@@ -62,7 +62,11 @@ class TimetableComponent extends React.Component {
     )
   }
 
-  renderItem = ({ dateISO, filteredTimetable }) => () => {
+  renderItem = ({ index }) => {
+    const { date, timetable } = this.props
+    const dateISO = date.clone().add(index - 1, `days`).format(`YYYY-MM-DD`)
+    const filteredTimetable = (timetable[dateISO] || {}).timetable || []
+
     const items = filteredTimetable.sort(
       (a, b) => Date.parse(`${dateISO}T${a.start_time}:00`)
         - Date.parse(`${dateISO}T${b.start_time}:00`),
@@ -87,7 +91,6 @@ class TimetableComponent extends React.Component {
       )
     }
 
-    const { date } = this.props
     return (
       <View style={{ width: windowWidth }}>
         <View style={topPadding} />
@@ -127,7 +130,7 @@ class TimetableComponent extends React.Component {
 
     return (
       <InfiniteHorizontalFlatlist
-        renderItem={this.renderItem({ dateISO, filteredTimetable })}
+        renderItem={this.renderItem}
         onScrollBack={() => changeDate(date.clone().subtract(1, `day`))}
         onScrollForward={() => changeDate(date.clone().add(1, `day`))}
       />
