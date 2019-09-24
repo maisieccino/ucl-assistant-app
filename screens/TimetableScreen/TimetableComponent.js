@@ -1,13 +1,19 @@
-import React from "react"
-import { Image, View } from "react-native"
-import PropTypes from "prop-types"
-import { momentObj } from "react-moment-proptypes"
 import moment from "moment"
+import PropTypes from "prop-types"
+import React from "react"
+import { momentObj } from "react-moment-proptypes"
+import {
+  Dimensions,
+  Image,
+  View,
+} from "react-native"
 import { generate } from "shortid"
+
 import TimetableCard from "../../components/Card/TimetableCard"
 import { CentredText, SubtitleText } from "../../components/Typography"
-import Styles from "../../styles/Containers"
 import { AssetManager, Random } from "../../lib"
+import Styles from "../../styles/Containers"
+import InfiniteHorizontalFlatlist from './InfiniteHorizontalFlatlist'
 
 const relaxIllustration = Random.array([
   AssetManager.undraw.relaxation,
@@ -17,103 +23,116 @@ const relaxIllustration = Random.array([
   AssetManager.undraw.relaxingAtHome,
 ])
 
-const mapToCards = (
-  timetableItems,
-  date,
-  navigation,
-  past = false
-) => timetableItems.map((item) => (
-  <TimetableCard
-    moduleName={item.module.name}
-    moduleCode={item.module.module_id}
-    startTime={`${date} ${item.start_time}`}
-    endTime={`${date} ${item.end_time}`}
-    location={item.location.name || `TBA`}
-    lecturer={item.contact ? item.contact : `Unknown Lecturer`}
-    pastEvent={past}
-    key={generate()}
-    navigation={navigation}
-  />
-))
-
-const timetableImageStyle = { marginTop: 5, height: 200 }
+const timetableImageStyle = { height: 200, marginTop: 5 }
 const topPadding = { height: 50 }
+const { width: windowWidth } = Dimensions.get(`window`)
 
-const TimetableComponent = ({
-  timetable, date, isLoading, navigation,
-}) => {
-  const dateISO = date.format(`YYYY-MM-DD`)
-  const filteredTimetable = (timetable[dateISO] || {}).timetable || []
-
-  if (isLoading && filteredTimetable.length === 0) {
-    return (
-      <View>
-        <CentredText>Loading timetable...</CentredText>
-      </View>
-    )
+class TimetableComponent extends React.Component {
+  static propTypes = {
+    changeDate: PropTypes.func,
+    date: momentObj,
+    isLoading: PropTypes.bool,
+    navigation: PropTypes.shape().isRequired,
+    timetable: PropTypes.shape(),
   }
 
-  const items = filteredTimetable.sort(
-    (a, b) => Date.parse(`${dateISO}T${a.start_time}:00`)
-      - Date.parse(`${dateISO}T${b.start_time}:00`),
-  )
-  const pastItems = mapToCards(
-    items.filter(
-      (item) => Date.parse(`${dateISO}T${item.end_time}`) - Date.now() < 0,
-    ),
-    dateISO,
-    navigation,
-    true,
-  )
-  const futureItems = mapToCards(
-    items.filter(
-      (item) => Date.parse(`${dateISO}T${item.end_time}`) - Date.now() > 0,
-    ),
-    dateISO,
-    navigation,
-  )
-  if (filteredTimetable.length > 0) {
-    return (
-      <View>
-        {futureItems}
-        {pastItems.length > 0 && (
-          <>
-            <SubtitleText>Past Events</SubtitleText>
-            {pastItems}
-          </>
-        )}
-      </View>
-    )
+  static defaultProps = {
+    changeDate: () => { },
+    date: moment(),
+    isLoading: false,
+    timetable: {},
   }
-  return (
-    <View>
-      <View style={topPadding} />
-      <CentredText>
-        Nothing scheduled on&nbsp;
-        {date.format(`dddd`)}
-        . Take it easy!
-      </CentredText>
-      <Image
-        source={relaxIllustration}
-        resizeMethod="scale"
-        style={[Styles.image, timetableImageStyle]}
-        resizeMode="contain"
+
+  renderTimetableCard = (item) => {
+    const { date, navigation } = this.props
+    const dateISO = date.format(`YYYY-MM-DD`)
+    const past = Date.parse(`${dateISO}T${item.end_time}`) - Date.now() < 0
+    return (
+      <TimetableCard
+        moduleName={item.module.name}
+        moduleCode={item.module.module_id}
+        startTime={`${dateISO} ${item.start_time}`}
+        endTime={`${dateISO} ${item.end_time}`}
+        location={item.location.name || `TBA`}
+        lecturer={item.contact ? item.contact : `Unknown Lecturer`}
+        pastEvent={past}
+        key={generate()}
+        navigation={navigation}
       />
-    </View>
-  )
-}
+    )
+  }
 
-TimetableComponent.propTypes = {
-  timetable: PropTypes.shape(),
-  date: momentObj,
-  isLoading: PropTypes.bool,
-  navigation: PropTypes.shape().isRequired,
-}
+  renderItem = ({ dateISO, filteredTimetable }) => () => {
+    const items = filteredTimetable.sort(
+      (a, b) => Date.parse(`${dateISO}T${a.start_time}:00`)
+        - Date.parse(`${dateISO}T${b.start_time}:00`),
+    )
+    const pastItems = items.filter(
+      (item) => Date.parse(`${dateISO}T${item.end_time}`) - Date.now() < 0,
+    )
+    const futureItems = items.filter(
+      (item) => Date.parse(`${dateISO}T${item.end_time}`) - Date.now() > 0,
+    )
+    if (filteredTimetable.length > 0) {
+      return (
+        <View style={{ width: windowWidth }}>
+          {futureItems.map(this.renderTimetableCard)}
+          {pastItems.length > 0 && (
+            <>
+              <SubtitleText>Past Events</SubtitleText>
+              {pastItems.map(this.renderTimetableCard)}
+            </>
+          )}
+        </View>
+      )
+    }
 
-TimetableComponent.defaultProps = {
-  timetable: {},
-  date: moment(),
-  isLoading: false,
+    const { date } = this.props
+    return (
+      <View style={{ width: windowWidth }}>
+        <View style={topPadding} />
+        <CentredText>
+          Nothing scheduled on&nbsp;
+          {date.format(`dddd`)}
+          . Take it easy!
+        </CentredText>
+        <Image
+          source={relaxIllustration}
+          resizeMethod="scale"
+          style={[Styles.image, timetableImageStyle]}
+          resizeMode="contain"
+        />
+      </View>
+    )
+  }
+
+  render() {
+    const {
+      timetable,
+      date,
+      isLoading,
+      changeDate,
+    } = this.props
+
+    const dateISO = date.format(`YYYY-MM-DD`)
+    const filteredTimetable = (timetable[dateISO] || {}).timetable || []
+
+    if (isLoading && filteredTimetable.length === 0) {
+      return (
+        <View>
+          <CentredText>Loading timetable...</CentredText>
+        </View>
+      )
+    }
+
+    return (
+      <InfiniteHorizontalFlatlist
+        renderItem={this.renderItem({ dateISO, filteredTimetable })}
+        onScrollBack={() => changeDate(date.clone().subtract(1, `day`))}
+        onScrollForward={() => changeDate(date.clone().add(1, `day`))}
+      />
+    )
+  }
 }
 
 export default TimetableComponent
