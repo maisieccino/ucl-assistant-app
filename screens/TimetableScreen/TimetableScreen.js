@@ -23,7 +23,12 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
+  jumpToToday: {
+    marginLeft: 20,
+    marginRight: 20,
+  },
   page: {
+    paddingBottom: 40,
     paddingLeft: 0,
     paddingRight: 0,
   },
@@ -201,7 +206,7 @@ class TimetableScreen extends Component {
           changeDate={this.onDateChanged}
         />
         {!date.isSame(moment().startOf(`day`)) && (
-          <Button onPress={() => this.onDateChanged(moment())}>
+          <Button onPress={() => this.onDateChanged(moment())} style={styles.jumpToToday}>
             Jump To Today
           </Button>
         )}

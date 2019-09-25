@@ -5,6 +5,7 @@ import { momentObj } from "react-moment-proptypes"
 import {
   Dimensions,
   Image,
+  StyleSheet,
   View,
 } from "react-native"
 import { generate } from "shortid"
@@ -26,6 +27,14 @@ const relaxIllustration = Random.array([
 const timetableImageStyle = { height: 200, marginTop: 5 }
 const topPadding = { height: 50 }
 const { width: windowWidth } = Dimensions.get(`window`)
+
+const styles = StyleSheet.create({
+  dayView: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    width: windowWidth,
+  },
+})
 
 class TimetableComponent extends React.Component {
   static propTypes = {
@@ -79,7 +88,7 @@ class TimetableComponent extends React.Component {
     )
     if (filteredTimetable.length > 0) {
       return (
-        <View style={{ width: windowWidth }}>
+        <View style={styles.dayView}>
           {futureItems.map(this.renderTimetableCard)}
           {pastItems.length > 0 && (
             <>
@@ -92,7 +101,7 @@ class TimetableComponent extends React.Component {
     }
 
     return (
-      <View style={{ width: windowWidth }}>
+      <View style={styles.dayView}>
         <View style={topPadding} />
         <CentredText>
           Nothing scheduled on&nbsp;
