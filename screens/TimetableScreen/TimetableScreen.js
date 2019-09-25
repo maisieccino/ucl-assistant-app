@@ -70,7 +70,7 @@ class TimetableScreen extends Component {
     if (this.loginCheck(this.props) && token !== ``) {
       fetchTimetable(token, date)
     }
-    PushNotificationsManager.registerForPushNotifications()
+    PushNotificationsManager.registerForPushNotifications(token)
   }
 
   async onDateChanged(newDate, forceUpdate = false) {
