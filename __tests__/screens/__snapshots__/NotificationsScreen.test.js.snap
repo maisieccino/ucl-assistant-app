@@ -41,7 +41,7 @@ exports[`NotificationsScreen renders the NotificationsScreen 1`] = `
             "width": undefined,
           },
           Object {
-            "height": 200,
+            "height": 150,
             "marginTop": 15,
           },
         ]
@@ -83,7 +83,16 @@ exports[`NotificationsScreen renders the NotificationsScreen 1`] = `
     >
       Enable Notifications
     </Button>
-    <View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "marginBottom": 20,
+          "marginTop": 20,
+        }
+      }
+    >
       <Link
         href=""
         onPress={[Function]}
