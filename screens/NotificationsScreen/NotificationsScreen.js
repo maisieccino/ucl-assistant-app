@@ -1,13 +1,17 @@
+import PropTypes from "prop-types"
 import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
+import { NavigationActions, StackActions } from "react-navigation"
+import { connect } from "react-redux"
 
 import Button from "../../components/Button"
 import { Page } from "../../components/Containers"
 import {
   BodyText,
+  Link,
   TitleText,
 } from "../../components/Typography"
-import { AssetManager } from "../../lib"
+import { AnalyticsManager, AssetManager, PushNotificationsManager } from "../../lib"
 import Styles from "../../styles/Containers"
 
 const styles = StyleSheet.create({
@@ -28,9 +32,45 @@ const styles = StyleSheet.create({
   },
 })
 
-class NotificationsScreen extends React.Component {
+export class NotificationsScreen extends React.Component {
   static navigationOptions = {
     header: null,
+  }
+
+  static propTypes = {
+    navigation: PropTypes.shape().isRequired,
+    token: PropTypes.string,
+  }
+
+  static defaultProps = {
+    token: ``,
+  }
+
+  static mapStateToProps = (state) => ({
+    token: state.user.token,
+  })
+
+  static mapDispatchToProps = () => ({})
+
+  onEnableNotifications = async () => {
+    const { token } = this.props
+    AnalyticsManager.logEvent(AnalyticsManager.events.NOTIFICATIONS_ENABLE)
+    await PushNotificationsManager.registerForPushNotifications(token)
+    this.goHome()
+  }
+
+  onSkip = () => {
+    AnalyticsManager.logEvent(AnalyticsManager.events.NOTIFICATIONS_SKIP)
+    this.goHome()
+  }
+
+  goHome = () => {
+    const { navigation } = this.props
+    const resetAction = StackActions.reset({
+      actions: [NavigationActions.navigate({ routeName: `Main` })],
+      index: 0,
+    })
+    navigation.dispatch(resetAction)
   }
 
   render() {
@@ -56,13 +96,25 @@ class NotificationsScreen extends React.Component {
               You can disable notifications later at any time.
             </BodyText>
           </View>
-          <Button>
+          <Button
+            onPress={this.onEnableNotifications}
+            testID="enable-notifications-button"
+          >
             Enable Notifications
           </Button>
+          <View style={styles.skip}>
+            <Link onPress={this.onSkip}>
+              Skip
+            </Link>
+          </View>
         </View>
       </Page>
     )
   }
 }
 
-export default NotificationsScreen
+
+export default connect(
+  NotificationsScreen.mapStateToProps,
+  NotificationsScreen.mapDispatchToProps,
+)(NotificationsScreen)

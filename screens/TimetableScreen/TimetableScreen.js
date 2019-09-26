@@ -13,7 +13,6 @@ import { Page } from "../../components/Containers"
 import { BodyText, ErrorText, TitleText } from "../../components/Typography"
 import Colors from "../../constants/Colors"
 import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants"
-import { PushNotificationsManager } from "../../lib"
 import DateControls from "./DateControls"
 import TimetableComponent from "./TimetableComponent"
 
@@ -27,7 +26,7 @@ class TimetableScreen extends Component {
         color={focused ? Colors.pageBackground : Colors.textColor}
       />
     ),
-  };
+  }
 
   static propTypes = {
     fetchTimetable: PropTypes.func,
@@ -37,25 +36,25 @@ class TimetableScreen extends Component {
     /* eslint-enable react/no-unused-prop-types */
     timetable: PropTypes.shape(),
     user: PropTypes.shape(),
-  };
+  }
 
   static defaultProps = {
     fetchTimetable: () => { },
     isFetchingTimetable: false,
     timetable: {},
     user: {},
-  };
+  }
 
   static mapStateToProps = (state) => ({
     error: state.timetable.error,
     isFetchingTimetable: state.timetable.isFetching,
     timetable: state.timetable.timetable,
     user: state.user,
-  });
+  })
 
   static mapDispatchToProps = (dispatch) => ({
     fetchTimetable: (token, date) => dispatch(fetchTimetableAction(token, date)),
-  });
+  })
 
   constructor(props) {
     super(props)
@@ -70,7 +69,6 @@ class TimetableScreen extends Component {
     if (this.loginCheck(this.props) && token !== ``) {
       fetchTimetable(token, date)
     }
-    PushNotificationsManager.registerForPushNotifications(token)
   }
 
   async onDateChanged(newDate, forceUpdate = false) {
