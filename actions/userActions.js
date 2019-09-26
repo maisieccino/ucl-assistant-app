@@ -65,3 +65,7 @@ export const signOut = () => async (dispatch) => {
   await persistor.purge()
   return {}
 }
+
+export const declinePushNotifications = () => ({
+  type: constants.DECLINE_PUSH_NOTIFICATIONS,
+})

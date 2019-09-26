@@ -13,6 +13,7 @@ import { Page } from "../../components/Containers"
 import { BodyText, ErrorText, TitleText } from "../../components/Typography"
 import Colors from "../../constants/Colors"
 import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants"
+import { PushNotificationsManager } from '../../lib'
 import DateControls from "./DateControls"
 import TimetableComponent from "./TimetableComponent"
 
@@ -63,11 +64,19 @@ class TimetableScreen extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { date } = this.state
-    const { user: { token }, fetchTimetable } = this.props
+    const { user: { token, declinePushNotifications }, fetchTimetable } = this.props
     if (this.loginCheck(this.props) && token !== ``) {
       fetchTimetable(token, date)
+    }
+
+    if (!declinePushNotifications) {
+      const didGrant = await PushNotificationsManager.hasPushNotificationPermissions()
+      if (!didGrant) {
+        const { navigation } = this.props
+        navigation.navigate(`Notifications`)
+      }
     }
   }
 

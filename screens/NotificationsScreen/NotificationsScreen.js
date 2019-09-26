@@ -4,6 +4,7 @@ import { Image, StyleSheet, View } from 'react-native'
 import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
 
+import { declinePushNotifications as declinePushNotificationsAction } from "../../actions/userActions"
 import Button from "../../components/Button"
 import { Page } from "../../components/Containers"
 import {
@@ -13,6 +14,7 @@ import {
 } from "../../components/Typography"
 import { AnalyticsManager, AssetManager, PushNotificationsManager } from "../../lib"
 import Styles from "../../styles/Containers"
+
 
 const styles = StyleSheet.create({
   container: {
@@ -24,8 +26,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   notifyImage: {
-    height: 200,
+    height: 150,
     marginTop: 15,
+  },
+  skip: {
+    flexDirection: `row`,
+    justifyContent: `center`,
+    marginBottom: 20,
+    marginTop: 20,
   },
   subdescription: {
     marginBottom: 30,
@@ -38,11 +46,13 @@ export class NotificationsScreen extends React.Component {
   }
 
   static propTypes = {
+    declinePushNotifications: PropTypes.func,
     navigation: PropTypes.shape().isRequired,
     token: PropTypes.string,
   }
 
   static defaultProps = {
+    declinePushNotifications: () => { },
     token: ``,
   }
 
@@ -50,7 +60,9 @@ export class NotificationsScreen extends React.Component {
     token: state.user.token,
   })
 
-  static mapDispatchToProps = () => ({})
+  static mapDispatchToProps = (dispatch) => ({
+    declinePushNotifications: () => dispatch(declinePushNotificationsAction()),
+  })
 
   onEnableNotifications = async () => {
     const { token } = this.props
@@ -60,6 +72,8 @@ export class NotificationsScreen extends React.Component {
   }
 
   onSkip = () => {
+    const { declinePushNotifications } = this.props
+    declinePushNotifications()
     AnalyticsManager.logEvent(AnalyticsManager.events.NOTIFICATIONS_SKIP)
     this.goHome()
   }
