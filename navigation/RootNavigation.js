@@ -56,7 +56,7 @@ const RootStackNavigator = createStackNavigator(
         fontWeight: `normal`,
       },
     }),
-    initialRouteName: `Splash`,
+    initialRouteName: `Notifications`,
   },
 )
 
