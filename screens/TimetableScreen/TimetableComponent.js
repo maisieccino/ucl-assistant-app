@@ -61,7 +61,7 @@ class TimetableComponent extends React.Component {
     const past = Date.parse(`${dateISO}T${item.end_time}`) - Date.now() < 0
     return (
       <TimetableCard
-        moduleName="item.module.name"
+        moduleName={item.module.name}
         moduleCode={item.module.module_id}
         startTime={`${dateISO} ${item.start_time}`}
         endTime={`${dateISO} ${item.end_time}`}
