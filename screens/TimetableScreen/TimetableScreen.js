@@ -1,6 +1,4 @@
 import { Feather } from "@expo/vector-icons"
-import { Notifications } from "expo"
-import * as Permissions from "expo-permissions"
 import moment from "moment"
 import PropTypes from "prop-types"
 import React, { Component } from "react"
@@ -15,6 +13,7 @@ import { BodyText, ErrorText, TitleText } from "../../components/Typography"
 import { ASSISTANT_API_URL } from "../../constants/API"
 import Colors from "../../constants/Colors"
 import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants"
+import { PushNotificationsManager } from '../../lib'
 import DateControls from "./DateControls"
 import TimetableComponent from "./TimetableComponent"
 
@@ -45,7 +44,9 @@ class TimetableScreen extends Component {
   static propTypes = {
     fetchTimetable: PropTypes.func,
     isFetchingTimetable: PropTypes.bool,
+    /* eslint-disable react/no-unused-prop-types */
     navigation: PropTypes.shape().isRequired,
+    /* eslint-enable react/no-unused-prop-types */
     timetable: PropTypes.shape(),
     user: PropTypes.shape(),
   }
@@ -75,14 +76,20 @@ class TimetableScreen extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { date } = this.state
-    const { user: { token }, fetchTimetable } = this.props
+    const { user: { token, declinePushNotifications }, fetchTimetable } = this.props
     if (this.loginCheck(this.props) && token !== ``) {
       fetchTimetable(token, date)
     }
 
-    // this.registerForPushNotificationsAsync();
+    if (!declinePushNotifications) {
+      const didGrant = await PushNotificationsManager.hasPushNotificationPermissions()
+      if (!didGrant) {
+        const { navigation } = this.props
+        navigation.navigate(`Notifications`)
+      }
+    }
   }
 
   onDateChanged = async (newDate, forceUpdate = false) => {
@@ -107,47 +114,7 @@ class TimetableScreen extends Component {
     }
   }
 
-  registerForPushNotificationsAsync = async () => {
-    const { status: existingStatus } = await Permissions.getAsync(
-      Permissions.NOTIFICATIONS,
-    )
-    let finalStatus = existingStatus
-
-    // only ask if permissions have not already been determined, because
-    // iOS won't necessarily prompt the user a second time.
-    if (existingStatus !== `granted`) {
-      // Android remote notification permissions are granted during the app
-      // install, so this will only ask on iOS
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
-      finalStatus = status
-    }
-
-    // Stop here if the user did not grant permissions
-    if (finalStatus !== `granted`) {
-      return
-    }
-
-    // Get the token that uniquely identifies this device
-    const pushToken = await Notifications.getExpoPushTokenAsync()
-    const { user: { token } } = this.props
-    try {
-      const res = await fetch(`${ASSISTANT_API_URL}/notifications/register`, {
-        body: JSON.stringify({ token: pushToken }),
-        headers: {
-          Accept: `application/json`,
-          Authorization: `Bearer ${token}`,
-          "Content-Type": `application/json`,
-        },
-        method: `POST`,
-      })
-      console.log(await res.text())
-    } catch (error) {
-      console.log(error.message)
-      this.setState({ error: error.message })
-    }
-  }
-
-  loginCheck = (props) => {
+  loginCheck(props) {
     const { user, navigation } = props
     if (Object.keys(user).length > 0 && user.scopeNumber < 0) {
       const resetAction = StackActions.reset({
