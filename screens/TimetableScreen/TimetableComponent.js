@@ -10,6 +10,7 @@ import {
 } from "react-native"
 import { generate } from "shortid"
 
+import Button from "../../components/Button"
 import TimetableCard from "../../components/Card/TimetableCard"
 import { CentredText, SubtitleText } from "../../components/Typography"
 import { AssetManager, Random } from "../../lib"
@@ -24,12 +25,14 @@ const relaxIllustration = Random.array([
   AssetManager.undraw.relaxingAtHome,
 ])
 
-const timetableImageStyle = { height: 200, marginTop: 5 }
+const timetableImageStyle = { height: 200, marginTop: 5, width: 300 }
 const topPadding = { height: 50 }
 const { width: windowWidth } = Dimensions.get(`window`)
 
 const styles = StyleSheet.create({
   dayView: {
+    alignContent: `center`,
+    alignItems: `center`,
     paddingLeft: 20,
     paddingRight: 20,
     width: windowWidth,
@@ -71,6 +74,18 @@ class TimetableComponent extends React.Component {
     )
   }
 
+  renderJumpToToday = () => {
+    const { date, changeDate } = this.props
+    if (!date.isSame(moment().startOf(`day`))) {
+      return (
+        <Button onPress={() => changeDate(moment())}>
+          Jump To Today
+        </Button>
+      )
+    }
+    return null
+  }
+
   renderItem = ({ index }) => {
     const { date, timetable } = this.props
     const dateISO = date.clone().add(index - 1, `days`).format(`YYYY-MM-DD`)
@@ -86,6 +101,7 @@ class TimetableComponent extends React.Component {
     const futureItems = items.filter(
       (item) => Date.parse(`${dateISO}T${item.end_time}`) - Date.now() > 0,
     )
+
     if (filteredTimetable.length > 0) {
       return (
         <View style={styles.dayView}>
@@ -96,6 +112,7 @@ class TimetableComponent extends React.Component {
               {pastItems.map(this.renderTimetableCard)}
             </>
           )}
+          {this.renderJumpToToday()}
         </View>
       )
     }
@@ -114,6 +131,7 @@ class TimetableComponent extends React.Component {
           style={[Styles.image, timetableImageStyle]}
           resizeMode="contain"
         />
+        {this.renderJumpToToday()}
       </View>
     )
   }

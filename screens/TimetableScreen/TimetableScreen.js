@@ -23,10 +23,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
-  jumpToToday: {
-    marginLeft: 20,
-    marginRight: 20,
-  },
   page: {
     paddingBottom: 40,
     paddingLeft: 0,
@@ -205,12 +201,6 @@ class TimetableScreen extends Component {
           navigation={navigation}
           changeDate={this.onDateChanged}
         />
-        {!date.isSame(moment().startOf(`day`)) && (
-          <Button onPress={() => this.onDateChanged(moment())} style={styles.jumpToToday}>
-            Jump To Today
-          </Button>
-        )}
-
         {/* <SubtitleText>Find A Timetable</SubtitleText>
         <TextInput placeholder="Search for a course or module..." /> */}
       </Page>
