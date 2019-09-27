@@ -1,5 +1,7 @@
 import {
-  Dimensions, Platform, StatusBar,
+  Dimensions,
+  Platform,
+  StatusBar,
   StyleSheet,
 } from "react-native"
 
