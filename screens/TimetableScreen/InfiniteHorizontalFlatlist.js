@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { FlatList } from 'react-native'
-import { generate } from "shortid"
 
 class InfiniteHorizontalFlatlist extends React.Component {
   static propTypes = {
@@ -17,7 +16,7 @@ class InfiniteHorizontalFlatlist extends React.Component {
   constructor() {
     super()
     this.state = {
-      data: [{}, {}, {}],
+      data: [`1`, `2`, `3`],
       width: 0,
     }
     this.flatList = null
@@ -46,7 +45,10 @@ class InfiniteHorizontalFlatlist extends React.Component {
     }
   }
 
-  onScrollFailed = () => this.flatList.scrollToIndex({ animated: false, index: 1 })
+  onScrollFailed = () => {
+    const { width } = this.state
+    this.flatList.scrollToOffset({ animated: false, offset: width })
+  }
 
   render() {
     const { data } = this.state
@@ -58,7 +60,7 @@ class InfiniteHorizontalFlatlist extends React.Component {
         onScroll={this.onScroll}
         onScrollToIndexFailed={this.onScrollFailed}
         data={data}
-        keyExtractor={() => generate()}
+        keyExtractor={(i) => i}
         initialScrollIndex={1}
         pagingEnabled
         horizontal

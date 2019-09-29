@@ -15,7 +15,6 @@ import TimetableCard from "../../components/Card/TimetableCard"
 import { CentredText, SubtitleText } from "../../components/Typography"
 import { AssetManager, Random } from "../../lib"
 import Styles from "../../styles/Containers"
-import InfiniteHorizontalFlatlist from './InfiniteHorizontalFlatlist'
 
 const relaxIllustration = Random.array([
   AssetManager.undraw.relaxation,
@@ -141,7 +140,6 @@ class TimetableComponent extends React.Component {
       timetable,
       date,
       isLoading,
-      changeDate,
     } = this.props
 
     const dateISO = date.format(`YYYY-MM-DD`)
@@ -155,13 +153,7 @@ class TimetableComponent extends React.Component {
       )
     }
 
-    return (
-      <InfiniteHorizontalFlatlist
-        renderItem={this.renderItem}
-        onScrollBack={() => changeDate(date.clone().subtract(1, `day`))}
-        onScrollForward={() => changeDate(date.clone().add(1, `day`))}
-      />
-    )
+    return this.renderItem(1)
   }
 }
 

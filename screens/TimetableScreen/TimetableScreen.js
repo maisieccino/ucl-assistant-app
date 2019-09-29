@@ -10,7 +10,6 @@ import { fetchTimetable as fetchTimetableAction } from "../../actions/timetableA
 import Button from "../../components/Button"
 import { Page } from "../../components/Containers"
 import { BodyText, ErrorText, TitleText } from "../../components/Typography"
-import { ASSISTANT_API_URL } from "../../constants/API"
 import Colors from "../../constants/Colors"
 import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants"
 import { PushNotificationsManager } from '../../lib'
@@ -44,9 +43,7 @@ class TimetableScreen extends Component {
   static propTypes = {
     fetchTimetable: PropTypes.func,
     isFetchingTimetable: PropTypes.bool,
-    /* eslint-disable react/no-unused-prop-types */
     navigation: PropTypes.shape().isRequired,
-    /* eslint-enable react/no-unused-prop-types */
     timetable: PropTypes.shape(),
     user: PropTypes.shape(),
   }
@@ -92,29 +89,43 @@ class TimetableScreen extends Component {
     }
   }
 
+  fetchTimetablePeriod = async (date, forceUpdate = false) => {
+    const day = date.clone().startOf(`day`)
+
+    const { timetable, fetchTimetable, user: { token } } = this.props
+
+    await Promise.all([
+      day.clone().subtract(1, `days`),
+      day,
+      day.clone().add(1, `days`),
+    ].map((eachDate) => {
+      const dateString = eachDate.format(`YYYY-MM-DD`)
+
+      if (forceUpdate || !timetable[dateString] || !timetable[dateString].lastUpdated) {
+        console.log(timetable[dateString])
+        return fetchTimetable(token, eachDate)
+      }
+      const diff = moment.duration(
+        moment().diff(timetable[dateString].lastUpdated),
+      )
+      if (diff.asHours() > TIMETABLE_CACHE_TIME_HOURS) {
+        console.log(diff.asHours(), TIMETABLE_CACHE_TIME_HOURS)
+        return fetchTimetable(token, eachDate)
+      }
+      return Promise.resolve()
+    }))
+  }
+
   onDateChanged = async (newDate, forceUpdate = false) => {
     const newDay = newDate.clone().startOf(`day`)
     await this.setState({
       date: newDay,
     })
-    const dateString = newDay.format(`YYYY-MM-DD`)
 
-    const { timetable, fetchTimetable, user: { token } } = this.props
-    const { date } = this.state
-
-    if (forceUpdate || !timetable[dateString] || !timetable[dateString].lastUpdated) {
-      fetchTimetable(token, date)
-    } else {
-      const diff = moment.duration(
-        moment().diff(timetable[dateString].lastUpdated),
-      )
-      if (diff.asHours() > TIMETABLE_CACHE_TIME_HOURS) {
-        fetchTimetable(token, date)
-      }
-    }
+    await this.fetchTimetablePeriod(newDay, forceUpdate)
   }
 
-  loginCheck(props) {
+  loginCheck = (props) => {
     const { user, navigation } = props
     if (Object.keys(user).length > 0 && user.scopeNumber < 0) {
       const resetAction = StackActions.reset({
