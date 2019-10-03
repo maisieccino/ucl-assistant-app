@@ -7,12 +7,13 @@ import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
 
 import { fetchTimetable as fetchTimetableAction } from "../../actions/timetableActions"
+import { setExpoPushToken as setExpoPushTokenAction } from "../../actions/userActions"
 import Button from "../../components/Button"
 import { Page } from "../../components/Containers"
 import { BodyText, ErrorText, TitleText } from "../../components/Typography"
 import Colors from "../../constants/Colors"
 import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants"
-import { PushNotificationsManager } from '../../lib'
+import { ErrorManager, PushNotificationsManager } from '../../lib'
 import DateControls from "./DateControls"
 import TimetableComponent from "./TimetableComponent"
 
@@ -44,6 +45,7 @@ class TimetableScreen extends Component {
     fetchTimetable: PropTypes.func,
     isFetchingTimetable: PropTypes.bool,
     navigation: PropTypes.shape().isRequired,
+    setExpoPushToken: PropTypes.func,
     timetable: PropTypes.shape(),
     user: PropTypes.shape(),
   }
@@ -51,6 +53,7 @@ class TimetableScreen extends Component {
   static defaultProps = {
     fetchTimetable: () => { },
     isFetchingTimetable: false,
+    setExpoPushToken: () => { },
     timetable: {},
     user: {},
   }
@@ -64,6 +67,7 @@ class TimetableScreen extends Component {
 
   static mapDispatchToProps = (dispatch) => ({
     fetchTimetable: (token, date) => dispatch(fetchTimetableAction(token, date)),
+    setExpoPushToken: (pushToken) => dispatch(setExpoPushTokenAction(pushToken)),
   })
 
   constructor(props) {
@@ -75,16 +79,29 @@ class TimetableScreen extends Component {
 
   async componentDidMount() {
     const { date } = this.state
-    const { user: { token, declinePushNotifications }, fetchTimetable } = this.props
+    const {
+      user: {
+        token,
+        declinePushNotifications,
+        expoPushToken,
+      },
+      fetchTimetable,
+      setExpoPushToken,
+    } = this.props
     if (this.loginCheck(this.props) && token !== ``) {
       fetchTimetable(token, date)
     }
 
-    if (Platform.OS === `android`) {
-      await PushNotificationsManager.registerForPushNotifications(token)
+    if (Platform.OS === `android` && expoPushToken === ``) {
+      try {
+        const pushToken = await PushNotificationsManager.registerForPushNotifications(token)
+        setExpoPushToken(pushToken)
+      } catch (error) {
+        ErrorManager.captureError(error)
+      }
     }
 
-    if (Platform.OS === `ios` && !declinePushNotifications) {
+    if (Platform.OS === `ios` && !declinePushNotifications && expoPushToken === ``) {
       const didGrant = await PushNotificationsManager.hasPushNotificationPermissions()
       if (!didGrant) {
         const { navigation } = this.props

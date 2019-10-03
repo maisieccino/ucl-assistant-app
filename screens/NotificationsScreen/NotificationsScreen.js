@@ -4,7 +4,10 @@ import { Image, StyleSheet, View } from 'react-native'
 import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
 
-import { declinePushNotifications as declinePushNotificationsAction } from "../../actions/userActions"
+import {
+  declinePushNotifications as declinePushNotificationsAction,
+  setExpoPushToken as setExpoPushTokenAction,
+} from "../../actions/userActions"
 import Button from "../../components/Button"
 import { Page } from "../../components/Containers"
 import {
@@ -12,7 +15,12 @@ import {
   Link,
   TitleText,
 } from "../../components/Typography"
-import { AnalyticsManager, AssetManager, PushNotificationsManager } from "../../lib"
+import {
+  AnalyticsManager,
+  AssetManager,
+  ErrorManager,
+  PushNotificationsManager,
+} from "../../lib"
 import Styles from "../../styles/Containers"
 
 
@@ -48,11 +56,13 @@ export class NotificationsScreen extends React.Component {
   static propTypes = {
     declinePushNotifications: PropTypes.func,
     navigation: PropTypes.shape().isRequired,
+    setExpoPushToken: PropTypes.func,
     token: PropTypes.string,
   }
 
   static defaultProps = {
     declinePushNotifications: () => { },
+    setExpoPushToken: () => { },
     token: ``,
   }
 
@@ -62,13 +72,19 @@ export class NotificationsScreen extends React.Component {
 
   static mapDispatchToProps = (dispatch) => ({
     declinePushNotifications: () => dispatch(declinePushNotificationsAction()),
+    setExpoPushToken: (pushToken) => dispatch(setExpoPushTokenAction(pushToken)),
   })
 
   onEnableNotifications = async () => {
-    const { token } = this.props
+    const { token, setExpoPushToken } = this.props
     AnalyticsManager.logEvent(AnalyticsManager.events.NOTIFICATIONS_ENABLE)
-    await PushNotificationsManager.registerForPushNotifications(token)
-    this.goHome()
+    try {
+      const pushToken = await PushNotificationsManager.registerForPushNotifications(token)
+      setExpoPushToken(pushToken)
+    } catch (error) {
+      ErrorManager.captureError(error)
+    }
+    return this.goHome()
   }
 
   onSkip = () => {

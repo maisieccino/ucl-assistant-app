@@ -1,6 +1,7 @@
 import {
   DECLINE_PUSH_NOTIFICATIONS,
   IS_SIGNING_IN,
+  SET_EXPO_PUSH_TOKEN,
   SIGN_IN_CANCEL,
   SIGN_IN_FAILURE,
   SIGN_IN_SUCCESS,
@@ -14,6 +15,7 @@ export const initialState = {
   declinePushNotifications: false,
   department: ``,
   email: ``,
+  expoPushToken: ``,
   fullName: ``,
   givenName: ``,
   scopeNumber: -1,
@@ -58,6 +60,11 @@ export default (state = initialState, action = null) => {
 
     case DECLINE_PUSH_NOTIFICATIONS: {
       return { ...state, declinePushNotifications: true }
+    }
+
+    case SET_EXPO_PUSH_TOKEN: {
+      const { pushToken } = action
+      return { ...state, expoPushToken: pushToken }
     }
 
     default: {
