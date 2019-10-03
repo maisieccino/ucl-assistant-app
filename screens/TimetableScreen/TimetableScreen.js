@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons"
 import moment from "moment"
 import PropTypes from "prop-types"
 import React, { Component } from "react"
-import { StyleSheet, View } from "react-native"
+import { Platform, StyleSheet, View } from "react-native"
 import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
 
@@ -80,7 +80,11 @@ class TimetableScreen extends Component {
       fetchTimetable(token, date)
     }
 
-    if (!declinePushNotifications) {
+    if (Platform.OS === `android`) {
+      await PushNotificationsManager.registerForPushNotifications(token)
+    }
+
+    if (Platform.OS === `ios` && !declinePushNotifications) {
       const didGrant = await PushNotificationsManager.hasPushNotificationPermissions()
       if (!didGrant) {
         const { navigation } = this.props
