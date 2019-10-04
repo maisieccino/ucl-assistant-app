@@ -69,3 +69,8 @@ export const signOut = () => async (dispatch) => {
 export const declinePushNotifications = () => ({
   type: constants.DECLINE_PUSH_NOTIFICATIONS,
 })
+
+export const setExpoPushToken = (pushToken) => ({
+  pushToken,
+  type: constants.SET_EXPO_PUSH_TOKEN,
+})
