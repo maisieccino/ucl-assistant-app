@@ -1,22 +1,16 @@
 /* eslint react/prop-types: 0 */
-import React from "react"
 import { Feather } from "@expo/vector-icons"
-import { createBottomTabNavigator } from "react-navigation"
-import Colors from "../constants/Colors"
+import React from "react"
+import { createBottomTabNavigator } from "react-navigation-tabs"
 
-import TimetableScreen from "../screens/TimetableScreen"
-import StudySpacesScreen from "../screens/StudySpacesScreen"
+import Colors from "../constants/Colors"
 import PeopleScreen from "../screens/PeopleScreen"
 import RoomsScreen from "../screens/RoomsScreen"
 import SettingsScreen from "../screens/SettingsScreen"
+import StudySpacesScreen from "../screens/StudySpacesScreen"
+import TimetableScreen from "../screens/TimetableScreen"
 
 const screens = {
-  Timetable: {
-    screen: TimetableScreen,
-  },
-  StudySpaces: {
-    screen: StudySpacesScreen,
-  },
   People: {
     screen: PeopleScreen,
   },
@@ -25,6 +19,12 @@ const screens = {
   },
   Settings: {
     screen: SettingsScreen,
+  },
+  StudySpaces: {
+    screen: StudySpacesScreen,
+  },
+  Timetable: {
+    screen: TimetableScreen,
   },
 }
 
@@ -64,30 +64,30 @@ export default createBottomTabNavigator(screens, {
   // initialRouteName: __DEV__ ? "Storybook" : "Timetable",
   initialRouteName: `Timetable`,
   tabBarOptions: {
-    activeTintColor: Colors.pageBackground,
     activeBackgroundColor: Colors.accentColor,
+    activeTintColor: Colors.pageBackground,
+    bottomNavigationOptions: {
+      backgroundColor: Colors.accentColor,
+      labelColor: Colors.pageBackground,
+      rippleColor: Colors.pageBackground,
+    },
     inactiveBackgroundColor: Colors.tabBackground,
     inactiveTintColor: Colors.textColor,
-    tabStyle: {
-      paddingTop: 5,
-      paddingBottom: 5,
-    },
     labelStyle: {
       fontFamily: `apercu`,
     },
     style: {
-      height: 60,
       backgroundColor: Colors.tabBackground,
+      bottom: 0,
       // https://github.com/react-navigation/react-navigation/issues/5994
       // position: "absolute",
+      height: 60,
       left: 0,
       right: 0,
-      bottom: 0,
     },
-    bottomNavigationOptions: {
-      labelColor: Colors.pageBackground,
-      backgroundColor: Colors.accentColor,
-      rippleColor: Colors.pageBackground,
+    tabStyle: {
+      paddingBottom: 5,
+      paddingTop: 5,
     },
   },
 })
