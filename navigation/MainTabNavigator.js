@@ -10,7 +10,16 @@ import SettingsScreen from "../screens/SettingsScreen"
 import StudySpacesScreen from "../screens/StudySpacesScreen"
 import TimetableScreen from "../screens/TimetableScreen"
 
+
 const screens = {
+  Timetable: {
+    screen: TimetableScreen,
+  },
+  // eslint-disable-next-line sort-keys-fix/sort-keys-fix
+  StudySpaces: {
+    screen: StudySpacesScreen,
+  },
+  // eslint-disable-next-line sort-keys-fix/sort-keys-fix
   People: {
     screen: PeopleScreen,
   },
@@ -19,12 +28,6 @@ const screens = {
   },
   Settings: {
     screen: SettingsScreen,
-  },
-  StudySpaces: {
-    screen: StudySpacesScreen,
-  },
-  Timetable: {
-    screen: TimetableScreen,
   },
 }
 
