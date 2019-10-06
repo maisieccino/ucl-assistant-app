@@ -126,7 +126,7 @@
     "lint-staged": "^9.4.1",
     "react-dom": "16.8.3",
     "react-native-storybook-loader": "^1.8.1",
-    "react-test-renderer": "^16.8.3",
+    "react-test-renderer": "16.8.3",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3"
   }
