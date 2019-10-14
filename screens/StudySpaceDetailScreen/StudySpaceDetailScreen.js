@@ -1,27 +1,28 @@
 // @flow
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { View, StyleSheet } from "react-native"
-import { connect } from "react-redux"
 import moment from "moment"
-import Timezones from "../../constants/Timezones"
-import LocalisationManager from "../../lib/LocalisationManager"
+import PropTypes from "prop-types"
+import React, { Component } from "react"
+import { StyleSheet, View } from "react-native"
+import { connect } from "react-redux"
+
 import { fetchAverages as fetchAveragesAction } from "../../actions/studyspacesActions"
-import { Page, Horizontal } from "../../components/Containers"
+import { Horizontal, Page } from "../../components/Containers"
+import LiveIndicator from "../../components/LiveIndicator"
 import {
   BodyText,
-  TitleText,
-  SubtitleText,
-  Link,
   InfoText,
+  Link,
+  SubtitleText,
+  TitleText,
 } from "../../components/Typography"
+import Colors from "../../constants/Colors"
+import Timezones from "../../constants/Timezones"
+import LocalisationManager from "../../lib/LocalisationManager"
+import Shadow from "../../lib/Shadow"
 import CapacityChart from "./CapacityChart"
-import LiveIndicator from "../../components/LiveIndicator"
 // import OpeningHours from "./OpeningHours";
 import FavouriteButton from "./FavouriteButton"
 import LiveSeatingMapList from "./LiveSeatingMapList"
-import Colors from "../../constants/Colors"
-import Shadow from "../../lib/Shadow"
 
 const busyText = (
   time = 0,
@@ -41,6 +42,10 @@ const busyText = (
 }
 
 const styles = StyleSheet.create({
+  capacityTextStyle: {
+    marginBottom: 0,
+    marginTop: 5,
+  },
   cardHeader: {
     backgroundColor: Colors.cardHeader,
     borderRadius: 10,
@@ -86,16 +91,21 @@ const styles = StyleSheet.create({
 })
 
 class StudySpaceDetailScreen extends Component {
-  static navigationOptions = {
-    title: `Study Space Detail`,
-  };
+  static mapStateToProps = (state) => ({
+    studyspaces: state.studyspaces.studyspaces,
+    token: state.user.token,
+  })
+
+  static mapDispatchToProps = (dispatch) => ({
+    fetchAverages: (token, id) => dispatch(fetchAveragesAction(token, id)),
+  })
 
   static propTypes = {
-    navigation: PropTypes.shape().isRequired,
-    /* eslint-disable react/no-unused-prop-types */
-    studyspaces: PropTypes.arrayOf(PropTypes.shape()),
-    /* eslint-enable react/no-unused-prop-types */
     fetchAverages: PropTypes.func.isRequired,
+    /* eslint-disable react/no-unused-prop-types */
+    navigation: PropTypes.shape().isRequired,
+    /* eslint-enable react/no-unused-prop-types */
+    studyspaces: PropTypes.arrayOf(PropTypes.shape()),
     token: PropTypes.string,
   }
 
@@ -112,20 +122,6 @@ class StudySpaceDetailScreen extends Component {
     return null
   }
 
-  static mapStateToProps = (state) => ({
-    studyspaces: state.studyspaces.studyspaces,
-    token: state.user.token,
-  })
-
-  static mapDispatchToProps = (dispatch) => ({
-    fetchAverages: (token, id) => dispatch(fetchAveragesAction(token, id)),
-  })
-
-  static capacityTextStyle = {
-    marginBottom: 0,
-    marginTop: 5,
-  }
-
   constructor(props) {
     super(props)
     const { navigation } = this.props
@@ -133,18 +129,18 @@ class StudySpaceDetailScreen extends Component {
       id, name, occupied, total,
     } = navigation.state.params
     this.state = {
-      name,
-      id,
-      total,
-      occupied,
       data: Array.from(Array(24)).map(() => 0),
       fetchingData: false,
+      id,
+      name,
+      occupied,
       space: {
         isFetchingAverages: false,
       },
       survey: props.studyspaces.filter(
         ({ id: surveyId }) => Number.parseInt(id, 10) === Number.parseInt(surveyId, 10),
       )[0],
+      total,
     }
   }
 
@@ -161,6 +157,10 @@ class StudySpaceDetailScreen extends Component {
     const { navigation } = this.props
     const { survey } = this.state
     navigation.navigate(`LiveSeatingMap`, { survey })
+  }
+
+  static navigationOptions = {
+    title: `Study Space Detail`,
   }
 
   render() {
@@ -198,13 +198,13 @@ class StudySpaceDetailScreen extends Component {
           <TitleText>{name}</TitleText>
           <Horizontal>
             <View style={styles.occupancySection}>
-              <TitleText style={StudySpaceDetailScreen.capacityTextStyle}>
+              <TitleText style={styles.capacityTextStyle}>
                 {total - occupied}
               </TitleText>
               <BodyText>Seats Available</BodyText>
             </View>
             <View style={styles.occupancySection}>
-              <TitleText style={StudySpaceDetailScreen.capacityTextStyle}>
+              <TitleText style={styles.capacityTextStyle}>
                 {occupied}
               </TitleText>
               <BodyText>Seats Occupied</BodyText>
@@ -217,7 +217,7 @@ class StudySpaceDetailScreen extends Component {
               data={data}
               occupied={occupied}
               capacity={total}
-              loading={isFetchingAverages}
+              isLoading={isFetchingAverages}
             />
           </View>
           {timezoneInfo}
