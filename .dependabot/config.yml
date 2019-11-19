@@ -23,3 +23,5 @@ update_configs:
           dependency_name: "react-native*"
       - match:
           dependency_name: "lottie-react-native"
+      - match:
+          dependency_name: "react-native-svg"
