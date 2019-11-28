@@ -10,13 +10,13 @@ import {
   Linking,
   Platform,
   StyleSheet,
+  Switch,
   View,
-  Switch
 } from "react-native"
 import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
 
-import { signOut as signOutAction, shouldTrackAnalytics as shouldTrackAnalyticsAction} from "../../actions/userActions"
+import { shouldTrackAnalytics as shouldTrackAnalyticsAction, signOut as signOutAction } from "../../actions/userActions"
 import Button, { SmallButton } from "../../components/Button"
 import { Horizontal, PaddedIcon, Page } from "../../components/Containers"
 import TextInput from "../../components/Input/TextInput"
@@ -36,8 +36,9 @@ import common from "../../styles/common"
 const { version } = require(`../../package.json`)
 
 const styles = StyleSheet.create({
-  signOutButton: {
-    paddingBottom: 10,
+  analyticsToggle: {
+    alignSelf: `center`,
+    marginTop: 10,
   },
   faqButton: {
     marginBottom: 10,
@@ -45,16 +46,15 @@ const styles = StyleSheet.create({
   feedbackButton: {
     alignSelf: `flex-start`,
   },
-  analyticsToggle: {
-    marginTop: 10,
-    alignSelf: `center`,
+  section: {
+    marginBottom: 15,
+    marginTop: 15,
   },
   // notificationSettingsButton: {
   //   marginTop: 10,
   // },
-  section: {
-    marginBottom: 15,
-    marginTop: 15,
+  signOutButton: {
+    paddingBottom: 10,
   },
   textWithUpperMargin: {
     marginTop: 10,
@@ -83,8 +83,8 @@ class SettingsScreen extends Component {
   })
 
   static mapDispatchToProps = (dispatch) => ({
-    signOut: () => dispatch(signOutAction()),
     shouldTrackAnalytics: (shouldTrackAnalytics) => dispatch(shouldTrackAnalyticsAction(shouldTrackAnalytics)),
+    signOut: () => dispatch(signOutAction()),
   })
 
   static launchNotificationSettings() {
@@ -227,11 +227,11 @@ class SettingsScreen extends Component {
             </Horizontal>
           </Button>
           <BodyText>
-            {`Click to enable/disable analytics being sent ` + 
-              `to the developers.`}
+            {`Click to enable/disable analytics being sent `
+              + `to the developers.`}
           </BodyText>
           <Switch
-            style={styles.analyticsToggle} 
+            style={styles.analyticsToggle}
             value={user.settings.shouldTrackAnalytics}
             onValueChange={this.toggleAnalytics}
           />
@@ -248,12 +248,12 @@ class SettingsScreen extends Component {
             {__DEV__ ? (
               <LiveIndicator>Developer Mode</LiveIndicator>
             ) : (
-                <>
+              <>
                   <BodyText>Release Channel: </BodyText>
                   <LiveIndicator>
                     {Constants.manifest.releaseChannel || `dev`}
                   </LiveIndicator>
-                </>
+              </>
             )}
           </Horizontal>
           <Link href="https://github.com/uclapi/ucl-assistant-app">
@@ -281,7 +281,7 @@ class SettingsScreen extends Component {
           <BodyText style={styles.textWithUpperMargin}>
             Currently managed by the UCL API Team: a group of students working
             together within ISD to improve UCL by building a platform on top of
-            {` UCL's `}
+             UCL's
             digital services for students.
           </BodyText>
           <BodyText style={styles.textWithUpperMargin}>
