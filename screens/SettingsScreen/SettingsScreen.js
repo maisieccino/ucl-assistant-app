@@ -11,6 +11,7 @@ import {
   Platform,
   StyleSheet,
   View,
+  Switch
 } from "react-native"
 import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
@@ -35,11 +36,18 @@ import common from "../../styles/common"
 const { version } = require(`../../package.json`)
 
 const styles = StyleSheet.create({
+  signOutButton: {
+    paddingBottom: 10,
+  },
   faqButton: {
     marginBottom: 10,
   },
   feedbackButton: {
     alignSelf: `flex-start`,
+  },
+  analyticsToggle: {
+    marginTop: 10,
+    alignSelf: `center`,
   },
   // notificationSettingsButton: {
   //   marginTop: 10,
@@ -123,6 +131,10 @@ class SettingsScreen extends Component {
     }
   }
 
+  toggleAnalytics = (value) => {
+    // TODO Add reducer and action
+  }
+
   signOut = () => {
     const { signOut } = this.props
     signOut()
@@ -203,7 +215,7 @@ class SettingsScreen extends Component {
           <BodyText>
             {`Unique Person Identifier (UPI): ${user.upi}`}
           </BodyText>
-          <Button onPress={this.signOut}>
+          <Button onPress={this.signOut} style={styles.signOutButton}>
             <Horizontal>
               <PaddedIcon
                 name="log-out"
@@ -213,6 +225,15 @@ class SettingsScreen extends Component {
               <ButtonText>Sign Out</ButtonText>
             </Horizontal>
           </Button>
+          <BodyText>
+            {`Click to enable/disable analytics being sent ` + 
+              `to the developers.`}
+          </BodyText>
+          <Switch
+            style={styles.analyticsToggle} 
+            value={true}
+            onValueChange={this.toggleAnalytics}
+          />
         </View>
         <View style={styles.section}>
           <TitleText>About This App</TitleText>
