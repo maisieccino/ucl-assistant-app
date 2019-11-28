@@ -16,7 +16,7 @@ import {
 import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
 
-import { signOut as signOutAction } from "../../actions/userActions"
+import { signOut as signOutAction, shouldTrackAnalytics as shouldTrackAnalyticsAction} from "../../actions/userActions"
 import Button, { SmallButton } from "../../components/Button"
 import { Horizontal, PaddedIcon, Page } from "../../components/Containers"
 import TextInput from "../../components/Input/TextInput"
@@ -84,6 +84,7 @@ class SettingsScreen extends Component {
 
   static mapDispatchToProps = (dispatch) => ({
     signOut: () => dispatch(signOutAction()),
+    shouldTrackAnalytics: (shouldTrackAnalytics) => dispatch(shouldTrackAnalyticsAction(shouldTrackAnalytics)),
   })
 
   static launchNotificationSettings() {
@@ -231,7 +232,7 @@ class SettingsScreen extends Component {
           </BodyText>
           <Switch
             style={styles.analyticsToggle} 
-            value={true}
+            value={user.settings.shouldTrackAnalytics}
             onValueChange={this.toggleAnalytics}
           />
         </View>

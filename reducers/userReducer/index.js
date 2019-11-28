@@ -22,6 +22,9 @@ export const initialState = {
   signIn: signInState,
   token: ``,
   upi: ``,
+  settings: [
+    shouldTrackAnalytics: true
+  ]
 }
 
 /**
@@ -65,6 +68,11 @@ export default (state = initialState, action = null) => {
     case SET_EXPO_PUSH_TOKEN: {
       const { pushToken } = action
       return { ...state, expoPushToken: pushToken }
+    }
+
+    case SET_SHOULD_TRACK_ANALYTICS: {
+      const { shouldTrackAnalytics } = action
+      return { ...state, settings: [...state.settings, shouldTrackAnalytics: shouldTrackAnalytics] }
     }
 
     default: {
