@@ -69,15 +69,15 @@ class SettingsScreen extends Component {
 
   static propTypes = {
     navigation: PropTypes.shape(),
-    signOut: PropTypes.func,
     shouldTrackAnalytics: PropTypes.func,
+    signOut: PropTypes.func,
     user: PropTypes.shape(),
   }
 
   static defaultProps = {
     navigation: {},
-    signOut: () => { },
     setShouldTrackAnalytics: () => { },
+    signOut: () => { },
     user: {},
   }
 
@@ -86,8 +86,7 @@ class SettingsScreen extends Component {
   })
 
   static mapDispatchToProps = (dispatch) => ({
-    setShouldTrackAnalytics: (shouldTrackAnalytics) => 
-      dispatch(setShouldTrackAnalyticsAction(shouldTrackAnalytics)),
+    setShouldTrackAnalytics: (shouldTrackAnalytics) => dispatch(setShouldTrackAnalyticsAction(shouldTrackAnalytics)),
     signOut: () => dispatch(signOutAction()),
   })
 
