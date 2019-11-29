@@ -70,12 +70,14 @@ class SettingsScreen extends Component {
   static propTypes = {
     navigation: PropTypes.shape(),
     signOut: PropTypes.func,
+    shouldTrackAnalytics: PropTypes.func,
     user: PropTypes.shape(),
   }
 
   static defaultProps = {
     navigation: {},
     signOut: () => { },
+    setShouldTrackAnalytics: () => { },
     user: {},
   }
 
@@ -83,12 +85,11 @@ class SettingsScreen extends Component {
     user: state.user,
   })
 
-  static mapDispatchToProps = (dispatch) => {
-    return {
-      shouldTrackAnalytics: (shouldTrackAnalytics) => dispatch(setShouldTrackAnalyticsAction(shouldTrackAnalytics)),
-      signOut: () => dispatch(signOutAction()),
-    }
-  }
+  static mapDispatchToProps = (dispatch) => ({
+    setShouldTrackAnalytics: (shouldTrackAnalytics) => 
+      dispatch(setShouldTrackAnalyticsAction(shouldTrackAnalytics)),
+    signOut: () => dispatch(signOutAction()),
+  })
 
   static launchNotificationSettings() {
     // note that this will only work on standalone apps
@@ -136,9 +137,9 @@ class SettingsScreen extends Component {
   }
 
   toggleAnalytics = (value) => {
-    const { shouldTrackAnalytics } = this.props
+    const { setShouldTrackAnalytics } = this.props
 
-    shouldTrackAnalytics(value)
+    setShouldTrackAnalytics(value)
   }
 
   signOut = () => {
