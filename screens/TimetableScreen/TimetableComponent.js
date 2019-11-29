@@ -14,6 +14,7 @@ import TimetableCard from "../../components/Card/TimetableCard"
 import { CentredText, SubtitleText } from "../../components/Typography"
 import { AssetManager, LocalisationManager, Random } from "../../lib"
 import Styles from "../../styles/Containers"
+import LastModified from "./LastModified"
 
 const relaxIllustration = Random.array([
   AssetManager.undraw.relaxation,
@@ -53,10 +54,22 @@ class TimetableComponent extends React.Component {
     timetable: {},
   }
 
+  jumpToToday = () => {
+    const { changeDate } = this.props
+    changeDate(LocalisationManager.getMoment())
+  }
+
+  openFAQ = () => {
+    const { navigation: { navigate } } = this.props
+    navigate(`FAQ`)
+  }
+
   renderTimetableCard = (item) => {
     const { date, navigation } = this.props
     const dateISO = date.format(`YYYY-MM-DD`)
-    const past = LocalisationManager.parseToDate(`${dateISO}T${item.end_time}`) - LocalisationManager.now() < 0
+    const past = LocalisationManager.parseToDate(
+      `${dateISO}T${item.end_time}`,
+    ) - LocalisationManager.now() < 0
     return (
       <TimetableCard
         moduleName={item.module.name}
@@ -73,10 +86,10 @@ class TimetableComponent extends React.Component {
   }
 
   renderJumpToToday = () => {
-    const { date, changeDate } = this.props
+    const { date } = this.props
     if (!date.isSame(LocalisationManager.getMoment().startOf(`day`))) {
       return (
-        <Button onPress={() => changeDate(LocalisationManager.getMoment())}>
+        <Button onPress={this.jumpToToday}>
           Jump To Today
         </Button>
       )
@@ -87,20 +100,27 @@ class TimetableComponent extends React.Component {
   renderItem = ({ index }) => {
     const { date, timetable } = this.props
     const dateISO = date.clone().add(index - 1, `days`).format(`YYYY-MM-DD`)
-    const filteredTimetable = (timetable[dateISO] || {}).timetable || []
+    const {
+      timetable: dayTimetable = [],
+      lastModified = null,
+    } = (timetable[dateISO] || {})
 
-    const items = filteredTimetable.sort(
+    const items = dayTimetable.sort(
       (a, b) => LocalisationManager.parseToDate(`${dateISO}T${a.start_time}:00`)
         - LocalisationManager.parseToDate(`${dateISO}T${b.start_time}:00`),
     )
     const pastItems = items.filter(
-      (item) => LocalisationManager.parseToDate(`${dateISO}T${item.end_time}`) - LocalisationManager.now() < 0,
+      (item) => LocalisationManager.parseToDate(
+        `${dateISO}T${item.end_time}`,
+      ) - LocalisationManager.now() < 0,
     )
     const futureItems = items.filter(
-      (item) => LocalisationManager.parseToDate(`${dateISO}T${item.end_time}`) - LocalisationManager.now() > 0,
+      (item) => LocalisationManager.parseToDate(
+        `${dateISO}T${item.end_time}`,
+      ) - LocalisationManager.now() > 0,
     )
 
-    if (filteredTimetable.length > 0) {
+    if (dayTimetable.length > 0) {
       return (
         <View style={styles.dayView}>
           {futureItems.map(this.renderTimetableCard)}
@@ -111,6 +131,7 @@ class TimetableComponent extends React.Component {
             </>
           )}
           {this.renderJumpToToday()}
+          {this.renderLastModified(lastModified)}
         </View>
       )
     }
@@ -130,9 +151,14 @@ class TimetableComponent extends React.Component {
           resizeMode="contain"
         />
         {this.renderJumpToToday()}
+        {this.renderLastModified(lastModified)}
       </View>
     )
   }
+
+  renderLastModified = (lastModified) => (
+    <LastModified lastModified={lastModified} openFAQ={this.openFAQ} />
+  )
 
   render() {
     const {
@@ -142,12 +168,23 @@ class TimetableComponent extends React.Component {
     } = this.props
 
     const dateISO = date.format(`YYYY-MM-DD`)
-    const filteredTimetable = (timetable[dateISO] || {}).timetable || []
+    const {
+      timetable: dayTimetable = [],
+      lastModified = null,
+    } = (timetable[dateISO] || {})
 
-    if (isLoading && filteredTimetable.length === 0) {
+    if (isLoading && dayTimetable.length === 0) {
       return (
         <View>
           <CentredText>Loading timetable...</CentredText>
+        </View>
+      )
+    }
+
+    if (lastModified === null) {
+      return (
+        <View>
+          <CentredText>Could not load personal timetable</CentredText>
         </View>
       )
     }
