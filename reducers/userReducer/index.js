@@ -6,6 +6,7 @@ import {
   SIGN_IN_FAILURE,
   SIGN_IN_SUCCESS,
   SIGN_OUT_USER,
+  SET_SHOULD_TRACK_ANALYTICS,
 } from "../../constants/userConstants"
 import signIn, { initialState as signInState } from "./signInReducer"
 
@@ -22,9 +23,9 @@ export const initialState = {
   signIn: signInState,
   token: ``,
   upi: ``,
-  settings: [
+  settings: {
     shouldTrackAnalytics: true
-  ]
+  }
 }
 
 /**
@@ -71,8 +72,8 @@ export default (state = initialState, action = null) => {
     }
 
     case SET_SHOULD_TRACK_ANALYTICS: {
-      const { shouldTrackAnalytics } = action
-      return { ...state, settings: [...state.settings, shouldTrackAnalytics: shouldTrackAnalytics] }
+      const { shouldTrack } = action
+      return { ...state, settings: {...state.settings, shouldTrackAnalytics: shouldTrack} }
     }
 
     default: {

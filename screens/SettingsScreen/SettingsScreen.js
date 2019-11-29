@@ -16,7 +16,7 @@ import {
 import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
 
-import { shouldTrackAnalytics as shouldTrackAnalyticsAction, signOut as signOutAction } from "../../actions/userActions"
+import { setShouldTrackAnalytics as setShouldTrackAnalyticsAction, signOut as signOutAction } from "../../actions/userActions"
 import Button, { SmallButton } from "../../components/Button"
 import { Horizontal, PaddedIcon, Page } from "../../components/Containers"
 import TextInput from "../../components/Input/TextInput"
@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
   //   marginTop: 10,
   // },
   signOutButton: {
-    paddingBottom: 10,
+    marginBottom: 10,
+    marginTop: 10,
   },
   textWithUpperMargin: {
     marginTop: 10,
@@ -82,10 +83,12 @@ class SettingsScreen extends Component {
     user: state.user,
   })
 
-  static mapDispatchToProps = (dispatch) => ({
-    shouldTrackAnalytics: (shouldTrackAnalytics) => dispatch(shouldTrackAnalyticsAction(shouldTrackAnalytics)),
-    signOut: () => dispatch(signOutAction()),
-  })
+  static mapDispatchToProps = (dispatch) => {
+    return {
+      shouldTrackAnalytics: (shouldTrackAnalytics) => dispatch(setShouldTrackAnalyticsAction(shouldTrackAnalytics)),
+      signOut: () => dispatch(signOutAction()),
+    }
+  }
 
   static launchNotificationSettings() {
     // note that this will only work on standalone apps
@@ -133,7 +136,9 @@ class SettingsScreen extends Component {
   }
 
   toggleAnalytics = (value) => {
-    // TODO Add reducer and action
+    const { shouldTrackAnalytics } = this.props
+
+    shouldTrackAnalytics(value)
   }
 
   signOut = () => {
