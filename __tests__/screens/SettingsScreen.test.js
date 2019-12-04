@@ -29,6 +29,9 @@ describe(`SettingsScreen`, () => {
     signOut: mockSignOut,
     user: {
       fullName: `Jeremy Bentham`,
+      settings: {
+        shouldTrackAnalytics: false,
+      },
       token: `abc123`,
       upi: `upiupi11`,
     },
