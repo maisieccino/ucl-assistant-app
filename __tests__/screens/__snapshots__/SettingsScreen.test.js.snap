@@ -71,21 +71,33 @@ exports[`SettingsScreen renders the SettingsScreen 1`] = `
     >
       Sign Out
     </Link>
-    <BodyText
-      style={Object {}}
-    >
-      Click to enable/disable analytics being sent to the developers.
-    </BodyText>
-    <Switch
-      onValueChange={[Function]}
+    <View
       style={
         Object {
-          "alignSelf": "center",
-          "marginTop": 10,
+          "flex": 1,
+          "flexDirection": "row",
         }
       }
-      value={false}
-    />
+    >
+      <BodyText
+        style={
+          Object {
+            "flex": 0.9,
+          }
+        }
+      >
+        Allow UCL Assistant to send analytics data to UCL API
+      </BodyText>
+      <UnimplementedView
+        onValueChange={[Function]}
+        style={
+          Object {
+            "flex": 0.1,
+          }
+        }
+        value={false}
+      />
+    </View>
   </View>
   <View
     style={
@@ -281,11 +293,11 @@ exports[`SettingsScreen renders the SettingsScreen 1`] = `
     >
       {
   "fullName": "Jeremy Bentham",
-  "token": "abc123",
-  "upi": "upiupi11",
   "settings": {
     "shouldTrackAnalytics": false
-  }
+  },
+  "token": "abc123",
+  "upi": "upiupi11"
 }
     </BodyText>
   </View>

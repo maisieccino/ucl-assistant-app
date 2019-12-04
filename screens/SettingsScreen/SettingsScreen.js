@@ -6,11 +6,11 @@ import PropTypes from "prop-types"
 import React, { Component } from "react"
 import {
   Alert,
+  CheckBox,
   Clipboard,
   Linking,
   Platform,
   StyleSheet,
-  Switch,
   View,
 } from "react-native"
 import { NavigationActions, StackActions } from "react-navigation"
@@ -38,10 +38,6 @@ const {
 } = require(`../../package.json`)
 
 const styles = StyleSheet.create({
-  analyticsToggle: {
-    alignSelf: `center`,
-    marginTop: 10,
-  },
   createdBy: {
     flexDirection: `row`,
     flexWrap: `wrap`,
@@ -66,9 +62,19 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 15,
   },
+  settingView: {
+    flex: 1,
+    flexDirection: `row`,
+  },
+  settingsCheckBox: {
+    flex: 0.1,
+  },
+  settingsText: {
+    flex: 0.9,
+  },
   signOut: {
-    marginTop: 10,
     marginBottom: 10,
+    marginTop: 10,
   },
   textWithUpperMargin: {
     marginTop: 10,
@@ -81,12 +87,13 @@ export class SettingsScreen extends Component {
   })
 
   static mapDispatchToProps = (dispatch) => ({
+    setShouldTrackAnalytics: (shouldTrackAnalytics) => dispatch(setShouldTrackAnalyticsAction(shouldTrackAnalytics)),
     signOut: () => dispatch(signOutAction()),
   })
 
   static propTypes = {
     navigation: PropTypes.shape(),
-    shouldTrackAnalytics: PropTypes.func,
+    setShouldTrackAnalytics: PropTypes.func,
     signOut: PropTypes.func,
     user: PropTypes.shape(),
   }
@@ -104,11 +111,6 @@ export class SettingsScreen extends Component {
       isSigningOut: false,
     }
   }
-
-  static mapDispatchToProps = (dispatch) => ({
-    setShouldTrackAnalytics: (shouldTrackAnalytics) => dispatch(setShouldTrackAnalyticsAction(shouldTrackAnalytics)),
-    signOut: () => dispatch(signOutAction()),
-  })
 
   componentDidUpdate(_, prevState) {
     const { user, navigation } = this.props
@@ -236,15 +238,18 @@ export class SettingsScreen extends Component {
           >
             Sign Out
           </Link>
-          <BodyText>
-            {`Click to enable/disable analytics being sent `
-              + `to the developers.`}
-          </BodyText>
-          <Switch
-            style={styles.analyticsToggle}
-            value={user.settings.shouldTrackAnalytics}
-            onValueChange={this.toggleAnalytics}
-          />
+          <View style={styles.settingView}>
+            <BodyText
+              style={styles.settingsText}
+            >
+              {user.settings.shouldTrackAnalytics ? `Stop UCL Assistant sending analytics data to UCL API` : `Allow UCL Assistant to send analytics data to UCL API`}
+            </BodyText>
+            <CheckBox
+              style={styles.settingsCheckBox}
+              value={user.settings.shouldTrackAnalytics}
+              onValueChange={this.toggleAnalytics}
+            />
+          </View>
         </View>
         <View style={styles.section}>
           <HeaderText>App Info</HeaderText>
