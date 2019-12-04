@@ -242,9 +242,14 @@ export class SettingsScreen extends Component {
             <BodyText
               style={styles.settingsText}
             >
-              {user.settings.shouldTrackAnalytics ? `Stop UCL Assistant sending analytics data to UCL API` : `Allow UCL Assistant to send analytics data to UCL API`}
+              {
+                user.settings.shouldTrackAnalytics
+                  ? `Disallow UCL Assistant from sending analytics data to UCL API`
+                  : `Allow UCL Assistant to send analytics data to UCL API`
+              }
             </BodyText>
             <CheckBox
+              testID="analyticsCheckbox"
               style={styles.settingsCheckBox}
               value={user.settings.shouldTrackAnalytics}
               onValueChange={this.toggleAnalytics}
