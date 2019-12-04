@@ -74,3 +74,8 @@ export const setExpoPushToken = (pushToken) => ({
   pushToken,
   type: constants.SET_EXPO_PUSH_TOKEN,
 })
+
+export const setShouldTrackAnalytics = (shouldTrack) => ({
+  shouldTrack,
+  type: constants.SET_SHOULD_TRACK_ANALYTICS,
+})

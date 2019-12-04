@@ -2,6 +2,7 @@ import {
   DECLINE_PUSH_NOTIFICATIONS,
   IS_SIGNING_IN,
   SET_EXPO_PUSH_TOKEN,
+  SET_SHOULD_TRACK_ANALYTICS,
   SIGN_IN_CANCEL,
   SIGN_IN_FAILURE,
   SIGN_IN_SUCCESS,
@@ -19,6 +20,9 @@ export const initialState = {
   fullName: ``,
   givenName: ``,
   scopeNumber: -1,
+  settings: {
+    shouldTrackAnalytics: true,
+  },
   signIn: signInState,
   token: ``,
   upi: ``,
@@ -65,6 +69,11 @@ export default (state = initialState, action = null) => {
     case SET_EXPO_PUSH_TOKEN: {
       const { pushToken } = action
       return { ...state, expoPushToken: pushToken }
+    }
+
+    case SET_SHOULD_TRACK_ANALYTICS: {
+      const { shouldTrack } = action
+      return { ...state, settings: { ...state.settings, shouldTrackAnalytics: shouldTrack } }
     }
 
     default: {

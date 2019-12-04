@@ -6,6 +6,7 @@ import PropTypes from "prop-types"
 import React, { Component } from "react"
 import {
   Alert,
+  CheckBox,
   Clipboard,
   Linking,
   Platform,
@@ -15,7 +16,7 @@ import {
 import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
 
-import { signOut as signOutAction } from "../../actions/userActions"
+import { setShouldTrackAnalytics as setShouldTrackAnalyticsAction, signOut as signOutAction } from "../../actions/userActions"
 import { SmallButton } from "../../components/Button"
 import { Horizontal, Page } from "../../components/Containers"
 import TextInput from "../../components/Input/TextInput"
@@ -44,12 +45,13 @@ const styles = StyleSheet.create({
   faqButton: {
     marginBottom: 10,
   },
+  feedbackButton: {
+    alignSelf: `flex-start`,
+    marginVertical: 10,
+  },
   // notificationSettingsButton: {
   //   marginTop: 10,
   // },
-  feedbackButton: {
-    marginVertical: 10,
-  },
   releaseChannel: {
     alignItems: `center`,
     flexDirection: `row`,
@@ -60,7 +62,18 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 15,
   },
+  settingView: {
+    flex: 1,
+    flexDirection: `row`,
+  },
+  settingsCheckBox: {
+    flex: 0.1,
+  },
+  settingsText: {
+    flex: 0.9,
+  },
   signOut: {
+    marginBottom: 10,
     marginTop: 10,
   },
   textWithUpperMargin: {
@@ -74,17 +87,20 @@ export class SettingsScreen extends Component {
   })
 
   static mapDispatchToProps = (dispatch) => ({
+    setShouldTrackAnalytics: (shouldTrackAnalytics) => dispatch(setShouldTrackAnalyticsAction(shouldTrackAnalytics)),
     signOut: () => dispatch(signOutAction()),
   })
 
   static propTypes = {
     navigation: PropTypes.shape(),
+    setShouldTrackAnalytics: PropTypes.func,
     signOut: PropTypes.func,
     user: PropTypes.shape(),
   }
 
   static defaultProps = {
     navigation: {},
+    setShouldTrackAnalytics: () => { },
     signOut: () => { },
     user: {},
   }
@@ -127,6 +143,12 @@ export class SettingsScreen extends Component {
         }`,
       )
     }
+  }
+
+  toggleAnalytics = (value) => {
+    const { setShouldTrackAnalytics } = this.props
+
+    setShouldTrackAnalytics(value)
   }
 
   signOut = () => {
@@ -216,6 +238,23 @@ export class SettingsScreen extends Component {
           >
             Sign Out
           </Link>
+          <View style={styles.settingView}>
+            <BodyText
+              style={styles.settingsText}
+            >
+              {
+                user.settings.shouldTrackAnalytics
+                  ? `Disallow UCL Assistant from sending analytics data to UCL API`
+                  : `Allow UCL Assistant to send analytics data to UCL API`
+              }
+            </BodyText>
+            <CheckBox
+              testID="analyticsCheckbox"
+              style={styles.settingsCheckBox}
+              value={user.settings.shouldTrackAnalytics}
+              onValueChange={this.toggleAnalytics}
+            />
+          </View>
         </View>
         <View style={styles.section}>
           <HeaderText>App Info</HeaderText>
