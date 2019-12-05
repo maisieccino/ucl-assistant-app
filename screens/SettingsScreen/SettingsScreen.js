@@ -146,8 +146,7 @@ export class SettingsScreen extends Component {
   }
 
   toggleAnalytics = () => {
-    const { user } = this.props
-    const value = user.settings.shouldTrackAnalytics
+    const { user: { settings: { shouldTrackAnalytics: value } } } = this.props
 
     const { setShouldTrackAnalytics } = this.props
 
