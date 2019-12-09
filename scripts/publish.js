@@ -34,7 +34,7 @@ const run = async () => {
     version,
   } = await inquirer.prompt(questions)
 
-  const expoCommand = `node node_modules/.bin/expo publish --release-channel=${environment}-${version}`
+  const expoCommand = `node node_modules/expo/bin/cli.js publish --release-channel=${environment}-${version}`
 
   const confirmationQuestion = [{
     type: `confirm`,
