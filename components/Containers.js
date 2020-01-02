@@ -67,7 +67,13 @@ export const Page = ({
   ...props
 }) => (
     <>
-      <SafeAreaView style={[styles.safeAreaViewTop, { backgroundColor: topColour }]} />
+      <SafeAreaView style={
+        [
+          styles.safeAreaViewTop,
+          { backgroundColor: topColour },
+        ]
+      }
+      />
       <SafeAreaView style={[
         Styles.pageContainer,
         safeAreaViewStyle,
@@ -83,7 +89,10 @@ export const Page = ({
           behavior="padding"
         >
           <ScrollView
-            contentContainerStyle={[Styles.pageScrollContent, contentContainerStyle]}
+            contentContainerStyle={[
+              Styles.pageScrollContent,
+              contentContainerStyle,
+            ]}
             style={[Styles.page, Styles.pageScrollView, style]}
             refreshControl={
               refreshEnabled ? (
@@ -102,21 +111,30 @@ export const Page = ({
         </KeyboardAvoidingView>
       </SafeAreaView>
     </>
-)
+  )
 Page.propTypes = propTypes
 Page.defaultProps = defaultProps
 
-export const PageNoScroll = ({ children, style, ...props }) => (
-  <SafeAreaView style={[Styles.pageContainer]}>
-    <KeyboardAvoidingView
-      style={[Styles.pageContainer, Styles.pageNoScrollContainer]}
-      {...props}
-      behavior="padding"
-    >
-      <View style={[Styles.page, style]}>{children}</View>
-    </KeyboardAvoidingView>
-  </SafeAreaView>
-)
+export const PageNoScroll = ({
+  children,
+  style,
+  mainTabPage,
+  ...props
+}) => (
+    <SafeAreaView style={Styles.pageContainer}>
+      <KeyboardAvoidingView
+        style={[
+          Styles.pageContainer,
+          Styles.pageNoScrollContainer,
+          mainTabPage ? Styles.mainTab : null,
+        ]}
+        {...props}
+        behavior="padding"
+      >
+        <View style={[Styles.page, style]}>{children}</View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  )
 PageNoScroll.propTypes = propTypes
 PageNoScroll.defaultProps = defaultProps
 

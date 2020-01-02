@@ -3,15 +3,16 @@ import React from 'react'
 import { momentObj } from "react-moment-proptypes"
 import { StyleSheet, View } from 'react-native'
 
-import { CentredText, ErrorText, Link } from "../../components/Typography"
-import { LocalisationManager } from "../../lib"
+import { CentredText, ErrorText, Link } from "../../../components/Typography"
+import { LocalisationManager } from "../../../lib"
 
 const styles = StyleSheet.create({
   error: {
     marginBottom: 20,
   },
   lastModified: {
-    marginTop: 20,
+    alignItems: `center`,
+    width: `100%`,
   },
 })
 
@@ -41,7 +42,7 @@ class LastModified extends React.Component {
     }
 
     const isStale = lastModified.isBefore(
-      LocalisationManager.getMoment().subtract(12, `hour`),
+      LocalisationManager.getMoment().subtract(24, `hour`),
     )
 
     return (
@@ -50,9 +51,7 @@ class LastModified extends React.Component {
         <Link onPress={openFAQ}>
           <CentredText>
             {`Last updated ${
-              LocalisationManager.parseToMoment(
-                lastModified,
-              ).calendar().toLowerCase()
+              lastModified.fromNow().toLowerCase()
             }`}
           </CentredText>
         </Link>
