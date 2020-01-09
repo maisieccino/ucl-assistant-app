@@ -66,6 +66,7 @@ class TimetableScreen extends Component {
   })
 
   static propTypes = {
+    error: PropTypes.string,
     fetchTimetable: PropTypes.func,
     isFetchingTimetable: PropTypes.bool,
     navigation: PropTypes.shape().isRequired,
@@ -75,6 +76,7 @@ class TimetableScreen extends Component {
   }
 
   static defaultProps = {
+    error: ``,
     fetchTimetable: () => { },
     isFetchingTimetable: false,
     setExpoPushToken: () => { },
@@ -281,11 +283,11 @@ class TimetableScreen extends Component {
       user,
       timetable,
       isFetchingTimetable,
+      error,
     } = this.props
     const { scopeNumber } = user
     const {
       currentIndex,
-      error,
     } = this.state
 
     if (scopeNumber < 0) {
@@ -299,7 +301,7 @@ class TimetableScreen extends Component {
       )
     }
 
-    if (timetable.length <= 2) { // to account for padding nulls
+    if (error === `` && timetable.length <= 2) { // to account for padding nulls
       return (
         <LoadingTimetable />
       )
