@@ -194,6 +194,12 @@ class TimetableScreen extends Component {
       return null
     }
 
+    // temporary, for debugging an error here on Sentry
+    try {
+      console.log(timetable[index][0].dateISO)
+    } catch (error) {
+      ErrorManager.captureError(error, timetable)
+    }
     const newDate = LocalisationManager.parseToMoment(
       timetable[index][0].dateISO,
     )
