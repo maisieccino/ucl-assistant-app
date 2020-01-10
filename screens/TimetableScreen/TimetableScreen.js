@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons"
 import PropTypes from "prop-types"
 import React, { Component } from "react"
 import {
+  AppState,
   Platform,
   StyleSheet,
   View,
@@ -22,6 +23,7 @@ import { BodyText, ErrorText } from "../../components/Typography"
 import Colors from "../../constants/Colors"
 import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants"
 import {
+  DeviceManager,
   ErrorManager,
   LocalisationManager,
   PushNotificationsManager,
@@ -87,6 +89,7 @@ class TimetableScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      appState: `active`,
       currentIndex: 1,
       date: LocalisationManager.getMoment().startOf(`isoweek`),
     }
@@ -140,7 +143,7 @@ class TimetableScreen extends Component {
       const didGrant = (
         await PushNotificationsManager.hasPushNotificationPermissions()
       )
-      if (!didGrant) {
+      if (!didGrant && DeviceManager.isRealDevice()) {
         const { navigation } = this.props
         navigation.navigate(`Notifications`)
       }
@@ -148,6 +151,12 @@ class TimetableScreen extends Component {
 
     const { date } = this.state
     await fetchTimetable(token, date)
+
+    AppState.addEventListener(`change`, this.handleAppStateChange)
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener(`change`, this.handleAppStateChange)
   }
 
   loginCheck = () => {
@@ -251,6 +260,17 @@ class TimetableScreen extends Component {
     }
   }
 
+  handleAppStateChange = (nextAppState) => {
+    const { appState } = this.state
+    if (
+      appState.match(/inactive|background/)
+      && nextAppState === `active`
+    ) {
+      this.onIndexChanged(0)
+    }
+    this.setState({ appState: nextAppState })
+  }
+
   static navigationOptions = {
     header: null,
     tabBarIcon: ({ focused }) => (
@@ -337,8 +357,7 @@ class TimetableScreen extends Component {
           ref={(ref) => { this.swiper = ref }}
           key={timetable.length} // re-render only if array length changes
           horizontal
-          style={styles.swiper}
-          height={300}
+          containerStyle={styles.swiper}
           showsPagination={false}
           index={currentIndex}
           loop={false}
