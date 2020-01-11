@@ -211,7 +211,7 @@ class TimetableScreen extends Component {
     try {
       console.log(timetable[index][0].dateISO)
     } catch (error) {
-      ErrorManager.captureError(error, timetable)
+      ErrorManager.captureError(error, { timetable, index })
     }
     const newDate = LocalisationManager.parseToMoment(
       timetable[index][0].dateISO,
