@@ -30,6 +30,6 @@ jobs:
     - run: npm ci
     - run: npm run test
     - run: expo doctor
-    - run: expo publish --release-channel=production-6.0.0
+#     - run: expo publish --release-channel=production-6.0.0
       
         
