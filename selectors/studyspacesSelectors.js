@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 
 import { WORKSPACES_SORT_TYPES } from '../constants/studyspacesConstants'
+import ErrorManager from '../lib/ErrorManager'
 
 const studySpacesSelector = (state) => state.studyspaces.studyspaces
 const studySpacesSearchQuerySelector = (state) => state.studyspaces.searchQuery
@@ -28,9 +29,17 @@ export const matchingStudySpacesSelector = createSelector(
 
       default:
       case WORKSPACES_SORT_TYPES.NAME: {
-        return matchingStudySpaces.slice().sort(
-          (s1, s2) => s1.name.localeCompare(s2.name),
-        )
+        try {
+          return matchingStudySpaces.slice().sort(
+            (s1, s2) => s1.name.localeCompare(s2.name),
+          )
+        } catch (error) {
+          ErrorManager.captureError(
+            error,
+            { matchingStudySpaces, searchQuery, studyspaces },
+          )
+          return matchingStudySpaces
+        }
       }
     }
   },

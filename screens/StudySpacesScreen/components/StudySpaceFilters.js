@@ -1,9 +1,10 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
 import PropTypes from "prop-types"
-import { SearchInput } from '../../../components/Input'
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+
 import { LightButton } from '../../../components/Button'
 import { Horizontal } from '../../../components/Containers'
+import { SearchInput } from '../../../components/Input'
 import { WORKSPACES_SORT_TYPES } from '../../../constants/studyspacesConstants'
 
 const styles = StyleSheet.create({
@@ -20,10 +21,10 @@ const styles = StyleSheet.create({
 
 class StudySpaceFilters extends React.Component {
   static propTypes = {
-    query: PropTypes.string,
     onChangeQuery: PropTypes.func.isRequired,
-    updateSortType: PropTypes.func.isRequired,
+    query: PropTypes.string,
     sortType: PropTypes.string.isRequired,
+    updateSortType: PropTypes.func.isRequired,
   }
 
   static defaultProps = {

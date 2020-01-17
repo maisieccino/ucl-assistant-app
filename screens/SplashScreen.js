@@ -68,9 +68,10 @@ class SplashScreen extends Component {
   componentDidMount() {
     const { token } = this.props
     if (token.length > 0) {
-      console.log(
-        `Component just mounted. Going to home. reason? token = ${token}`,
-      )
+      ErrorManager.addDetail({
+        message: `Component just mounted. Going to home. reason?`
+          + ` token = ${token}`,
+      })
       this.goHome()
     }
   }
