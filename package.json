@@ -133,7 +133,7 @@
     "eslint-plugin-sort-keys-fix": "^1.1.0",
     "expo-cli": "^3.11.7",
     "husky": "^4.2.1",
-    "inquirer": "^7.0.3",
+    "inquirer": "^7.0.4",
     "jest-expo": "^36.0.0",
     "lint-staged": "^9.5.0",
     "mockdate": "^2.0.5",
