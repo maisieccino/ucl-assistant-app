@@ -34,8 +34,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,json}": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ]
   },
   "config": {
@@ -135,7 +134,7 @@
     "husky": "^4.2.1",
     "inquirer": "^7.0.4",
     "jest-expo": "^36.0.0",
-    "lint-staged": "^9.5.0",
+    "lint-staged": "^10.0.7",
     "mockdate": "^2.0.5",
     "react-dom": "16.9.0",
     "react-native-storybook-loader": "^1.8.1",
