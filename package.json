@@ -131,7 +131,7 @@
     "eslint-plugin-sonarjs": "^0.5.0",
     "eslint-plugin-sort-keys-fix": "^1.1.0",
     "expo-cli": "^3.13.1",
-    "husky": "^4.2.2",
+    "husky": "^4.2.3",
     "inquirer": "^7.0.4",
     "jest-expo": "^36.0.0",
     "lint-staged": "^10.0.7",
