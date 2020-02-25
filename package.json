@@ -109,7 +109,7 @@
     "@storybook/addon-actions": "^5.3.14",
     "@storybook/addon-knobs": "^5.3.14",
     "@storybook/addon-links": "^5.3.14",
-    "@storybook/react-native": "^5.3.13",
+    "@storybook/react-native": "^5.3.14",
     "babel-eslint": "^10.0.3",
     "babel-preset-expo": "^8.0.0",
     "codecov": "^3.6.5",
