@@ -1,9 +1,8 @@
 /**
  * @jest-environment jsdom
  */
-import "react-native"
-
 import React from 'react'
+import "react-native"
 import { cleanup, fireEvent, render } from "react-native-testing-library"
 
 import { MailManager, WebBrowserManager } from '../../../lib'
@@ -55,19 +54,19 @@ describe(`SettingsScreen`, () => {
     expect(wrapper.toJSON()).toMatchSnapshot()
   })
 
-  it(`logs out when the signOut button is pressed`, async () => {
+  it(`logs out when the signOut button is pressed`, () => {
     const { getByTestId } = wrapper
     fireEvent.press(getByTestId(`sign-out-button`))
     expect(mockSignOut).toHaveBeenCalledTimes(1)
   })
 
-  it(`opens Github repository when Github button is pressed`, async () => {
+  it(`opens Github repository when Github button is pressed`, () => {
     const { getByTestId } = wrapper
     const githubButton = getByTestId(`github-button`)
     expect(githubButton.props.href === githubURL)
   })
 
-  it(`opens FAQ page when the FAQ button is pressed`, async () => {
+  it(`opens FAQ page when the FAQ button is pressed`, () => {
     const { getByTestId } = wrapper
     const faqButton = getByTestId(`faq-button`)
     fireEvent.press(faqButton)
@@ -76,7 +75,7 @@ describe(`SettingsScreen`, () => {
     expect(mockNavigate).toHaveBeenCalledWith(`FAQ`)
   })
 
-  it(`opens mail client when the feedback button is pressed`, async () => {
+  it(`opens mail client when the feedback button is pressed`, () => {
     const { getByTestId } = wrapper
     const feedbackButton = getByTestId(`feedback-button`)
     fireEvent.press(feedbackButton)
@@ -85,7 +84,7 @@ describe(`SettingsScreen`, () => {
     expect(mockComposeAsync.mock.calls).toMatchSnapshot()
   })
 
-  it(`dispatches action when analytics checkbox is toggled`, async () => {
+  it(`dispatches action when analytics checkbox is toggled`, () => {
     const { getByTestId } = wrapper
     const analyticsCheckbox = getByTestId(`analytics-checkbox`)
     fireEvent(analyticsCheckbox, `click`)
