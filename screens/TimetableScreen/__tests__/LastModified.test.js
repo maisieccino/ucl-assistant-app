@@ -39,7 +39,7 @@ describe(`LastUpdated`, () => {
         .getMoment()
         .subtract(25, `hours`),
     }
-    const wrapper = render(<LastModified {...mockProps} />)
+    const wrapper = render(<LastModified {...mockProps} isLoading={false} />)
     expect(wrapper.toJSON()).toMatchSnapshot()
   })
 })
