@@ -2,7 +2,7 @@ _universe/**
 .expo
 **/*/node_modules
 package-lock.json
+package.json
 
 !.eslintrc.json
-!package.json
 !tsconfig.json
