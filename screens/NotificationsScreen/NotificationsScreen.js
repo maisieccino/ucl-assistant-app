@@ -1,7 +1,7 @@
+import { CommonActions } from "@react-navigation/native"
 import PropTypes from "prop-types"
 import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
-import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
 
 import {
@@ -49,6 +49,10 @@ const styles = StyleSheet.create({
 })
 
 export class NotificationsScreen extends React.Component {
+  static navigationOptions = {
+    headerShown: false,
+  }
+
   static mapStateToProps = (state) => ({
     token: state.user.token,
   })
@@ -92,15 +96,11 @@ export class NotificationsScreen extends React.Component {
 
   goHome = () => {
     const { navigation } = this.props
-    const resetAction = StackActions.reset({
-      actions: [NavigationActions.navigate({ routeName: `Main` })],
+    const resetAction = CommonActions.reset({
       index: 0,
+      routes: [CommonActions.navigate({ name: `Main` })],
     })
     navigation.dispatch(resetAction)
-  }
-
-  static navigationOptions = {
-    headerShown: false,
   }
 
   render() {

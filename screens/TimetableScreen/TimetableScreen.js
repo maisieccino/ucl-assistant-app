@@ -6,9 +6,7 @@ import {
   AppState,
   Platform,
   StyleSheet,
-  View,
 } from "react-native"
-import { NavigationActions, StackActions } from "react-navigation"
 import { connect } from "react-redux"
 
 import {
@@ -16,11 +14,10 @@ import {
 } from "../../actions/timetableActions"
 import {
   setExpoPushToken as setExpoPushTokenAction,
+  signOut as signOutAction,
 } from "../../actions/userActions"
-import Button from "../../components/Button"
 import { PageNoScroll } from "../../components/Containers"
 import { ErrorMessage } from '../../components/Message'
-import { BodyText } from "../../components/Typography"
 import Colors from "../../constants/Colors"
 import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants"
 import {
@@ -36,21 +33,25 @@ import LoadingTimetable from "./components/LoadingTimetable"
 import WeekView from "./components/WeekView"
 
 const styles = StyleSheet.create({
-  messageContainer: {
-    alignItems: `center`,
-    justifyContent: `center`,
-  },
   page: {
     paddingLeft: 0,
     paddingRight: 0,
-  },
-  pageContainer: {
-    padding: 20,
   },
   swiper: { flex: 1 },
 })
 
 class TimetableScreen extends Component {
+  static navigationOptions = {
+    headerShown: false,
+    tabBarIcon: ({ focused }) => (
+      <Feather
+        name="calendar"
+        size={28}
+        color={focused ? Colors.pageBackground : Colors.textColor}
+      />
+    ),
+  }
+
   static mapStateToProps = (state) => ({
     error: state.timetable.error,
     isFetchingTimetable: state.timetable.isFetching,
@@ -65,6 +66,7 @@ class TimetableScreen extends Component {
     setExpoPushToken: (pushToken) => dispatch(
       setExpoPushTokenAction(pushToken),
     ),
+    signOut: () => dispatch(signOutAction()),
   })
 
   static propTypes = {
@@ -164,13 +166,9 @@ class TimetableScreen extends Component {
   }
 
   loginCheck = () => {
-    const { user, navigation } = this.props
+    const { user, signOut } = this.props
     if (Object.keys(user).length > 0 && user.scopeNumber < 0) {
-      const resetAction = StackActions.reset({
-        actions: [NavigationActions.navigate({ routeName: `Splash` })],
-        index: 0,
-      })
-      navigation.dispatch(resetAction)
+      signOut()
       return false
     }
     return true
@@ -180,11 +178,6 @@ class TimetableScreen extends Component {
     const { fetchTimetable, user: { token } } = this.props
     const { date } = this.state
     return fetchTimetable(token, date)
-  }
-
-  navigateToSignIn = () => {
-    const { navigation: { navigate } } = this.props
-    navigate(`Splash`)
   }
 
   onSwipe = ({ nativeEvent: { position: index } }) => {
@@ -277,17 +270,6 @@ class TimetableScreen extends Component {
     this.setState({ appState: nextAppState })
   }
 
-  static navigationOptions = {
-    headerShown: false,
-    tabBarIcon: ({ focused }) => (
-      <Feather
-        name="calendar"
-        size={28}
-        color={focused ? Colors.pageBackground : Colors.textColor}
-      />
-    ),
-  }
-
   renderWeek = (weekTimetable, index) => {
     if (weekTimetable === null) {
       return (
@@ -312,26 +294,13 @@ class TimetableScreen extends Component {
 
   render() {
     const {
-      user,
       timetable,
       isFetchingTimetable,
       error,
     } = this.props
-    const { scopeNumber } = user
     const {
       currentIndex,
     } = this.state
-
-    if (scopeNumber < 0) {
-      return (
-        <PageNoScroll style={styles.pageContainer}>
-          <View style={styles.messageContainer}>
-            <BodyText>You are not signed in.</BodyText>
-            <Button onPress={this.navigateToSignIn}>Sign In</Button>
-          </View>
-        </PageNoScroll>
-      )
-    }
 
     if (error === `` && timetable.length <= 2) { // to account for padding nulls
       return (

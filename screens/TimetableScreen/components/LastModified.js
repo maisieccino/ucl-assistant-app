@@ -67,7 +67,7 @@ class LastModified extends React.Component {
               lastModified.isBefore()
                 ? lastModified.fromNow().toLowerCase()
                 : `just now`
-              }`}
+            }`}
           </CentredText>
         </Link>
       </View>
