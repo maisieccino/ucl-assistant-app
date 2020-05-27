@@ -46,6 +46,7 @@ const screenOptions = ({ route }) => ({
 const tabBarOptions = {
   activeBackgroundColor: Colors.accentColor,
   activeTintColor: Colors.pageBackground,
+  allowFontScaling: false,
   bottomNavigationOptions: {
     backgroundColor: Colors.accentColor,
     labelColor: Colors.pageBackground,
@@ -59,10 +60,9 @@ const tabBarOptions = {
   style: {
     backgroundColor: Colors.tabBackground,
     bottom: 0,
-    // https://github.com/react-navigation/react-navigation/issues/5994
-    // position: "absolute",
     height: 60,
     left: 0,
+    position: `absolute`,
     right: 0,
   },
   tabStyle: {
@@ -70,7 +70,6 @@ const tabBarOptions = {
     paddingTop: 5,
   },
 }
-
 
 const MainTabNavigator = () => (
   <Tab.Navigator
