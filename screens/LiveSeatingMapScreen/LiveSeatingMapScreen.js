@@ -42,7 +42,7 @@ class LiveSeatingMapScreen extends Component {
 
   componentDidMount() {
     const { route, token } = this.props
-    const { surveyId, mapId } = route.state.params
+    const { surveyId, mapId } = route.params
     ApiManager.workspaces
       .getLiveImage(token, { mapId, surveyId })
       .then((base64) => {
