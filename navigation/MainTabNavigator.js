@@ -5,9 +5,9 @@ import React from "react"
 import Colors from "../constants/Colors"
 import PeopleScreen from "../screens/PeopleScreen"
 import RoomsScreen from "../screens/RoomsScreen"
-import SettingsScreen from "../screens/SettingsScreen"
+import SettingsNavigator from "../screens/Settings"
 import StudySpacesScreen from "../screens/StudySpacesScreen"
-import TimetableScreen from "../screens/TimetableScreen"
+import TimetableNavigator from "../screens/Timetable"
 
 const Tab = createBottomTabNavigator()
 
@@ -79,7 +79,7 @@ const MainTabNavigator = () => (
   >
     <Tab.Screen
       name="Timetable"
-      component={TimetableScreen}
+      component={TimetableNavigator}
     />
     <Tab.Screen
       name="StudySpaces"
@@ -95,7 +95,7 @@ const MainTabNavigator = () => (
     />
     <Tab.Screen
       name="Settings"
-      component={SettingsScreen}
+      component={SettingsNavigator}
     />
   </Tab.Navigator>
 )

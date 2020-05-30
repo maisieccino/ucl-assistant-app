@@ -2,10 +2,10 @@ import PropTypes from "prop-types"
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { timetableSelector } from "../../selectors/timetableSelectors"
+import { timetableSelector } from "../../../selectors/timetableSelectors"
 import TimetableDetailView from "./TimetableDetailView"
 
-class TimetableDetailScreen extends Component {
+export class TimetableDetailScreen extends Component {
   static navigationOptions = ({ route }) => ({
     title: `Event: ${route.params.code}`,
   })

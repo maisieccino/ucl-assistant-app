@@ -3,14 +3,12 @@ import { createStackNavigator } from "@react-navigation/stack"
 import React from 'react'
 import { connect } from "react-redux"
 
-import FAQScreen from "../screens/FAQScreen"
 import LiveSeatingMapScreen from "../screens/LiveSeatingMapScreen"
 import NotificationsScreen from "../screens/NotificationsScreen"
 import PersonDetailScreen from "../screens/PersonDetailScreen"
 import RoomDetailScreen from "../screens/RoomDetailScreen"
 import SplashScreen from "../screens/SplashScreen"
 import StudySpaceDetailScreen from "../screens/StudySpaceDetailScreen"
-import TimetableDetailScreen from "../screens/TimetableDetailScreen"
 import MainTabNavigator from "./MainTabNavigator"
 
 const Stack = createStackNavigator()
@@ -30,10 +28,6 @@ export const RootNavigatorComponent = ({
   const screens = isLoggedIn
     ? (
       <>
-        <Stack.Screen
-          name="FAQ"
-          component={FAQScreen}
-        />
         <Stack.Screen
           name="LiveSeatingMap"
           component={LiveSeatingMapScreen}
@@ -58,11 +52,6 @@ export const RootNavigatorComponent = ({
           name="StudySpaceDetail"
           component={StudySpaceDetailScreen}
         />
-        <Stack.Screen
-          name="TimetableDetail"
-          component={TimetableDetailScreen}
-        />
-
       </>
     )
     : (

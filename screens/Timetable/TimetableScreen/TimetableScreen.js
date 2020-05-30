@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons"
 import ViewPager from '@react-native-community/viewpager'
-import PropTypes from "prop-types"
-import React, { Component } from "react"
+import { Moment } from 'moment'
+import React from "react"
 import {
   AppState,
   Platform,
@@ -11,24 +11,26 @@ import { connect } from "react-redux"
 
 import {
   fetchTimetable as fetchTimetableAction,
-} from "../../actions/timetableActions"
+} from "../../../actions/timetableActions"
 import {
   setExpoPushToken as setExpoPushTokenAction,
   signOut as signOutAction,
-} from "../../actions/userActions"
-import { PageNoScroll } from "../../components/Containers"
-import { ErrorMessage } from '../../components/Message'
-import Colors from "../../constants/Colors"
-import { TIMETABLE_CACHE_TIME_HOURS } from "../../constants/timetableConstants"
+} from "../../../actions/userActions"
+import { PageNoScroll } from "../../../components/Containers"
+import { ErrorMessage } from '../../../components/Message'
+import Colors from "../../../constants/Colors"
+import {
+  TIMETABLE_CACHE_TIME_HOURS,
+} from "../../../constants/timetableConstants"
 import {
   DeviceManager,
   ErrorManager,
   LocalisationManager,
   PushNotificationsManager,
-} from '../../lib'
+} from '../../../lib'
 import {
   weeklyTimetableArraySelector,
-} from "../../selectors/timetableSelectors"
+} from "../../../selectors/timetableSelectors"
 import LoadingTimetable from "./components/LoadingTimetable"
 import WeekView from "./components/WeekView"
 
@@ -42,7 +44,24 @@ const styles = StyleSheet.create({
 
 const today = LocalisationManager.getMoment()
 
-class TimetableScreen extends Component {
+interface Props {
+  error: string,
+  fetchTimetable: (token: string, date: Moment) => null,
+  isFetchingTimetable: boolean,
+  navigation: any,
+  setExpoPushToken: (pushToken: string) => void,
+  timetable: any,
+  user: any,
+  signOut: () => void,
+}
+
+interface State {
+  appState: string,
+  currentIndex: number,
+  date: Moment,
+}
+
+class TimetableScreen extends React.Component<Props, State> {
   static navigationOptions = {
     headerShown: false,
     tabBarIcon: ({ focused }) => (
@@ -70,16 +89,6 @@ class TimetableScreen extends Component {
     ),
     signOut: () => dispatch(signOutAction()),
   })
-
-  static propTypes = {
-    error: PropTypes.string,
-    fetchTimetable: PropTypes.func,
-    isFetchingTimetable: PropTypes.bool,
-    navigation: PropTypes.shape().isRequired,
-    setExpoPushToken: PropTypes.func,
-    timetable: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape())),
-    user: PropTypes.shape(),
-  }
 
   static defaultProps = {
     error: ``,
@@ -201,7 +210,7 @@ class TimetableScreen extends Component {
       return null
     }
 
-    const newDate = LocalisationManager.parseToMoment(
+    const newDate = LocalisationManager.parseToMoment( // sets date to Monday
       timetable[index][0].dateISO,
     )
 
@@ -271,6 +280,7 @@ class TimetableScreen extends Component {
     }
 
     const { navigation, isFetchingTimetable } = this.props
+    const { date } = this.state
 
     return (
       <WeekView
@@ -281,6 +291,7 @@ class TimetableScreen extends Component {
         isLoading={isFetchingTimetable}
         onDateChanged={this.onDateChanged}
         onIndexChanged={this.onIndexChanged}
+        date={date}
       />
     )
   }

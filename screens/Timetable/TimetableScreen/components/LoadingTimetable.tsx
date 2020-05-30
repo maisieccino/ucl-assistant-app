@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
-import { PageNoScroll } from '../../../components/Containers'
-import { BodyText } from '../../../components/Typography'
+import { PageNoScroll } from '../../../../components/Containers'
+import { BodyText } from '../../../../components/Typography'
 
 const styles = StyleSheet.create({
   loadingText: {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const LoadingTimetable = () => (
+const LoadingTimetable = (): ReactElement => (
   <PageNoScroll style={styles.pageContainer}>
     <View style={styles.messageContainer}>
       <BodyText style={styles.loadingText}>Loading timetable...</BodyText>
