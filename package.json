@@ -33,6 +33,9 @@
     }
   },
   "lint-staged": {
+    "*.{ts,tsx,d.ts}": [
+      "tsc --allowSyntheticDefaultImports --jsx react-native --noEmit --esModuleInterop --moduleResolution node --skipLibCheck"
+    ],
     "*.{ts,tsx,js,jsx,json}": [
       "eslint --fix --ignore-pattern"
     ]
@@ -108,6 +111,7 @@
     "@types/jest": "^25.2.1",
     "@types/react": "^16.9.11",
     "@types/react-native": "^0.62.12",
+    "@types/react-native-vector-icons": "^6.4.5",
     "@types/react-redux": "^7.1.7",
     "@types/react-test-renderer": "^16.9.2",
     "@types/shortid": "0.0.29",
