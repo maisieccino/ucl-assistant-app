@@ -115,7 +115,7 @@ const roomsController = {
       throw error
     }
   },
-  search: async (token = null, query) => {
+  search: async (token = null, query = ``) => {
     if (query && query.length < 3) {
       return {}
     }

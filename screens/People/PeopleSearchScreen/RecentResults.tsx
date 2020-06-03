@@ -12,7 +12,7 @@ import Button from "../../../components/Button"
 import SearchResult from "../../../components/SearchResult"
 import { CentredText, SubtitleText } from "../../../components/Typography"
 import type { AppStateType } from '../../../configureStore'
-import type { Person } from "../../../reducers/peopleReducer"
+import { Person } from "../../../types/uclapi"
 import type { PeopleNavigatorParamList } from '../PeopleNavigator'
 
 interface Props extends PropsFromRedux {
@@ -41,7 +41,7 @@ export class RecentResults extends React.Component<Props> {
   }
 
   render(): React.ReactElement {
-    const { recents, clearRecentResults } = this.props
+    const { recents = [], clearRecentResults } = this.props
     if (recents.length === 0) {
       return null
     }

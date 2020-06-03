@@ -12,7 +12,7 @@ import Shadow from './Shadow'
 import WebBrowserManager from './WebBrowserManager'
 
 const Random = {
-  array: (arr) => arr[Math.floor(Math.random() * arr.length)],
+  array: (arr: Array<any>): Array<any> => arr[Math.floor(Math.random() * arr.length)],
 }
 
 export {

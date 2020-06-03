@@ -15,7 +15,7 @@ import { TextInput } from "../../../components/Input"
 import SearchResult from "../../../components/SearchResult"
 import { CentredText } from "../../../components/Typography"
 import type { AppStateType } from '../../../configureStore'
-import type { Person } from '../../../reducers/peopleReducer'
+import type { Person } from '../../../types/uclapi'
 import type { PeopleNavigatorParamList } from '../PeopleNavigator'
 
 const styles = StyleSheet.create({
@@ -70,7 +70,7 @@ export class SearchControl extends React.Component<Props, State> {
 
   renderStatusText = (): React.ReactNode => {
     const { query } = this.state
-    const { searchResults } = this.props
+    const { searchResults = [] } = this.props
     if (query.length === 0) {
       return <CentredText>Start typing to get search results </CentredText>
     }
@@ -106,9 +106,9 @@ export class SearchControl extends React.Component<Props, State> {
   render(): React.ReactElement {
     const { query } = this.state
     const {
-      error,
-      isSearching,
-      searchResults,
+      error = ``,
+      isSearching = false,
+      searchResults = [],
     } = this.props
     return (
       <View>

@@ -14,7 +14,7 @@ import {
   PEOPLE_SEARCH_SUCCESS,
   PeopleActionTypes,
 } from "../constants/peopleConstants"
-import type { Person } from "../reducers/peopleReducer"
+import type { Person } from "../types/uclapi"
 
 export type PeopleThunkAction = ThunkAction<
   Promise<unknown>,
@@ -43,8 +43,8 @@ export const searchClear = (): PeopleActionTypes => ({
 })
 
 export const search = (
-  token: string = null,
-  query: string = null,
+  token = ``,
+  query = ``,
 ): PeopleThunkAction => async (dispatch: PeopleDispatch): Promise<void> => {
   if (query && query.length <= 3) {
     return null

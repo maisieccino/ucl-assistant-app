@@ -31,7 +31,7 @@ export class PeopleScreen extends Component<Props> {
   render(): React.ReactElement {
     const {
       navigation,
-      recents,
+      recents = [],
       isSearching,
       searchResults,
     } = this.props
