@@ -32,6 +32,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   flatList: {
+    paddingLeft: 20,
+    paddingRight: 20,
     paddingTop: 10,
   },
   footer: {
@@ -39,6 +41,10 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 20,
+  },
+  page: {
+    paddingLeft: 0,
+    paddingRight: 0,
   },
   suggestion: {
     marginBottom: 20,
@@ -100,7 +106,7 @@ class StudySpaceFavouritesScreen extends React.Component<Props, State> {
       lastModified,
     } = this.props
     return (
-      <PageNoScroll>
+      <PageNoScroll style={styles.page}>
         <FlatList
           contentContainerStyle={styles.flatList}
           onRefresh={this.fetchSeatInfo}
