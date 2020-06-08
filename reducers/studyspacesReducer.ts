@@ -1,4 +1,4 @@
-import moment from "moment"
+import moment, { Moment } from "moment"
 
 import {
   WORKSPACES_FETCH_DETAILS_FAILURE,
@@ -16,19 +16,21 @@ import {
   WORKSPACES_SORT_TYPES_TYPE,
   WORKSPACES_TOGGLE_FAVOURITE,
 } from "../constants/studyspacesConstants"
+import type { StudySpace } from "../types/uclapi"
 
 const sortStudySpaces = (s1, s2) => s1.id - s2.id
 
 export interface StudySpacesState {
-  favourites: any,
+  // eslint-disable-next-line quotes
+  favourites: Array<StudySpace['id']>,
   fetchingSpacesDetailsError: string,
   isFetchingSpaces: boolean,
   isFetchingSpacesDetails: boolean,
-  lastModified: any,
-  lastStatusUpdate: any,
+  lastModified: Moment,
+  lastStatusUpdate: Moment,
   searchQuery: string,
   sortType: WORKSPACES_SORT_TYPES_TYPE,
-  studyspaces: any,
+  studyspaces: Array<StudySpace>,
 }
 
 export const initialState: StudySpacesState = {

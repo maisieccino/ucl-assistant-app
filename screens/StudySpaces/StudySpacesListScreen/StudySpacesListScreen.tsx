@@ -1,28 +1,29 @@
-// @flow
+
 import memoize from "memoize-one"
-import PropTypes from "prop-types"
 import React from 'react'
-import { momentObj } from "react-moment-proptypes"
 import { FlatList, StyleSheet } from 'react-native'
-import { connect } from "react-redux"
+import { connect, ConnectedProps } from "react-redux"
 import { generate } from "shortid"
 
 import {
   fetchSeatInfos,
   setSearchQuery,
   setSortType,
-} from "../../actions/studyspacesActions"
-import { Page } from "../../components/Containers"
+  StudySpacesDispatch,
+} from "../../../actions/studyspacesActions"
+import { Page } from "../../../components/Containers"
 import {
   ErrorText,
-} from "../../components/Typography"
-import { WORKSPACES_SORT_TYPES } from '../../constants/studyspacesConstants'
+} from "../../../components/Typography"
+import { AppStateType } from '../../../configureStore'
+import { WORKSPACES_SORT_TYPES } from '../../../constants/studyspacesConstants'
 import {
   matchingStudySpacesSelector,
-} from '../../selectors/studyspacesSelectors'
-import LastUpdated from './components/LastUpdated'
+} from '../../../selectors/studyspacesSelectors'
+import LastUpdated from '../components/LastUpdated'
+import StudySpaceSearchResult from "../components/StudySpaceResult"
+import { StudySpacesNavigationType } from '../StudySpacesNavigator'
 import StudySpaceFilters from './components/StudySpaceFilters'
-import StudySpaceSearchResult from "./components/StudySpaceResult"
 
 const styles = StyleSheet.create({
   flatList: {
@@ -33,68 +34,21 @@ const styles = StyleSheet.create({
   },
 })
 
-class StudySpacesListScreen extends React.Component {
-  static navigationOptions = {
-    title: `All Study Spaces`,
-  }
+interface Props extends PropsFromRedux {
+  navigation: StudySpacesNavigationType,
+}
 
-  static mapStateToProps = (state) => {
-    const {
-      studyspaces: {
-        lastModified,
-        searchQuery = ``,
-        sortType,
-      },
-      user: {
-        token,
-      },
-    } = state
-    return {
-      lastModified,
-      searchQuery,
-      sortType,
-      studyspaces: matchingStudySpacesSelector(state),
-      token,
-    }
-  }
+interface State {
+  loadedSeatInfo: boolean,
+}
 
-  static mapDispatchToProps = (dispatch) => ({
-    clearQuery: () => dispatch(setSearchQuery(``)),
-    fetchInfo: (ids, token) => dispatch(fetchSeatInfos(token, ids)),
-    setQuery: (query: string) => dispatch(setSearchQuery(query)),
-    setSort: (sortType: string) => dispatch(setSortType(sortType)),
-  })
-
-
+class StudySpacesListScreen extends React.Component<Props, State> {
   static findErrorneousSpaces = (spaces) => spaces.filter(
     (space) => typeof space.fetchSeatInfoError === `string`
       && space.fetchSeatInfoError !== ``,
   )
 
   memoizeErrorneousSpaces = memoize(StudySpacesListScreen.findErrorneousSpaces)
-
-  static propTypes = {
-    fetchInfo: PropTypes.func,
-    lastModified: PropTypes.oneOfType([momentObj, PropTypes.string]),
-    navigation: PropTypes.shape().isRequired,
-    searchQuery: PropTypes.string,
-    setQuery: PropTypes.func,
-    setSort: PropTypes.func,
-    sortType: PropTypes.string,
-    studyspaces: PropTypes.arrayOf(PropTypes.shape()),
-    token: PropTypes.string,
-  }
-
-  static defaultProps = {
-    fetchInfo: () => { },
-    lastModified: null,
-    searchQuery: ``,
-    setQuery: () => { },
-    setSort: () => { },
-    sortType: WORKSPACES_SORT_TYPES.NAME,
-    studyspaces: [],
-    token: ``,
-  }
 
   constructor(props) {
     super(props)
@@ -113,9 +67,8 @@ class StudySpacesListScreen extends React.Component {
 
   fetchSeatInfo = () => {
     this.setState({ loadedSeatInfo: true }, () => {
-      const { studyspaces, fetchInfo, token } = this.props
-      const ids = studyspaces.map((space) => space.id)
-      setTimeout(() => fetchInfo(ids, token), 500)
+      const { fetchInfo, token } = this.props
+      setTimeout(() => fetchInfo(token), 500)
     })
   }
 
@@ -134,7 +87,7 @@ class StudySpacesListScreen extends React.Component {
       studyspaces,
       setQuery,
       searchQuery,
-      sortType,
+      sortType = WORKSPACES_SORT_TYPES.NAME,
       setSort,
       lastModified,
     } = this.props
@@ -146,7 +99,6 @@ class StudySpacesListScreen extends React.Component {
       )
     return (
       <Page
-        mainTabPage
         refreshEnabled
         onRefresh={this.fetchSeatInfo}
         refreshing={isLoading}
@@ -167,7 +119,7 @@ class StudySpacesListScreen extends React.Component {
             <ErrorText>
               Looks like there was an error trying to fetch live seating info.
             </ErrorText>
-          )}
+        )}
 
         <StudySpaceFilters
           query={searchQuery}
@@ -190,7 +142,34 @@ class StudySpacesListScreen extends React.Component {
   }
 }
 
-export default connect(
-  StudySpacesListScreen.mapStateToProps,
-  StudySpacesListScreen.mapDispatchToProps,
-)(StudySpacesListScreen)
+const connector = connect(
+  (state: AppStateType) => {
+    const {
+      studyspaces: {
+        lastModified,
+        searchQuery = ``,
+        sortType,
+      },
+      user: {
+        token,
+      },
+    } = state
+    return {
+      lastModified,
+      searchQuery,
+      sortType,
+      studyspaces: matchingStudySpacesSelector(state),
+      token,
+    }
+  },
+  (dispatch: StudySpacesDispatch) => ({
+    clearQuery: () => dispatch(setSearchQuery(``)),
+    fetchInfo: (token) => dispatch(fetchSeatInfos(token)),
+    setQuery: (query) => dispatch(setSearchQuery(query)),
+    setSort: (sortType) => dispatch(setSortType(sortType)),
+  }),
+)
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+export default connector(StudySpacesListScreen)

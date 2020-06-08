@@ -1,11 +1,13 @@
 import { RouteProp } from '@react-navigation/native'
 import React, { Component } from "react"
 import { ActivityIndicator, StyleSheet, View } from "react-native"
-import { connect } from "react-redux"
+import { connect, ConnectedProps } from "react-redux"
 
-import Svg from "../../components/Svg"
-import ApiManager from "../../lib/ApiManager"
-import type { RootStackParamList } from '../../navigation/RootNavigation'
+import Svg from "../../../components/Svg"
+import type { AppStateType } from '../../../configureStore'
+import ApiManager from "../../../lib/ApiManager"
+import type { StudySpacesNavigatorParamList } from '../StudySpacesNavigator'
+
 
 const styles = StyleSheet.create({
   loadingContainer: {
@@ -17,16 +19,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 })
-
-type LiveSeatingMapScreenRouteProp = RouteProp<
-  RootStackParamList,
-  // eslint-disable-next-line quotes
-  'LiveSeatingMap'
->
-
-interface Props {
-  route: LiveSeatingMapScreenRouteProp,
-  token: string,
+interface Props extends PropsFromRedux {
+  route: RouteProp<
+    StudySpacesNavigatorParamList,
+    // eslint-disable-next-line quotes
+    'LiveSeatingMap'
+  >,
 }
 
 interface State {
@@ -34,16 +32,6 @@ interface State {
 }
 
 class LiveSeatingMapScreen extends Component<Props, State> {
-  static navigationOptions = ({ route }) => ({
-    title: route.params?.name ?? `Live Seating Map`,
-  })
-
-  static mapStateToProps = (state) => ({
-    token: state.user.token,
-  })
-
-  static mapDispatchToProps = () => ({})
-
   constructor(props) {
     super(props)
     this.state = {
@@ -82,7 +70,12 @@ class LiveSeatingMapScreen extends Component<Props, State> {
   }
 }
 
-export default connect(
-  LiveSeatingMapScreen.mapStateToProps,
-  LiveSeatingMapScreen.mapDispatchToProps,
-)(LiveSeatingMapScreen)
+const connector = connect(
+  (state: AppStateType) => ({
+    token: state.user.token,
+  }),
+)
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+export default connector(LiveSeatingMapScreen)

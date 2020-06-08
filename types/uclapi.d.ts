@@ -61,6 +61,22 @@ export interface Person {
   email?: string,
 }
 
+export interface StudySpace {
+  id?: string,
+  surveyId?: string,
+  mapId?: string,
+  name?: string,
+  isFetchingAverages?: boolean,
+  location?: Location,
+  maps?: Array<unknown>,
+  dailyAveragesError?: Error,
+  occupied?: number,
+  total?: number,
+  capacity?: number,
+  isFetchingSeatInfo?: boolean,
+  dailyAverages?: Array<number>,
+}
+
 export type NestedNavigator<T> = {
   screen: keyof T,
   params?: T[keyof T],

@@ -1,16 +1,28 @@
-import React from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { generate } from "shortid"
-import SearchResult from "../../../components/SearchResult"
-import Colors from "../../../constants/Colors"
 
-const StudySpaceResult = ({
-  name,
+import React from "react"
+import { GestureResponderEvent } from "react-native"
+import { connect, ConnectedProps } from "react-redux"
+import { generate } from "shortid"
+
+import SearchResult from "../../../components/SearchResult"
+import type { AppStateType } from "../../../configureStore"
+import Colors from "../../../constants/Colors"
+import type { StudySpacesNavigationType } from "../StudySpacesNavigator"
+
+interface Props {
+  name?: string,
+  onPress: (e?: GestureResponderEvent) => void,
+  occupied?: number,
+  total?: number,
+  fetchingSeatInfo?: boolean,
+}
+
+const StudySpaceResult: React.FC<Props> = ({
+  name = `Study Space Name`,
   onPress,
-  occupied,
-  total,
-  fetchingSeatInfo,
+  occupied = 0,
+  total = 0,
+  fetchingSeatInfo = false,
 }) => {
   const occupation = occupied / total
   let capacityString = `Unable to get data`
@@ -44,7 +56,6 @@ const StudySpaceResult = ({
       topText={name}
       bottomText={`${capacityString} (${total - occupied} seats free)`}
       type="location"
-      buttonText="View"
       indicator
       indicatorLoading={fetchingSeatInfo}
       indicatorColor={indicatorColor}
@@ -53,23 +64,16 @@ const StudySpaceResult = ({
   )
 }
 
-StudySpaceResult.propTypes = {
-  onPress: PropTypes.func,
-  name: PropTypes.string,
-  occupied: PropTypes.number,
-  total: PropTypes.number,
-  fetchingSeatInfo: PropTypes.bool,
+interface ConnectedStudySpaceProps extends PropsFromRedux {
+  id: string,
+  navigation: StudySpacesNavigationType,
 }
 
-StudySpaceResult.defaultProps = {
-  onPress: () => { },
-  name: `Study Space Name`,
-  occupied: 0,
-  total: 0,
-  fetchingSeatInfo: false,
-}
-
-const ConnectedStudySpaceResult = ({ id, studyspaces, navigation }) => {
+const ConnectedStudySpaceResult: React.FC<ConnectedStudySpaceProps> = ({
+  id,
+  studyspaces,
+  navigation,
+}) => {
   const space = studyspaces.filter((x) => x.id === id)[0]
 
   // There may be non-studyspace results e.g. 1 Saint Martin Le Grand
@@ -81,30 +85,29 @@ const ConnectedStudySpaceResult = ({ id, studyspaces, navigation }) => {
   return (
     <StudySpaceResult
       {...space}
-      onPress={() => navigation.navigate(`StudySpaceDetail`, {
-        id: space.id,
-        name: space.name,
-        occupied: space.occupied,
-        total: space.total,
+      onPress={() => navigation.navigate(`Main`, {
+        params: {
+          params: {
+            id: space.id,
+            name: space.name,
+            occupied: space.occupied,
+            total: space.total,
+          },
+          screen: `StudySpacesDetail`,
+        },
+        screen: `StudySpaces`,
       })}
     />
   )
 }
 
-ConnectedStudySpaceResult.propTypes = {
-  id: PropTypes.number.isRequired,
-  studyspaces: PropTypes.arrayOf(PropTypes.shape()),
-  navigation: PropTypes.shape().isRequired,
-}
 
-ConnectedStudySpaceResult.defaultProps = {
-  studyspaces: [],
-}
-
-ConnectedStudySpaceResult.mapStateToProps = (state) => ({
-  studyspaces: state.studyspaces.studyspaces,
-})
-
-export default connect(ConnectedStudySpaceResult.mapStateToProps)(
-  ConnectedStudySpaceResult,
+const connector = connect(
+  (state: AppStateType) => ({
+    studyspaces: state.studyspaces.studyspaces,
+  }),
 )
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+export default connector(ConnectedStudySpaceResult)

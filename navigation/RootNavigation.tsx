@@ -3,18 +3,13 @@ import { createStackNavigator } from "@react-navigation/stack"
 import React, { ReactElement } from 'react'
 import { connect } from "react-redux"
 
-import LiveSeatingMapScreen from "../screens/LiveSeatingMapScreen"
+import { AppStateType } from '../configureStore'
 import NotificationsScreen from "../screens/NotificationsScreen"
 import SplashScreen from "../screens/SplashScreen"
-import StudySpaceDetailScreen from "../screens/StudySpaceDetailScreen"
 import { NestedNavigator } from '../types/uclapi'
 import MainTabNavigator, { MainTabNavigatorParamList } from "./MainTabNavigator"
 
 export type RootStackParamList = {
-  LiveSeatingMap: {
-    surveyId: string,
-    mapId: string,
-  },
   Main: NestedNavigator<MainTabNavigatorParamList>,
   Notifications: undefined,
   PersonDetail: undefined,
@@ -40,20 +35,12 @@ export const RootNavigatorComponent = ({
     ? (
       <>
         <Stack.Screen
-          name="LiveSeatingMap"
-          component={LiveSeatingMapScreen}
-        />
-        <Stack.Screen
           name="Main"
           component={MainTabNavigator}
         />
         <Stack.Screen
           name="Notifications"
           component={NotificationsScreen}
-        />
-        <Stack.Screen
-          name="StudySpaceDetail"
-          component={StudySpaceDetailScreen}
         />
       </>
     )
@@ -93,9 +80,7 @@ export default connect(
       upi,
       scopeNumber,
     },
-  }: {
-    user: any,
-  }) => ({
+  }: AppStateType) => ({
     scopeNumber,
     token,
     upi,

@@ -1,7 +1,3 @@
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs"
-import { CompositeNavigationProp } from "@react-navigation/native"
-import { StackNavigationProp } from "@react-navigation/stack"
-import { MailComposerResult } from "expo-mail-composer"
 import React from "react"
 import { StyleSheet, View } from "react-native"
 import MapView, { Marker } from "react-native-maps"
@@ -17,12 +13,11 @@ import {
 } from "../../../components/Typography"
 import { LocalisationManager, MailManager, MapsManager } from "../../../lib"
 import type {
-  MainTabNavigatorParamList,
-} from "../../../navigation/MainTabNavigator"
-import type { RootStackParamList } from '../../../navigation/RootNavigation'
+  MailManagerComposeAsyncReturnType,
+} from "../../../lib/MailManager"
 import MapStyle from "../../../styles/Map"
 import type { Region, TimetableEvent } from "../../../types/uclapi"
-import type { TimetableNavigatorParamList } from "../TimetableNavigator"
+import type { TimetableNavigationType } from "../TimetableNavigator"
 
 const styles = StyleSheet.create({
   contactPerson: {
@@ -35,13 +30,7 @@ const styles = StyleSheet.create({
 })
 
 interface Props extends TimetableEvent {
-  navigation: CompositeNavigationProp<
-    StackNavigationProp<TimetableNavigatorParamList>,
-    CompositeNavigationProp<
-      BottomTabNavigationProp<MainTabNavigatorParamList>,
-      StackNavigationProp<RootStackParamList>
-    >
-  >,
+  navigation: TimetableNavigationType,
   initialRegion: Region,
 }
 
@@ -67,7 +56,7 @@ class TimetableDetailView extends React.Component<Props> {
 
   sendEmail = (
     email: string,
-  ) => (): Promise<MailComposerResult> => MailManager.composeAsync({
+  ) => (): MailManagerComposeAsyncReturnType => MailManager.composeAsync({
     recipients: [email],
   })
 

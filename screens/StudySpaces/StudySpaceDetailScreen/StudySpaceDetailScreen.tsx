@@ -1,24 +1,33 @@
-// @flow
-import PropTypes from "prop-types"
-import React, { Component } from "react"
+import type {
+  RouteProp,
+} from "@react-navigation/native"
+import React from "react"
 import { StyleSheet, View } from "react-native"
-import { connect } from "react-redux"
+import { connect, ConnectedProps } from "react-redux"
 
 import {
-  fetchAverages as fetchAveragesAction,
-} from "../../actions/studyspacesActions"
-import Button from "../../components/Button"
-import { Horizontal, Page } from "../../components/Containers"
-import LiveIndicator from "../../components/LiveIndicator"
+  fetchAverages as fetchAveragesAction, StudySpacesDispatch,
+} from "../../../actions/studyspacesActions"
+import Button from "../../../components/Button"
+import { Horizontal, Page } from "../../../components/Containers"
+import LiveIndicator from "../../../components/LiveIndicator"
 import {
   BodyText,
   InfoText,
   Link,
   SubtitleText,
   TitleText,
-} from "../../components/Typography"
-import Colors from "../../constants/Colors"
-import { LocalisationManager, MapsManager, Shadow } from "../../lib"
+} from "../../../components/Typography"
+import type { AppStateType } from "../../../configureStore"
+import Colors from "../../../constants/Colors"
+import { LocalisationManager, MapsManager, Shadow } from "../../../lib"
+import {
+  studySpaceSelectorFactory,
+} from "../../../selectors/studyspacesSelectors"
+import type {
+  StudySpacesNavigationType,
+  StudySpacesNavigatorParamList,
+} from "../StudySpacesNavigator"
 import CapacityChart from "./CapacityChart"
 // import OpeningHours from "./OpeningHours";
 import FavouriteButton from "./FavouriteButton"
@@ -110,65 +119,30 @@ const hasAddress = (address) => (
   && !address.every((part) => part.length === 0)
 )
 
-class StudySpaceDetailScreen extends Component {
-  static navigationOptions = {
-    title: `Study Space Detail`,
-  }
+interface Props {
+  navigation: StudySpacesNavigationType,
+  // eslint-disable-next-line quotes
+  route: RouteProp<StudySpacesNavigatorParamList, 'StudySpacesDetail'>,
+}
 
-  static mapStateToProps = (state) => ({
-    studyspaces: state.studyspaces.studyspaces,
-    token: state.user.token,
-  })
+interface State {
+  fetchingData: boolean,
+}
 
-  static mapDispatchToProps = (dispatch) => ({
-    fetchAverages: (token, id) => dispatch(fetchAveragesAction(token, id)),
-  })
-
-  static propTypes = {
-    fetchAverages: PropTypes.func.isRequired,
-    /* eslint-disable react/no-unused-prop-types */
-    navigation: PropTypes.shape().isRequired,
-    route: PropTypes.shape().isRequired,
-    /* eslint-enable react/no-unused-prop-types */
-    studyspaces: PropTypes.arrayOf(PropTypes.shape()),
-    token: PropTypes.string,
-  }
-
-  static defaultProps = {
-    studyspaces: [],
-    token: ``,
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    if (props.studyspaces && props.studyspaces.length > 0) {
-      const space = props.studyspaces.filter((s) => s.id === state.id)[0]
-      return { data: space.dailyAverages, space }
-    }
-    return null
-  }
-
+class StudySpaceDetailScreen extends React.Component<
+  Props & PropsFromRedux,
+  State
+  > {
   constructor(props) {
     super(props)
-    const { route } = this.props
-    const {
-      id, name, occupied, total,
-    } = route.params
     this.state = {
-      data: Array.from(Array(24)).map(() => 0),
       fetchingData: false,
-      id,
-      name,
-      occupied,
-      space: {
-        isFetchingAverages: false,
-      },
-      total,
     }
   }
 
   componentDidMount() {
-    const { fetchingData, id } = this.state
-    const { token, fetchAverages } = this.props
+    const { fetchingData } = this.state
+    const { token, fetchAverages, route: { params: { id } } } = this.props
     if (!fetchingData && token.length > 0) {
       fetchAverages(token, id)
       setTimeout(() => this.setState({ fetchingData: true }), 100)
@@ -176,13 +150,12 @@ class StudySpaceDetailScreen extends Component {
   }
 
   navigateToLiveSeatMap = () => {
-    const { navigation } = this.props
-    const { space } = this.state
-    navigation.navigate(`LiveSeatingMap`, { space })
+    const { navigation, space: { surveyId, mapId, name } } = this.props
+    navigation.navigate(`LiveSeatingMap`, { mapId, name, surveyId })
   }
 
   navigateToLocation = () => {
-    const { space: { location } } = this.state
+    const { space: { location } } = this.props
     const { coordinates, address } = location
     if (hasCoordinates(coordinates)) {
       const { lat, lng } = coordinates
@@ -193,13 +166,9 @@ class StudySpaceDetailScreen extends Component {
   }
 
   render() {
-    const { navigation } = this.props
     const {
-      id,
-      name,
+      navigation,
       data,
-      total,
-      occupied,
       space: {
         isFetchingAverages,
         maps,
@@ -209,7 +178,15 @@ class StudySpaceDetailScreen extends Component {
           address,
         },
       },
-    } = this.state
+      route: {
+        params: {
+          id,
+          name,
+          total,
+          occupied,
+        },
+      },
+    } = this.props
     const hour = parseInt(
       LocalisationManager.getMoment()
         .format(`HH`),
@@ -240,13 +217,13 @@ class StudySpaceDetailScreen extends Component {
           <Horizontal>
             <View style={styles.occupancySection}>
               <TitleText style={styles.capacityTextStyle}>
-                {total - occupied}
+                {`${total - occupied}`}
               </TitleText>
               <BodyText>Seats Available</BodyText>
             </View>
             <View style={styles.occupancySection}>
               <TitleText style={styles.capacityTextStyle}>
-                {occupied}
+                {`${occupied}`}
               </TitleText>
               <BodyText>Seats Occupied</BodyText>
             </View>
@@ -258,17 +235,16 @@ class StudySpaceDetailScreen extends Component {
               </View>
             ) : (
               <>
-                <View style={styles.popularTimes}>
-                  <SubtitleText>Popular Times</SubtitleText>
-                  <CapacityChart
-                    id={id}
-                    data={data}
-                    occupied={occupied}
-                    capacity={total}
-                    isLoading={isFetchingAverages}
-                  />
-                </View>
-                {timezoneInfo}
+                  <View style={styles.popularTimes}>
+                    <SubtitleText>Popular Times</SubtitleText>
+                    <CapacityChart
+                      data={data}
+                      occupied={occupied}
+                      capacity={total}
+                      isLoading={isFetchingAverages}
+                    />
+                  </View>
+                  {timezoneInfo}
               </>
             )
           }
@@ -282,7 +258,6 @@ class StudySpaceDetailScreen extends Component {
             </BodyText>
           </Horizontal>
           <LiveSeatingMapList
-            style={styles.liveSeatingMapList}
             maps={maps}
             surveyId={id}
             navigation={navigation}
@@ -318,7 +293,21 @@ class StudySpaceDetailScreen extends Component {
   }
 }
 
-export default connect(
-  StudySpaceDetailScreen.mapStateToProps,
-  StudySpaceDetailScreen.mapDispatchToProps,
-)(StudySpaceDetailScreen)
+const connector = connect(
+  (state: AppStateType, ownProps: Props) => {
+    const { user: { token } } = state
+    const space = studySpaceSelectorFactory(ownProps.route?.params?.id)(state)
+    return {
+      data: space?.dailyAverages,
+      space,
+      token,
+    }
+  },
+  (dispatch: StudySpacesDispatch) => ({
+    fetchAverages: (token, id) => dispatch(fetchAveragesAction(token, id)),
+  }),
+)
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+export default connector(StudySpaceDetailScreen)
