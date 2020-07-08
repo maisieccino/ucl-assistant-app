@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
 import { cleanup, fireEvent, render } from "react-native-testing-library"
 import { Provider } from "react-redux"
+import { Store } from 'redux'
 import configureStore from 'redux-mock-store'
 import thunk from "redux-thunk"
 
@@ -10,9 +11,6 @@ import debounce from "../../lib/debounce"
 import { initialState } from '../../reducers'
 import MainTabNavigator from '../MainTabNavigator'
 
-// https://github.com/facebook/react-native/issues/11094#issuecomment-263240420
-jest.mock(`react-native/Libraries/Animated/src/NativeAnimatedHelper`)
-
 const middlewares = [
   debounce.middleware,
   thunk,
@@ -20,8 +18,10 @@ const middlewares = [
 const mockStore = configureStore(middlewares)
 
 describe(`MainTabNavigator`, () => {
+  jest.useRealTimers()
+
   let Navigator
-  const store = mockStore(initialState)
+  const store: Store = mockStore(initialState)
 
   beforeEach(() => {
     Navigator = render(
@@ -36,6 +36,7 @@ describe(`MainTabNavigator`, () => {
   afterEach(() => {
     cleanup()
   })
+
   it(`renders without error`, () => {
     expect(Navigator.toJSON()).toMatchSnapshot()
   })

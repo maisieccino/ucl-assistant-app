@@ -5,15 +5,36 @@ import { render } from "react-native-testing-library"
 
 import App from "../App"
 
-// https://github.com/facebook/react-native/issues/11094#issuecomment-263240420
-jest.mock(`react-native/Libraries/Animated/src/NativeAnimatedHelper`)
+jest.mock(`react-redux`, () => ({
+  Provider: ({ children }) => children,
+  connect: () => (component) => component,
+}))
 
-it(`renders the loading screen`, async () => {
-  const tree = render(<App />).toJSON()
-  expect(tree).toMatchSnapshot()
-})
+jest.mock(`redux-persist/lib/integration/react`, () => ({
+  PersistGate: ({ children }) => children,
+}))
 
-it(`renders the root without loading screen`, async () => {
-  const tree = render(<App skipLoadingScreen />).toJSON()
-  expect(tree).toMatchSnapshot()
+jest.mock(`../configureStore`, () => ({
+  persistor: jest.fn(),
+  store: jest.fn(),
+}))
+
+describe(`App`, () => {
+  beforeEach(() => {
+    jest.useFakeTimers()
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  it(`renders the loading screen`, async () => {
+    const tree = render(<App />).toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  it(`renders the root without loading screen`, async () => {
+    const tree = render(<App skipLoadingScreen />).toJSON()
+    expect(tree).toMatchSnapshot()
+  })
 })
