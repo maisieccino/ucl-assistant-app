@@ -1,8 +1,6 @@
-import "react-native"
-
+import { cleanup, render } from '@testing-library/react-native'
 import React from "react"
-import { cleanup, render } from 'react-native-testing-library'
-
+import "react-native"
 import { RecentResults } from "../RecentResults"
 import { SearchControl } from "../SearchControl"
 
@@ -23,8 +21,8 @@ describe(`RecentResults`, () => {
       } as any,
       recents: [],
     }
-    const tree = render(<RecentResults {...props} />).toJSON()
-    expect(tree).toBe(null)
+    const tree = render(<RecentResults {...props} />)
+    expect(tree).toMatchSnapshot()
   })
 
   it(`renders a filled RecentResults component`, async () => {
@@ -48,7 +46,7 @@ describe(`RecentResults`, () => {
         },
       ],
     }
-    const tree = render(<RecentResults {...props} />).toJSON()
+    const tree = render(<RecentResults {...props} />)
     expect(tree).toMatchSnapshot()
   })
 

@@ -1,8 +1,6 @@
-import "react-native"
-
+import { cleanup, fireEvent, render } from "@testing-library/react-native"
 import React from 'react'
-import { cleanup, fireEvent, render } from "react-native-testing-library"
-
+import "react-native"
 import Button from ".."
 import { ButtonText } from '../../Typography'
 
@@ -20,7 +18,7 @@ describe(`Button`, () => {
         Press Me
       </Button>,
     )
-    expect(wrapper.toJSON()).toMatchSnapshot()
+    expect(wrapper).toMatchSnapshot()
   })
 
   it(`renders with text element as child`, () => {
@@ -29,7 +27,7 @@ describe(`Button`, () => {
         <ButtonText>Press Me</ButtonText>
       </Button>,
     )
-    expect(wrapper.toJSON()).toMatchSnapshot()
+    expect(wrapper).toMatchSnapshot()
   })
 
   it(`renders the loading state`, () => {
@@ -38,23 +36,21 @@ describe(`Button`, () => {
         This is a loading button
       </Button>,
     )
-    expect(wrapper.toJSON()).toMatchSnapshot()
+    expect(wrapper).toMatchSnapshot()
   })
 
   it(`handles onPress events`, () => {
-    const testID = `active-button`
     const onPress = jest.fn()
     const wrapper = render(
       <Button
-        testID={testID}
         onPress={onPress}
       >
         Active Button
       </Button>,
     )
 
-    const { getByTestId } = wrapper
-    const activeButton = getByTestId(testID)
+    const { getByText } = wrapper
+    const activeButton = getByText(/Active Button/i)
     fireEvent.press(activeButton)
 
     expect(onPress).toHaveBeenCalledTimes(1)
@@ -62,24 +58,22 @@ describe(`Button`, () => {
   })
 
   it(`renders the disabled state`, () => {
-    const testID = `disabled-button`
     const onPress = jest.fn()
     const wrapper = render(
       <Button
         disabled
-        testID={testID}
         onPress={onPress}
       >
         This is a disabled button
       </Button>,
     )
-    expect(wrapper.toJSON()).toMatchSnapshot()
+    expect(wrapper).toMatchSnapshot()
 
-    // const { getByTestId } = wrapper
-    // const disabledButton = getByTestId(testID)
-    // fireEvent.press(disabledButton)
+    const { getByText } = wrapper
+    const disabledButton = getByText(/disabled button/i)
+    fireEvent.press(disabledButton)
 
-    // expect(onPress).toMatchSnapshot()
-    // expect(onPress).toHaveBeenCalledTimes(0)
+    expect(onPress).toMatchSnapshot()
+    expect(onPress).toHaveBeenCalledTimes(0)
   })
 })
