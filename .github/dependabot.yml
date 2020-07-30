@@ -17,4 +17,4 @@ update_configs:
       - dependency_name: "lottie-react-native"
       - dependency_name: "react-native-svg"
       - dependency_name: "@react-native-community/*"
-      - dependency_name: "expo-*"
+      - dependency_name: "expo\-"
