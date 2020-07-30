@@ -10,9 +10,11 @@ import { Provider } from "react-redux"
 import { PersistGate } from "redux-persist/lib/integration/react"
 import configureStore from "./configureStore"
 import Colors from './constants/Colors'
-import { NotificationChannels } from "./constants/notificationsConstants"
-import { AnalyticsManager, AssetManager, ErrorManager } from "./lib"
+import {
+  AnalyticsManager, AssetManager, ErrorManager, Warnings,
+} from "./lib"
 import RootNavigation from "./navigation/RootNavigation"
+import { NotificationChannels } from "./redux/constants/notificationsConstants"
 import Styles from "./styles/Containers"
 
 const { persistor, store } = configureStore
@@ -22,6 +24,8 @@ ErrorManager.initialise()
 // SVG base64 string
 // unfortunately, this reduces navigation performance
 // enableScreens()
+
+Warnings.ignore()
 
 interface Props {
   skipLoadingScreen: boolean,
