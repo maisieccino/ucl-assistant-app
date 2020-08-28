@@ -62,7 +62,6 @@ export const PersonDetailScreen: React.FC<Props> = ({
     } = {},
     error,
   } = usePerson(token, email)
-  console.log(fetchStatus, email)
 
   const sendEmail = useCallback(() => MailManager.composeAsync({ recipients: [email] }), [email])
 

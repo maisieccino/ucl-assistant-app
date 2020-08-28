@@ -379,6 +379,11 @@ Object {
               <TouchableWithoutFeedback
                 accessibilityLabel="Timetable, tab, 1 of 5"
                 accessibilityRole="button"
+                accessibilityState={
+                  Object {
+                    "selected": true,
+                  }
+                }
                 accessibilityStates={
                   Array [
                     "selected",
@@ -485,6 +490,11 @@ Object {
               <TouchableWithoutFeedback
                 accessibilityLabel="StudySpaces, tab, 2 of 5"
                 accessibilityRole="button"
+                accessibilityState={
+                  Object {
+                    "selected": false,
+                  }
+                }
                 accessibilityStates={Array []}
               >
                 <View
@@ -587,6 +597,11 @@ Object {
               <TouchableWithoutFeedback
                 accessibilityLabel="People, tab, 3 of 5"
                 accessibilityRole="button"
+                accessibilityState={
+                  Object {
+                    "selected": false,
+                  }
+                }
                 accessibilityStates={Array []}
               >
                 <View
@@ -689,6 +704,11 @@ Object {
               <TouchableWithoutFeedback
                 accessibilityLabel="Rooms, tab, 4 of 5"
                 accessibilityRole="button"
+                accessibilityState={
+                  Object {
+                    "selected": false,
+                  }
+                }
                 accessibilityStates={Array []}
               >
                 <View
@@ -791,6 +811,11 @@ Object {
               <TouchableWithoutFeedback
                 accessibilityLabel="Settings, tab, 5 of 5"
                 accessibilityRole="button"
+                accessibilityState={
+                  Object {
+                    "selected": false,
+                  }
+                }
                 accessibilityStates={Array []}
               >
                 <View
@@ -1264,6 +1289,11 @@ Object {
             <TouchableWithoutFeedback
               accessibilityLabel="Timetable, tab, 1 of 5"
               accessibilityRole="button"
+              accessibilityState={
+                Object {
+                  "selected": true,
+                }
+              }
               accessibilityStates={
                 Array [
                   "selected",
@@ -1370,6 +1400,11 @@ Object {
             <TouchableWithoutFeedback
               accessibilityLabel="StudySpaces, tab, 2 of 5"
               accessibilityRole="button"
+              accessibilityState={
+                Object {
+                  "selected": false,
+                }
+              }
               accessibilityStates={Array []}
             >
               <View
@@ -1472,6 +1507,11 @@ Object {
             <TouchableWithoutFeedback
               accessibilityLabel="People, tab, 3 of 5"
               accessibilityRole="button"
+              accessibilityState={
+                Object {
+                  "selected": false,
+                }
+              }
               accessibilityStates={Array []}
             >
               <View
@@ -1574,6 +1614,11 @@ Object {
             <TouchableWithoutFeedback
               accessibilityLabel="Rooms, tab, 4 of 5"
               accessibilityRole="button"
+              accessibilityState={
+                Object {
+                  "selected": false,
+                }
+              }
               accessibilityStates={Array []}
             >
               <View
@@ -1676,6 +1721,11 @@ Object {
             <TouchableWithoutFeedback
               accessibilityLabel="Settings, tab, 5 of 5"
               accessibilityRole="button"
+              accessibilityState={
+                Object {
+                  "selected": false,
+                }
+              }
               accessibilityStates={Array []}
             >
               <View
