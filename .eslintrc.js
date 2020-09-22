@@ -176,6 +176,10 @@ module.exports = {
       `warn`,
       {
         code: 100,
+        ignoreComments: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+        ignoreUrls: true,
       },
     ],
     "no-console": `off`,
