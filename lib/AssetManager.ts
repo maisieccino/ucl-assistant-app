@@ -18,6 +18,7 @@ const undraw = {
   relaxation: require(`../assets/images/undraw_relaxation.png`),
   relaxingAtHome: require(`../assets/images/undraw_relaxing_at_home.png`),
   scrumBoard: require(`../assets/images/undraw_scrum_board.png`),
+  socialDistancing: require(`../assets/images/undraw_social_distancing.png`),
   studying: require(`../assets/images/undraw_studying.png`),
 }
 
